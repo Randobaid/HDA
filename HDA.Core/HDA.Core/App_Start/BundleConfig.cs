@@ -24,7 +24,7 @@ namespace HDA.Core
                 "~/Scripts/bootstrap.bundle.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      //"~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/font-awesome.min.css",
                       "~/Content/awesomplete.css",
@@ -35,6 +35,10 @@ namespace HDA.Core
                       "~/Content/bootstrap-multiselect.css"
                       )
                       );
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
+                "~/Content/bootstrap.css"
+                ));
 
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
@@ -53,6 +57,13 @@ namespace HDA.Core
                 "~/Scripts/moment.min.js",
                 "~/Scripts/daterangepicker.js"
                 ));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap-rtl-css").Include(
+                "~/Content/bootstrap-rtl/css/rtl/bootstrap.css"
+                ));
+            //bundles.Add(new ScriptBundle("~/bundles/bootstrap-rtl-js").Include(
+            //    "~/Content/bootstrap-rtl/js/bootstrap.js"
+            //    ));
         }
     }
 }

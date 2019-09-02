@@ -21,7 +21,9 @@ namespace HDA.Core.Migrations
             SeedGovernorates(context);
             SeedDomains(context);
             SeedHealthFacilityTypes(context);
-            //SeedHealthFacilities(context);
+            SeedHealthFacilities(context);
+            SeedSectionLookups(context);
+            SeedSpecialityLookups(context);
             //SeedServices(context);
             SeedGenderLookups(context);
             SeedMaritalStatusLookups(context);
@@ -32,6 +34,27 @@ namespace HDA.Core.Migrations
             SeedDepartments(context);
             SeedMovementLookups(context);
             base.Seed(context);
+        }
+
+        private void SeedSpecialityLookups(HDACoreContext context)
+        {
+            context.SpecialityLookups.AddOrUpdate(h => h.SpecialityNameEn,
+                new SpecialityLookup
+                {
+                    SectionLookupID = context.SectionLookups.Where(g => g.SectionNameEn.ToLower() == "default").First().SectionLookupID,
+                    SpecialityNameEn = "Default",
+                }
+
+                );
+            context.SaveChanges();
+        }
+
+        private void SeedSectionLookups(HDACoreContext context)
+        {
+            context.SectionLookups.AddOrUpdate(m => m.SectionNameEn,
+                new SectionLookup { SectionNameEn = "Default" }
+                );
+            context.SaveChanges();
         }
 
         private void SeedMovementLookups(HDACoreContext context)
@@ -143,7 +166,7 @@ namespace HDA.Core.Migrations
             context.SaveChanges();
         }
 
-        /*private void SeedHealthFacilities(HDACoreContext context)
+        private void SeedHealthFacilities(HDACoreContext context)
         {
             context.HealthFacilities.AddOrUpdate(h => h.SourceID,
                 new HealthFacility
@@ -152,8 +175,9 @@ namespace HDA.Core.Migrations
                     HealthFacilityNameAr = "مستشفى الكرك الحكومي",
                     SourceID = 266,
                     GovernorateID = context.Governorates.Where(g => g.GovernorateNameEn.ToLower() == "karak").First().GovernorateID,
-                    DomainID = context.Domains.Where(d => d.DomainCode.ToLower() == "moh").First().DomainID,
-                    HealthFacilityTypeID = context.HealthFacilityTypes.Where(h => h.HealthFacilityTypeCode.ToLower() == "H").First().HealthFacilityTypeID
+                    DomainLookupID = context.DomainLookups.Where(d => d.DomainCode.ToLower() == "moh").First().DomainLookupID,
+                    HealthFacilityTypeID = context.HealthFacilityTypes.Where(h => h.HealthFacilityTypeCode.ToLower() == "H").First().HealthFacilityTypeID,
+                    DirectorateLookupID = context.DirectorateLookups.Where(d => d.DirectorateNameEn.ToLower() == "Health Directorate of Karak".ToLower()).First().DirectorateLookupID
                 },
                 new HealthFacility
                 {
@@ -161,13 +185,14 @@ namespace HDA.Core.Migrations
                     HealthFacilityNameAr = "مستشفى البشير",
                     SourceID = 210,
                     GovernorateID = context.Governorates.Where(g => g.GovernorateNameEn.ToLower() == "amman").First().GovernorateID,
-                    DomainID = context.Domains.Where(d => d.DomainCode.ToLower() == "moh").First().DomainID,
-                    HealthFacilityTypeID = context.HealthFacilityTypes.Where(h => h.HealthFacilityTypeCode.ToLower() == "H").First().HealthFacilityTypeID
+                    DomainLookupID = context.DomainLookups.Where(d => d.DomainCode.ToLower() == "moh").First().DomainLookupID,
+                    HealthFacilityTypeID = context.HealthFacilityTypes.Where(h => h.HealthFacilityTypeCode.ToLower() == "H").First().HealthFacilityTypeID,
+                    DirectorateLookupID = context.DirectorateLookups.Where(d => d.DirectorateNameEn.ToLower() == "Health Directorate of Amman".ToLower()).First().DirectorateLookupID
                 }
 
                 );
             context.SaveChanges();
-        }*/
+        }
 
         /*private void SeedServices(HDACoreContext context)
         {

@@ -14,6 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
+    @*@Styles.Render("~/Content/bootstrap-rtl-css")*@
+    @Styles.Render("~/Content/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="bg-light">
@@ -63,10 +65,10 @@
                     </section>
                     <div class="card-footer" style="padding-top:0.2em;padding-bottom:0.2em;">
                         @*<a class="nav-item" href="#">
-                            <img src="@Url.Content("~/favicon.ico")" width="30" height="30" /> <b class="text-dark">Hakeem Data Analytics</b>
-                        </a>*@
+                                <img src="@Url.Content("~/favicon.ico")" width="30" height="30" /> <b class="text-dark">Hakeem Data Analytics</b>
+                            </a>*@
                         <a class="nav-item" href="#">
-                            <img src="@Url.Content("~/Images/hda_logo_blue.png")" width="52" height="40" alt=""/> <b class="text-dark">Health Data Analytics</b>
+                            <img src="@Url.Content("~/Images/hda_logo_blue.png")" width="52" height="40" alt="" /> <b class="text-dark">Health Data Analytics</b>
                         </a>
                     </div>
                 </div>
@@ -77,6 +79,7 @@
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/bootstrap-rtl-js")*@
     @Scripts.Render("~/bundles/bootstrap")
 
 </body>

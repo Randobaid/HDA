@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
+    @*@Styles.Render("~/Content/bootstrap-rtl-css")*@
+    @Styles.Render("~/Content/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
@@ -15,7 +17,7 @@
         @*@Html.ActionLink("HDA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
         @*<a href="@Url.Action("Index","Home")" class="navbar-brand"><i class="fa fa-pie-chart fa-lg"></i></a>*@
         <a class="nav-item" href="#">
-            <img src="@Url.Content("~/Images/hda_logo_white.png")" width="52" height="40" alt=""> 
+            <img src="@Url.Content("~/Images/hda_logo_white.png")" width="52" height="40" alt="">
         </a>
         <button type="button"
                 class="navbar-toggler"
@@ -32,17 +34,17 @@
                     @Html.ActionLink("Reports", "Index", "Reports", new { area = "" }, new { @class = "nav-link" })
                 </li>
                 @*<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="Reports" id="reportsDropDown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Reports
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="reportsDropDown">
-                        @Html.ActionLink("Workload", "Workload"
-                                , "Reports", new { area = "" }, new { @class = "dropdown-item" })
-                        <div class="dropdown-divider"></div>
-                        @Html.ActionLink("Other", "Other"
-                                , "Reports", new { area = "" }, new { @class = "dropdown-item" })
-                    </div>
-                </li>*@
+                        <a class="nav-link dropdown-toggle" href="Reports" id="reportsDropDown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Reports
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="reportsDropDown">
+                            @Html.ActionLink("Workload", "Workload"
+                                    , "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                            <div class="dropdown-divider"></div>
+                            @Html.ActionLink("Other", "Other"
+                                    , "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                        </div>
+                    </li>*@
 
                 @Html.Partial("_AdminPartial")
             </ul>
@@ -55,7 +57,7 @@
         <nav class="navbar fixed-bottom navbar-light bg-light border">
             <span class="pull-left">
                 <a class="nav-item" href="#">
-                    <img src="@Url.Content("~/Images/hda_logo_blue.png")" width="52" height="40" alt=""/> <b class="text-dark">Health Data Analytics</b>
+                    <img src="@Url.Content("~/Images/hda_logo_blue.png")" width="52" height="40" alt="" /> <b class="text-dark">Health Data Analytics</b>
                 </a>
             </span>
             <span class="pull-right">
@@ -71,6 +73,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/bootstrap-rtl-js")*@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/app")
     @Scripts.Render("~/bundles/daterangepicker")
