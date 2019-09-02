@@ -1,0 +1,850 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark">
+                    <i class="fa fa-filter fa-lg" aria-hidden="true"></i><b> Filters</b>
+                </div>
+                <div class="card-body text-left">
+                    <div class="row">
+                        @*<div class="form-group col-md-12">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-hospital-o fa-lg" aria-hidden="true"></i> Select Hospital Type
+                                </button>
+                                
+                                <ul id="demolist" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li class="dropdown-item"><a href="#" id="1">Hospitals</a></li>
+                                    <li class="dropdown-item"><a href="#">Comprehensive Centers</a></li>
+                                    <li class="dropdown-item"><a href="#">Specialized Medical Centers</a></li>
+                                    <li class="dropdown-item"><a href="#">Peripheral Centers</a></li>
+                                    <li class="dropdown-item"><a href="#">Primary Centers</a></li>
+                                    <li class="dropdown-item"><a href="#">Educational Hospitals</a></li>
+                                </ul>
+
+                            </div>
+                        </div>*@
+                        <div class="form-group col-md-12">
+                            <div class="dropdown">
+                                <select id="hospital_types" multiple="multiple">
+                                    <option value="1">Hospitals</option>
+                                    <option value="2">Comprehensive Centers</option>
+                                    <option value="3">Specialized Medical Centers</option>
+                                    <option value="4">Peripheral Centers</option>
+                                    <option value="5">Primary Centers</option>
+                                    <option value="6">Educational Hospitals</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="col-md-10 col-sm-12">
+                                    <input type="text" class="form-control" id="TextHospital" placeholder="Select Hospital.." disabled="disabled" />
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allHospitals">
+                                        <label class="form-check-label" for="allHospitals">
+                                            All
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input type="text" placeholder="Select Provider.." class="form-control" id="TextProvider" disabled="disabled" />
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allProviders">
+                                        <label class="form-check-label" for="allProviders">
+                                            All
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="reportrange" class="col-form-label">Performance Period</label>
+                            <div id="reportrange" class="rounded" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <span></span> <i class="fa fa-caret-down"></i>
+                            </div>
+                            <div>
+                                <div class="form-check col-md-12">
+                                    <input class="form-check-input " type="checkbox" value="" id="compareLastYear">
+                                    <label class="form-check-label" for="compareLastYear">
+                                        Compare with Previous Year
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+            <br />
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark">
+                    <i class="fa fa-bullseye fa-lg" aria-hidden="true"></i><b> Targets</b>
+                </div>
+                <div class="card-body text-left">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Beds</h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6><b><label id="NumberOfBeds" class="text-primary"></label></b></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <i>Targeting 70% occupancy rates and 3 days average LOS</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Clinics</h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6><b><label id="NumberOfClinics" class="text-primary"></label></b></h6>
+                                </div>
+                            </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <i>Targeting 25 visits daily for clinics operating 3 days a week</i>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Operating Rooms</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><b><label id="NumberOfOperatingRooms" class="text-primary"></label></b></h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <i>Targeting 2 operations daily for theatres working 3 days a week</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+
+            <br />
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark">
+                    <i class="fa fa-info-circle fa-lg" aria-hidden="true"></i><b> Additional Information</b>
+                </div>
+                <div class="card-body text-left">
+                    <h6 class="card-subtitle mb-2 text-muted">Elements for Interpretation</h6>
+                    <p class="card-text">
+                        Patient care is the reason to be for a healthcare facility. 
+                        Understanding the population being served and the services they seek from the point of view of the facility will allow for better planning of resources and services in the different facilities.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card border border-primary bg-light" hidden="hidden" id="outPatientDiv">
+                        <div class="card-header bg-primary text-white">
+                            <i class="fa fa-star-o fa-pull-left fa-lg" id="starOutpatientChart" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
+                            Outpatient Encounters
+                            <i class="fa fa-expand fa-pull-right fa-lg" id="expandOutpatientChart" data-toggle="tooltip" data-placement="top" title="Expand this chart to see more information"></i>
+                        </div>
+                        <div class="col-md-3" hidden="hidden">
+                            <table id="OutPatientEncounters" class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3">OutPatient Encounters</th>
+                                    </tr>
+                                    <tr>
+                                        <th>MonthId</th>
+                                        <th>Month</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <div class="ct-chart ct-octave" id="outPatientChart"></div>
+                            </div>
+                            <br />
+                            <div id="oppivot" hidden="hidden" class="col-md-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card border border-primary bg-light" hidden="hidden" id="inPatientDiv">
+                        <div class="card-header bg-primary text-white">
+                            <i class="fa fa-star-o fa-pull-left fa-lg" id="starInpatientChart" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
+                            Inpatient Transfers <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="inpatientProgress"></i>
+                            <i class="fa fa-expand fa-pull-right fa-lg" id="expandInpatientChart"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <div class="ct-chart ct-octave " id="inPatientChart"></div>
+                            </div>
+                            <br />
+                            <div id="inpivot" style="width:100%;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="card border border-primary bg-light" id="surgeriesDiv" hidden="hidden">
+                        <div class="card-header bg-primary text-white">
+                            <i class="fa fa-star-o fa-pull-left fa-lg" id="starSurgeriesChart" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
+                            Surgeries
+                            <i class="fa fa-expand fa-pull-right fa-lg" id="expandSurgeriesChart" data-toggle="tooltip" data-placement="top" title="Expand this chart to see more information"></i>
+                        </div>
+                        <div class="card-body ">
+                            <div class="col-md-12 ">
+                                <div class="ct-chart ct-octave " id="surgeriesChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="card border border-primary bg-light" id="monthlyAverageDiv" hidden="hidden">
+                        <div class="card-header bg-primary text-white">
+                            Monthly Average
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <div class="ct-chart ct-square" id="monthlyAverageChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        var facilityTypeId = 0;
+        var facilityId = 0;
+        var providerId = 0;
+        var startDate = '2019-01-01';
+        var endDate = '2019-03-31';
+        var showPreviousYear = 0;
+        var pInput = document.getElementById("TextProvider");
+        var providerAws;
+        var outpatientTarget = 0;
+        var inPatientTarget = 0;
+        var surgeriesTarget = 0;
+        var fInput;
+        var aws1;
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+        $(document).ready(function () {
+            fInput = document.getElementById("TextHospital");
+            aws1 = new Awesomplete(fInput, { minChars: 2 });
+            
+            providerAws = new Awesomplete(pInput, { minChars: 2, autoFirst: true });
+
+            //$('#demolist li a').on('click', function () {
+            //    $('#dropdownMenuButton').text($(this).text());
+            //    facilityTypeId = 1; //TODO Get Value from Dropdown
+            //    GetInventory();
+                
+            //});
+
+            $('#hospital_types').multiselect({
+                enableHTML:true,
+                buttonWidth: '100%',
+                
+                includeSelectAllOption: true,
+                allSelectedText:'All Selected',
+                buttonClass: 'btn btn-primary btn-block',
+                buttonText: function (options, select) {
+                    if (options.length === 0) {
+                        return '<i class="fa fa-hospital-o fa-lg" aria-hidden="true"></i> Select Hospital Type';
+                    }
+                    else if (options.length > 3) {
+                        return options.length + ' selected';
+                    }
+                    else {
+                        var labels = [];
+                        options.each(function () {
+                            if ($(this).attr('label') !== undefined) {
+                                labels.push($(this).attr('label'));
+                            }
+                            else {
+                                labels.push($(this).html());
+                            }
+                        });
+                        return labels.join(', ') + '';
+                    }
+                },
+                onDropdownHidden: function (event) {
+                    var selectedOptions = $('#hospital_types option:selected');
+                    console.log(selectedOptions);
+                    facilityTypeId = 1;//TODO Get Value from Dropdown
+                    GetInventory();
+                }
+                
+            });
+
+        });
+
+        $(function () {
+            var start = moment().startOf('year');
+            var end = moment();
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+                startDate = start.format('YYYY-MM-DD');
+                endDate = end.format('YYYY-MM-DD');
+                if (facilityTypeId > 0) {
+                    GetOutPatientEncounters();
+                    GetInPatientEncounters();
+                    GetSurgeries();
+                    GetMonthlyAverage();
+                }
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                alwaysShowCalendars: true,
+                ranges: {
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'Year to Date': [moment().startOf('year'), moment()],
+                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')]
+                }
+            }, cb);
+            cb(start, end);
+        });
+
+        function SelectFacility() {
+            var result = this.value.split("~");
+            this.value = result[1];
+            facilityId = result[0];
+            
+            $('#TextProvider').val('');
+            providerId = 0;
+            $("#allProviders").prop('checked', true);
+            $('#TextProvider').attr('disabled', true);
+
+            GetInventory();
+            GetOutPatientEncounters();
+            GetInPatientEncounters();
+            GetSurgeries();
+            GetMonthlyAverage();
+        }
+
+        function SelectProvider() {
+            var r = this.value.split("~");
+            this.value = r[1];
+            providerId = r[0];
+            GetOutPatientEncounters();
+            GetInPatientEncounters();
+            GetSurgeries();
+            GetMonthlyAverage();
+        }
+
+        function GetProviders() {
+            providerAws.destroy();
+            pInput.addEventListener('awesomplete-selectcomplete', SelectProvider);
+            providerAws = new Awesomplete(pInput, { minChars: 2, autoFirst: true });
+            $.ajax({
+                url: '../api/Providers/GetProviders/' + facilityId,
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var providerList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        providerList.push({ label: data[i]['ProviderName'], value: data[i]['ProviderID'] + '~' + data[i]['ProviderName'] });
+                    }
+                    providerAws.list = providerList;
+                    console.log(providerList);
+                }
+            });
+
+        }
+
+        $("#allProviders").change(function () {
+            if (this.checked) {
+                $('#TextProvider').attr('disabled', true);
+                $('#TextProvider').val('');
+                providerId = 0;
+                GetOutPatientEncounters();
+                GetInPatientEncounters();
+                GetSurgeries();
+                GetMonthlyAverage();
+            }
+            else {
+                $('#TextProvider').removeAttr('disabled');
+                GetProviders();
+            }
+        });
+
+        $("#allHospitals").change(function () {
+            if (this.checked) {
+                $('#TextHospital').attr('disabled', true);
+                $('#TextHospital').val('');
+                facilityId = 0;
+                GetInventory();
+                GetOutPatientEncounters();
+                GetInPatientEncounters();
+                GetSurgeries();
+                GetMonthlyAverage();
+            }
+            else {
+                $('#TextHospital').removeAttr('disabled');
+            }
+        });
+
+        $('#compareLastYear').change(function () {
+            if (this.checked) {
+                showPreviousYear = 1;
+            }
+            else {
+                showPreviousYear = 0;
+            }
+            GetOutPatientEncounters();
+        });
+
+        function GetFacilityList(fInput, aws1, facilityTypeId) {
+
+
+            fInput.addEventListener('awesomplete-selectcomplete', SelectFacility);
+            $.ajax({
+                url: '../api/HealthFacilities/GetHealthFacilities/'+facilityTypeId,
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+
+                success: function (data) {
+
+                    var serverData = data;
+                    var hfList = [];
+
+                    for (var i = 0; i < serverData.length; i++) {
+
+                        hfList.push({ label: serverData[i]['HealthFacilityName'], value: serverData[i]['ID'] + '~' + serverData[i]['HealthFacilityName'] });
+                    }
+                    aws1.list = hfList;
+                    //console.log(serverData);
+                    //console.log(hfList);
+                },
+                error: function (data) {
+                    console.log(data.d);
+                }
+            });
+        }
+
+        function GetOutPatientEncounters() {
+            if (facilityTypeId > 0) {
+                $('#outPatientDiv').removeAttr('hidden');
+
+                var outPatientEncountersTable = $('#OutPatientEncounters').DataTable({
+                    destroy: true,
+                    ordering: false,
+                    paging: false,
+                    searching: false,
+                    ajax: {
+                        type: 'GET',
+                        dataType: 'json',
+                        url: '../api/OutPatientEncounters/GetMonthlyTotals/?HealthFacilityID=' + facilityId
+                            + '&ProviderID=' + providerId
+                            + '&FromDate=' + startDate
+                            + '&ToDate=' + endDate
+                            + '&PreviousYear=' + showPreviousYear + '',
+                        contentType: "application/json; charset=utf-8",
+                        dataSrc: function (d) { return d }
+                    },
+                    columns: [
+                        { data: 'MonthId' },
+                        { data: 'MonthName' },
+                        { data: 'Total' }
+                    ],
+                    columnDefs: [
+                        {
+                            targets: [0],
+                            visible: false
+                        }
+                    ],
+                    initComplete: function (settings, json) {
+                        var chartLabels = [];
+                        var chartData = [];
+                        var lastYear = [];
+                        for (var i = 0; i < json.length; i++) {
+                            chartLabels.push((json[i]['MonthName']));
+                            chartData.push(json[i]['Total']);
+                            if (showPreviousYear == 1) {
+                                lastYear.push(json[i]['TotalPreviousYear']);
+                            }
+                        }
+
+                        if (chartLabels.length > 2) {
+                            var chart = new Chartist.Line('#outPatientChart', {
+                                labels: chartLabels,
+                                series: [
+                                    {
+                                        name: 'outpatient-encounters',
+                                        data: chartData
+                                    },
+                                    {
+                                        name: 'last-year',
+                                        data: lastYear
+                                    }
+                                ]
+                            },
+                                {
+                                    fullWidth: true,
+                                    chartPadding: {
+                                        right: 40,
+                                        top:40
+                                    },
+                                    lineSmooth: true,
+                                    showArea: true,
+                                    axisY: {
+                                        onlyInteger: true
+                                    },
+                                    axisX: {
+                                        labelInterpolationFnc: function (value) {
+                                            return value.slice(0,3);
+                                        }
+                                    },
+                                    plugins: [
+                                        Chartist.plugins.ctThreshold({
+                                            threshold: outpatientTarget
+                                        }),
+                                        Chartist.plugins.legend()]
+                                }
+                            );
+                        }
+                        else {
+                            new Chartist.Bar('#outPatientChart',
+                                {
+                                    labels: chartLabels,
+                                    series: [
+                                        chartData
+                                    ]
+                                });
+                        }
+
+                        /*
+                        chart.on('draw', function (data) {
+                            if (data.type === 'line' || data.type === 'area') {
+                                data.element.animate({
+                                    d: {
+                                        begin: 2000 * data.index,
+                                        dur: 2000,
+                                        from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                                        to: data.path.clone().stringify(),
+                                        easing: Chartist.Svg.Easing.easeOutQuint
+                                    }
+                                });
+                            }
+                        });*/
+
+
+                        var utils = $.pivotUtilities;
+                        var heatmap = utils.renderers["Heatmap"];
+                        var sum = utils.aggregators["Integer Sum"];
+                        var max = utils.aggregators["Maximum"];
+                        var sortAs = utils.sortAs;
+                        var tpl = utils.aggregatorTemplates;
+                        $('#oppivot').pivot(
+                            json,
+                            {
+
+                                cols: ['MonthName'],
+                                //vals: ['Total'],
+
+                                aggregator: sum(['Total']),
+                                //aggregator: max(['Total']),
+
+
+                                sorters: {
+                                    'MonthName': sortAs(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Decemeber"])
+                                },
+                                renderer: heatmap
+                            }
+                        );
+                    }
+                });
+
+            }
+        }
+
+        function GetInPatientEncounters() {
+            if (facilityTypeId > 0) {
+                $('#inPatientDiv').removeAttr('hidden');
+                $('#inpatientProgress').removeAttr('hidden');
+                $.ajax({
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                if (percentComplete < 1) {
+                                    $('#inpatientProgress').removeAttr('hidden');
+                                }
+                                else {
+                                    $('#inpatientProgress').attr('hidden', true);
+                                }
+                            }
+                        }, false);
+
+                        xhr.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                if (percentComplete < 1) {
+                                    $('#inpatientProgress').removeAttr('hidden');
+                                }
+                                else {
+                                    $('#inpatientProgress').attr('hidden', true);
+                                }
+                            }
+                        }, false);
+
+                        return xhr;
+                    },
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '../api/InPatientEncounters/GetMonthlyTotals/?HealthFacilityID=' + facilityId
+                        + '&ProviderID=' + providerId
+                        + '&FromDate=' + startDate
+                        + '&ToDate=' + endDate
+                        + '&PreviousYear=' + showPreviousYear + '',
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (json) {
+                    //console.log(json);
+                    var chartLabels = [];
+                    var series13 = [];
+                    var series47 = [];
+                    var series8Plus = [];
+                    var seriesNotDischarged = [];
+
+                    for (var i = 0; i < json.length; i++) {
+                        chartLabels.push((json[i]['MonthName']));
+                        series13.push(json[i]['LOS13Total']);
+                        series47.push(json[i]['LOS47Total']);
+                        series8Plus.push(json[i]['LOS8Total']);
+                        seriesNotDischarged.push(json[i]['LOSNDTotal']);
+                    }
+
+
+                    var chart = new Chartist.Bar('#inPatientChart', {
+                        labels: chartLabels,
+                        series: [
+                            { 'name': '1-3 days', 'data': series13 }
+                            , { 'name': '4-7 days', 'data': series47 }
+                            , { 'name': '8+ days', 'data': series8Plus }
+                            , { 'name': 'Not Discharged', 'data': seriesNotDischarged }
+                        ]
+                    }, {
+                            stackBars: true,
+                            fullWidth: true,
+                            chartPadding: {
+                                right: 40,
+                                top: 40
+                            },
+                            showArea:true,
+                            axisY: {
+                                onlyInteger: true
+                            },
+                            axisX: {
+                                labelInterpolationFnc: function (value) {
+                                    return value.slice(0, 3);
+
+                                }
+                            },
+                            plugins: [
+                                Chartist.plugins.ctTargetLine({ value: inPatientTarget }) 
+                                //,Chartist.plugins.ctThreshold({
+                                //    threshold: 100
+                                //}),
+                                ,Chartist.plugins.legend({
+                                position: 'bottom'
+                            })]
+                        }).on('draw', function (data) {
+                            if (data.type === 'bar') {
+                                data.element.attr({
+                                    style: 'stroke-width: 30px'
+                                });
+                               
+                            }
+                        });
+                });
+            }
+        }
+
+        function GetSurgeries() {
+            var chart;
+            if (facilityTypeId > 0) {
+                $('#surgeriesDiv').removeAttr('hidden');
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '../api/Surgeries/GetMonthlyTotalsBySeverity/?HealthFacilityID=' + facilityId
+                        + '&ProviderID=' + providerId
+                        + '&FromDate=' + startDate
+                        + '&ToDate=' + endDate
+                        + '&PreviousYear=' + showPreviousYear + '',
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (json) {
+                    //if (json.length > 0) {
+                    var chartLabels = [];
+                    var seriesMinor = [];
+                    var seriesMajor = [];
+                  
+
+                    for (var i = 0; i < json.length; i++) {
+                        chartLabels.push((json[i]['MonthName']));
+                        seriesMinor.push(json[i]['MinorSeverityTotal']);
+                        seriesMajor.push(json[i]['MajorSeverityTotal']);
+                        
+                    }
+
+                    chart = new Chartist.Bar('#surgeriesChart'
+                        , {
+                            labels: chartLabels,
+                            series: [
+                                { 'name': 'Minor', 'data': seriesMinor }
+                                , { 'name': 'Major', 'data': seriesMajor }
+                               
+                            ]
+                        },
+                        {
+                            //reverseData: true,
+                            //horizontalBars: true,
+                            stackBars: true,
+                            fullWidth: true,
+                            chartPadding: {
+                                right: 40,
+                                top: 40
+                            },
+                            axisX: {
+                                labelInterpolationFnc: function (value) {
+                                    return value.slice(0, 3);
+
+                                }
+                            },
+                            axisY: {
+                                onlyInteger: true
+                            },
+                            plugins: [
+                                Chartist.plugins.ctTargetLine({ value: surgeriesTarget }) 
+
+                                , Chartist.plugins.legend({
+                                position: "bottom"
+                            })]
+                        }
+
+                        ).on('draw', function (data) {
+                            if (data.type === 'bar') {
+                                data.element.attr({
+                                    style: 'stroke-width: 30px'
+                                });
+                            }
+                        });
+
+                });
+
+            }
+
+        }
+
+        function GetMonthlyAverage() {
+            if (facilityTypeId > 0) {
+                $('#monthlyAverageDiv').removeAttr('hidden');
+                var data = {
+                    labels: ['OUT', 'IN', 'OR'],
+                    series: [2354, 1523, 320]
+                };
+
+                var options = {
+                    labelInterpolationFnc: function (value) {
+                        return value[0]
+                    }
+                };
+
+                var responsiveOptions = [
+                    ['screen and (min-width: 640px)', {
+                        chartPadding: 30,
+                        labelOffset: 100,
+                        labelDirection: 'explode',
+                        labelInterpolationFnc: function (value) {
+                            return value;
+                        }
+                    }],
+                    ['screen and (min-width: 1024px)', {
+                        labelOffset: 80,
+                        chartPadding: 20
+                    }]
+                ];
+
+                new Chartist.Pie('#monthlyAverageChart', data, options, responsiveOptions);
+            }
+        }
+
+        function GetInventory() {
+            if (facilityTypeId > 0) {
+
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '../api/HealthFacilities/GetFacilityInventory/'+ facilityId,
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (json) {
+                    //console.log(json);
+                    $('#NumberOfBeds').text(json['NumberOfBeds']);
+                    $('#NumberOfClinics').text(json['NumberOfClinics']);
+                    $('#NumberOfOperatingRooms').text(json['NumberOfOperatingRooms']);
+                    outpatientTarget = json['NumberOfClinics'] * 25 * 4;
+                    inPatientTarget = json['NumberOfBeds'] * 1.7;
+                    surgeriesTarget = json['NumberOfOperatingRooms'] * 2 * 3;
+                    GetFacilityList(fInput, aws1, facilityTypeId);
+                    GetOutPatientEncounters();
+                    GetInPatientEncounters();
+                    GetSurgeries();
+                    GetMonthlyAverage();
+                    
+                });
+            }
+        }
+
+    </script>
+}

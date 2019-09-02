@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="@Url.Content("~/favicon.ico")" type="image/x-icon" />
+    <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")" type="image/x-icon" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body class="bg-light">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-purple">
+        @*@Html.ActionLink("HDA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+        @*<a href="@Url.Action("Index","Home")" class="navbar-brand"><i class="fa fa-pie-chart fa-lg"></i></a>*@
+        <a class="nav-item" href="#">
+            <img src="@Url.Content("~/Images/hda_logo_white.png")" width="52" height="40" alt=""> 
+        </a>
+        <button type="button"
+                class="navbar-toggler"
+                data-toggle="collapse"
+                data-target=".navbar-collapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav mt-auto">
+                <li class="nav-item">
+                    @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Reports", "Index", "Reports", new { area = "" }, new { @class = "nav-link" })
+                </li>
+                @*<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="Reports" id="reportsDropDown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Reports
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="reportsDropDown">
+                        @Html.ActionLink("Workload", "Workload"
+                                , "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("Other", "Other"
+                                , "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                    </div>
+                </li>*@
+
+                @Html.Partial("_AdminPartial")
+            </ul>
+            @Html.Partial("_LoginPartial")
+        </div>
+    </nav>
+    <div class="container-fluid">
+        @RenderBody()
+        @*<hr />*@
+        <nav class="navbar fixed-bottom navbar-light bg-light border">
+            <span class="pull-left">
+                <a class="nav-item" href="#">
+                    <img src="@Url.Content("~/Images/hda_logo_blue.png")" width="52" height="40" alt=""/> <b class="text-dark">Health Data Analytics</b>
+                </a>
+            </span>
+            <span class="pull-right">
+                <a class="nav-item" href="#">
+                    <b class="text-dark">AR</b>
+                </a>
+                <a class="nav-item" href="#">
+                    <b class="text-dark">EN</b>
+                </a>
+            </span>
+        </nav>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/app")
+    @Scripts.Render("~/bundles/daterangepicker")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

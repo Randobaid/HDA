@@ -1,0 +1,177 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.bg-purple {
+    background-color: #6046af !important;
+}
+.border-purple {
+    border-color: #6046af !important;
+}
+
+.btn-purple {
+    color: #fff;
+    background-color: #6046af;
+    border-color: #6046af;
+}
+
+.btn-outline-purple {
+    color: #6046af;
+    border-color: #6046af;
+}
+
+.btn-purple:hover {
+    color: #fff;
+    background-color: #218838;
+    border-color: #6046af;
+}
+
+.btn-purple:focus, .btn-purple.focus {
+    box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, 0.5);
+}
+
+.border-95 {
+    border-color: #95af46 !important;
+}
+
+
+.ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-point {
+    stroke: #326ada !important;
+}
+
+.ct-series-a .ct-slice-pie {
+    fill: #326ada !important;
+}
+
+.ct-series-b .ct-slice-pie {
+    fill: #6046af !important;
+}
+
+.ct-series-c .ct-slice-pie {
+    fill: #1cb3c8 !important;
+}
+
+.ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-point {
+    stroke: #6046af !important;
+}
+
+.ct-series-c .ct-line  {
+    stroke: #a19c9c !important;
+}
+
+.ct-series-a .ct-area {
+    fill: #326ada !important;
+}
+
+.ct-series-b .ct-area {
+    fill: #6046af !important;
+}
+/**/
+/*.ct-series-a .ct-line.ct-threshold-above, .ct-point.ct-threshold-above, .ct-bar.ct-threshold-above {
+    stroke: #66b266 !important;
+}*/
+/*.ct-series-a .ct-line.ct-threshold-below, .ct-point.ct-threshold-below, .ct-bar.ct-threshold-below {
+    stroke: #b2d8b2 !important;
+}*/
+.ct-series-d .ct-bar {
+    stroke: grey !important;
+}
+
+.ct-bar.ct-threshold-above {
+    fill: #66b266 !important;
+}
+
+.ct-area.ct-threshold-above {
+    fill: #518e51 !important;
+}
+
+.ct-target-line {
+    stroke: green;
+    stroke-width: 2px;
+}
+
+/*
+.ct-area.ct-threshold-below {
+    fill: #b2d8b2 !important;
+}
+    */
+
+.ct-chart .ct-legend {
+    position: relative;
+    z-index: 10;
+    list-style: none;
+    text-align: center;
+}
+
+.ct-area {
+    fill-opacity:0.2 !important;
+}
+
+    .ct-chart .ct-legend li {
+        position: relative;
+        padding-left: 23px;
+        margin-right: 10px;
+        margin-bottom: 3px;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+        .ct-chart .ct-legend li:before {
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            left: 0;
+            content: '';
+            border: 3px solid transparent;
+            border-radius: 2px;
+        }
+
+        .ct-chart .ct-legend li .inactive:before {
+            background: transparent;
+        }
+
+        .ct-chart .ct-legend li:nth-child(1)::before {
+            background-color: #326ada;
+            
+        }
+
+        .ct-chart .ct-legend li:nth-child(2)::before {
+            background-color: #6046af;
+        }
+
+        .ct-chart .ct-legend li:nth-child(3)::before {
+            background-color: #f4c63d;
+        }
+
+        .ct-chart .ct-legend li:nth-child(1n+4)::before {
+            background-color: grey;
+        }
+
+    .ct-chart .ct-legend .ct-legend-inside {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+.ct-chart g:not(.ct-grids):not(.ct-labels) g:nth-child(1) .ct-point,
+.ct-chart g:not(.ct-grids):not(.ct-labels) g:nth-child(1) .ct-line {
+    stroke: #d70206;
+}
+
+.ct-chart g:not(.ct-grids):not(.ct-labels) g:nth-child(2) .ct-point,
+.ct-chart g:not(.ct-grids):not(.ct-labels) g:nth-child(2) .ct-line {
+    stroke: #f05b4f;
+}
+
+.ct-chart g:not(.ct-grids):not(.ct-labels) g:nth-child(3) .ct-point,
+.ct-chart g:not(.ct-grids):not(.ct-labels) g:nth-child(3) .ct-line {
+    stroke: #f4c63d;
+}
+
+.ct-chart g:not(.ct-grids):not(.ct-labels) g:nth-child(1n+4) .ct-point,
+.ct-chart g:not(.ct-grids):not(.ct-labels) g:nth-child(1n+4) .ct-line {
+    stroke: #F06292;
+}
+
+
