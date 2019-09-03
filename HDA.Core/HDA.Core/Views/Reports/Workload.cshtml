@@ -506,9 +506,11 @@
                     initComplete: function (settings, json) {
                         var chartLabels = [];
                         var chartData = [];
+                        var chartType = 'column';
                         var lastYear = [];
+
                         for (var i = 0; i < json.length; i++) {
-                            chartLabels.push((json[i]['MonthName']));
+                            chartLabels.push((json[i]['MonthName']).substring(0, 3));
                             chartData.push(json[i]['Total']);
                             if (showPreviousYear == 1) {
                                 lastYear.push(json[i]['TotalPreviousYear']);
@@ -516,66 +518,23 @@
                         }
 
                         if (chartLabels.length > 2) {
-                            new Highcharts.chart('outPatientChart', {
-                                title: {
-                                    text: ''
-                                },
-                                subtitle: {
-                                    text: ''
-                                },
-                                yAxis: {
-                                    title: {
-                                        text: ''
-                                    },
-                                },
-                                series: [
-                                    {
-                                        name: 'outpatient-encounters',
-                                        data: chartData
-                                    },
-                                    {
-                                        name: 'last-year',
-                                        data: lastYear
-                                    }
-                                ],
-                                credits: false
-                            });
-                        }
-                        else {
-                            new Highcharts.chart('outPatientChart', {
-                                title: {
-                                    text: ''
-                                },
-                                subtitle: {
-                                    text: ''
-                                },
-                                yAxis: {
-                                    title: {
-                                        text: ''
-                                    },
-                                },
-                                series: [
-                                    chartData
-                                ],
-                                credits: false
-                            });
+                            chartType = 'areaspline';
+                        } else {
+                            chartType = 'column';
                         }
 
-                        /*
-                        chart.on('draw', function (data) {
-                            if (data.type === 'line' || data.type === 'area') {
-                                data.element.animate({
-                                    d: {
-                                        begin: 2000 * data.index,
-                                        dur: 2000,
-                                        from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
-                                        to: data.path.clone().stringify(),
-                                        easing: Chartist.Svg.Easing.easeOutQuint
-                                    }
-                                });
-                            }
-                        });*/
-
+                        new Highcharts.chart('outPatientChart', {
+                            chart: { type: chartType },
+                            title: { text: '' },
+                            subtitle: { text: '' },
+                            xAxis: { categories: chartLabels },
+                            yAxis: { title: { text: '' }, plotLines: [{ color: '#FF0000', width: 2, value: outpatientTarget }] },
+                            series: [
+                                { name: 'outpatient-encounters', data: chartData },
+                                { name: 'last-year', data: lastYear }
+                            ],
+                            credits: false
+                        });
 
                         var utils = $.pivotUtilities;
                         var heatmap = utils.renderers["Heatmap"];
@@ -656,55 +615,28 @@
                     var seriesNotDischarged = [];
 
                     for (var i = 0; i < json.length; i++) {
-                        chartLabels.push((json[i]['MonthName']));
+                        chartLabels.push((json[i]['MonthName']).substring(0, 3));
                         series13.push(json[i]['LOS13Total']);
                         series47.push(json[i]['LOS47Total']);
                         series8Plus.push(json[i]['LOS8Total']);
                         seriesNotDischarged.push(json[i]['LOSNDTotal']);
                     }
 
-
-                    var chart = new Chartist.Bar('#inPatientChart', {
-                        labels: chartLabels,
+                    new Highcharts.chart('inPatientChart', {
+                        chart: { type: 'column' },
+                        title: { text: '' },
+                        subtitle: { text: '' },
+                        xAxis: { categories: chartLabels },
+                        yAxis: { title: { text: '' }, plotLines: [{ color: '#FF0000', width: 2, value:  inPatientTarget }] },
                         series: [
-                            { 'name': '1-3 days', 'data': series13 }
-                            , { 'name': '4-7 days', 'data': series47 }
-                            , { 'name': '8+ days', 'data': series8Plus }
-                            , { 'name': 'Not Discharged', 'data': seriesNotDischarged }
-                        ]
-                    }, {
-                            stackBars: true,
-                            fullWidth: true,
-                            chartPadding: {
-                                right: 40,
-                                top: 40
-                            },
-                            showArea:true,
-                            axisY: {
-                                onlyInteger: true
-                            },
-                            axisX: {
-                                labelInterpolationFnc: function (value) {
-                                    return value.slice(0, 3);
-
-                                }
-                            },
-                            plugins: [
-                                Chartist.plugins.ctTargetLine({ value: inPatientTarget }) 
-                                //,Chartist.plugins.ctThreshold({
-                                //    threshold: 100
-                                //}),
-                                ,Chartist.plugins.legend({
-                                position: 'bottom'
-                            })]
-                        }).on('draw', function (data) {
-                            if (data.type === 'bar') {
-                                data.element.attr({
-                                    style: 'stroke-width: 30px'
-                                });
-                               
-                            }
-                        });
+                            { 'name': '1-3 days', 'data': series13 },
+                            { 'name': '4-7 days', 'data': series47 },
+                            { 'name': '8+ days', 'data': series8Plus },
+                            { 'name': 'Not Discharged', 'data': seriesNotDischarged }
+                        ],
+                        plotOptions: { series: { stacking: 'normal' } },
+                        credits: false
+                    });
                 });
             }
         }
@@ -728,61 +660,27 @@
                     var seriesMinor = [];
                     var seriesMajor = [];
                   
-
                     for (var i = 0; i < json.length; i++) {
-                        chartLabels.push((json[i]['MonthName']));
+                        chartLabels.push((json[i]['MonthName']).substring(0, 3));
                         seriesMinor.push(json[i]['MinorSeverityTotal']);
                         seriesMajor.push(json[i]['MajorSeverityTotal']);
-                        
                     }
 
-                    chart = new Chartist.Bar('#surgeriesChart'
-                        , {
-                            labels: chartLabels,
-                            series: [
-                                { 'name': 'Minor', 'data': seriesMinor }
-                                , { 'name': 'Major', 'data': seriesMajor }
-                               
-                            ]
-                        },
-                        {
-                            //reverseData: true,
-                            //horizontalBars: true,
-                            stackBars: true,
-                            fullWidth: true,
-                            chartPadding: {
-                                right: 40,
-                                top: 40
-                            },
-                            axisX: {
-                                labelInterpolationFnc: function (value) {
-                                    return value.slice(0, 3);
-
-                                }
-                            },
-                            axisY: {
-                                onlyInteger: true
-                            },
-                            plugins: [
-                                Chartist.plugins.ctTargetLine({ value: surgeriesTarget }) 
-
-                                , Chartist.plugins.legend({
-                                position: "bottom"
-                            })]
-                        }
-
-                        ).on('draw', function (data) {
-                            if (data.type === 'bar') {
-                                data.element.attr({
-                                    style: 'stroke-width: 30px'
-                                });
-                            }
-                        });
-
+                    new Highcharts.chart('surgeriesChart', {
+                        chart: { type: 'column' },
+                        title: { text: '' },
+                        subtitle: { text: '' },
+                        xAxis: { categories: chartLabels },
+                        yAxis: { title: { text: '' }, plotLines: [{ color: '#FF0000', width: 2, value: surgeriesTarget }] },
+                        series: [
+                            { 'name': 'Minor', 'data': seriesMinor },
+                            { 'name': 'Major', 'data': seriesMajor }
+                        ],
+                        plotOptions: { series: { stacking: 'normal' } },
+                        credits: false
+                    });
                 });
-
             }
-
         }
 
         function GetMonthlyAverage() {
@@ -815,6 +713,7 @@
                 ];
 
                 new Chartist.Pie('#monthlyAverageChart', data, options, responsiveOptions);
+                
             }
         }
 
