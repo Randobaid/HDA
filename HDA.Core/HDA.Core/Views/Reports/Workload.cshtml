@@ -516,8 +516,18 @@
                         }
 
                         if (chartLabels.length > 2) {
-                            var chart = new Chartist.Line('#outPatientChart', {
-                                labels: chartLabels,
+                            new Highcharts.chart('outPatientChart', {
+                                title: {
+                                    text: ''
+                                },
+                                subtitle: {
+                                    text: ''
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: ''
+                                    },
+                                },
                                 series: [
                                     {
                                         name: 'outpatient-encounters',
@@ -527,40 +537,28 @@
                                         name: 'last-year',
                                         data: lastYear
                                     }
-                                ]
-                            },
-                                {
-                                    fullWidth: true,
-                                    chartPadding: {
-                                        right: 40,
-                                        top:40
-                                    },
-                                    lineSmooth: true,
-                                    showArea: true,
-                                    axisY: {
-                                        onlyInteger: true
-                                    },
-                                    axisX: {
-                                        labelInterpolationFnc: function (value) {
-                                            return value.slice(0,3);
-                                        }
-                                    },
-                                    plugins: [
-                                        Chartist.plugins.ctThreshold({
-                                            threshold: outpatientTarget
-                                        }),
-                                        Chartist.plugins.legend()]
-                                }
-                            );
+                                ],
+                                credits: false
+                            });
                         }
                         else {
-                            new Chartist.Bar('#outPatientChart',
-                                {
-                                    labels: chartLabels,
-                                    series: [
-                                        chartData
-                                    ]
-                                });
+                            new Highcharts.chart('outPatientChart', {
+                                title: {
+                                    text: ''
+                                },
+                                subtitle: {
+                                    text: ''
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: ''
+                                    },
+                                },
+                                series: [
+                                    chartData
+                                ],
+                                credits: false
+                            });
                         }
 
                         /*
