@@ -50,7 +50,8 @@ namespace HDA.Core
                 "~/Scripts/chartist-plugin-legend.js",
                 "~/Scripts/chartist-plugin-targetline.js",
                 "~/Scripts/pivot.js",
-                "~/Scripts/bootstrap-multiselect.js"
+                "~/Scripts/bootstrap-multiselect.js",
+                "~/Scripts/highcharts/7.1.2/highcharts.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/daterangepicker").Include(
