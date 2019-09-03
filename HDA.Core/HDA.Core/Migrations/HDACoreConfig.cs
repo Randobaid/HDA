@@ -21,7 +21,6 @@ namespace HDA.Core.Migrations
             SeedGovernorates(context);
             SeedDomains(context);
             SeedHealthFacilityTypes(context);
-            SeedHealthFacilities(context);
             SeedSectionLookups(context);
             SeedSpecialityLookups(context);
             //SeedServices(context);
@@ -31,6 +30,7 @@ namespace HDA.Core.Migrations
             //SeedLocations(context);
             //SeedHealthFacilityLocations(context);
             SeedDirectorates(context);
+            SeedHealthFacilities(context);
             SeedDepartments(context);
             SeedMovementLookups(context);
             base.Seed(context);
