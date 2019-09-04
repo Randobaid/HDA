@@ -712,8 +712,29 @@
                     }]
                 ];
 
-                new Chartist.Pie('#monthlyAverageChart', data, options, responsiveOptions);
-                
+                new Highcharts.chart('monthlyAverageChart', {
+                    chart: { type: 'pie' },
+                    title: { text: '' },
+                    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: { enabled: false },
+                            showInLegend: true
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        colorByPoint: true,
+                        data: [
+                            { name: 'OUT', y: 2354 },
+                            { name: 'IN', y: 1523 },
+                            { name: 'OR', y: 320 }
+                        ]
+                    }],
+                    credits: false
+                });                
             }
         }
 
