@@ -30,7 +30,6 @@ namespace HDA.Core
                       "~/Content/awesomplete.css",
                       "~/Content/daterangepicker.css",
                       "~/Content/datatables.css",
-                      "~/Content/chartist.css",
                       "~/Content/pivot.css",
                       "~/Content/bootstrap-multiselect.css"
                       )
@@ -45,10 +44,6 @@ namespace HDA.Core
                 "~/Scripts/app.js",
                 "~/Scripts/awesomplete.js",
                 "~/Scripts/datatables.js",
-                "~/Scripts/chartist.js",
-                "~/Scripts/chartist-plugin-threshold.js",
-                "~/Scripts/chartist-plugin-legend.js",
-                "~/Scripts/chartist-plugin-targetline.js",
                 "~/Scripts/pivot.js",
                 "~/Scripts/bootstrap-multiselect.js",
                 "~/Scripts/highcharts/7.1.2/highcharts.js"
