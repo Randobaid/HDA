@@ -17,13 +17,13 @@ namespace HDA.Core.Controllers
 
         [Route("api/targets")]
         [HttpGet]
-        public IHttpActionResult Index()
+        public IHttpActionResult Index([FromUri] TargetViewModel query)
         {
             List<TargetViewModel> targets = new List<TargetViewModel>();
             DateTimeFormatInfo dateTimeFormatInfo = new DateTimeFormatInfo();
-            foreach(var target in db.Targets)
+            foreach (var target in db.Targets)
             {
-                targets.Add(new TargetViewModel {
+                TargetViewModel t = new TargetViewModel {
                     TargetID = target.TargetID,
                     IndicatorID = target.IndicatorID,
                     HealthFacilityID = target.HealthFacilityID,
@@ -35,7 +35,16 @@ namespace HDA.Core.Controllers
                     Month = target.Month,
                     MonthName = target.Month > 0 ? dateTimeFormatInfo.GetMonthName(target.Month ?? 0) : "",
                     Value = target.Value,
-                });
+                };
+                if (!(query is null) && query.TargetID > 0 && t.TargetID != query.TargetID) { continue; }
+                if (!(query is null) && query.IndicatorID > 0 && t.IndicatorID != query.IndicatorID) { continue; }
+                if (!(query is null) && query.HealthFacilityID > 0 && t.HealthFacilityID != query.HealthFacilityID) { continue; }
+                if (!(query is null) && query.ProviderID > 0 && t.ProviderID != query.ProviderID) { continue; }
+                if (!(query is null) && query.DomainLookupID > 0 && t.DomainLookupID != query.DomainLookupID) { continue; }
+                if (!(query is null) && query.DirectorateLookupID > 0 && t.DirectorateLookupID != query.DirectorateLookupID) { continue; }
+                if (!(query is null) && query.Year > 0 && t.Year != query.Year) { continue; }
+                if (!(query is null) && query.Month > 0 && t.Month != query.Month) { continue; }
+                targets.Add(t);
             }
             return Ok(targets);
         }
@@ -46,7 +55,7 @@ namespace HDA.Core.Controllers
         {
             List<TargetViewModel> targets = new List<TargetViewModel>();
             DateTimeFormatInfo dateTimeFormatInfo = new DateTimeFormatInfo();
-            foreach(var target in db.Targets.Where(i => i.TargetID == id))
+            foreach (var target in db.Targets.Where(i => i.TargetID == id))
             {
                 targets.Add(new TargetViewModel {
                     TargetID = target.TargetID,

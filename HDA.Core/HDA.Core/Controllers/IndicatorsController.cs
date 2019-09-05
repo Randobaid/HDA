@@ -17,34 +17,37 @@ namespace HDA.Core.Controllers
 
         [Route("api/indicators")]
         [HttpGet]
-        public IHttpActionResult Index()
+        public IHttpActionResult Index([FromUri] IndicatorViewModel query)
         {
-            List<IndicatorViewModel> targets = new List<IndicatorViewModel>();
+            List<IndicatorViewModel> indicators = new List<IndicatorViewModel>();
             DateTimeFormatInfo dateTimeFormatInfo = new DateTimeFormatInfo();
-            foreach(var target in db.Indicators)
+            foreach (var indicator in db.Indicators)
             {
-                targets.Add(new IndicatorViewModel {
-                    IndicatorID = target.IndicatorID,
-                    IndicatorName = target.IndicatorNameEn,
-                });
+                IndicatorViewModel i = new IndicatorViewModel {
+                    IndicatorID = indicator.IndicatorID,
+                    IndicatorName = indicator.IndicatorNameEn,
+                };
+                if (!(query is null) && query.IndicatorID > 0 && i.IndicatorID != query.IndicatorID) { continue; }
+                if (!(query is null) && !(query.IndicatorName is null) && i.IndicatorName != query.IndicatorName) { continue; }
+                indicators.Add(i);
             }
-            return Ok(targets);
+            return Ok(indicators);
         }
 
         [Route("api/indicators/{id}")]
         [HttpGet]
         public IHttpActionResult Details(int id)
         {
-            List<IndicatorViewModel> targets = new List<IndicatorViewModel>();
+            List<IndicatorViewModel> indicators = new List<IndicatorViewModel>();
             DateTimeFormatInfo dateTimeFormatInfo = new DateTimeFormatInfo();
-            foreach(var target in db.Indicators.Where(i => i.IndicatorID == id))
+            foreach (var indicator in db.Indicators.Where(i => i.IndicatorID == id))
             {
-                targets.Add(new IndicatorViewModel {
-                    IndicatorID = target.IndicatorID,
-                    IndicatorName = target.IndicatorNameEn,
+                indicators.Add(new IndicatorViewModel {
+                    IndicatorID = indicator.IndicatorID,
+                    IndicatorName = indicator.IndicatorNameEn,
                 });
             }
-            return Ok(targets);
+            return Ok(indicators);
         }
     }
 }
