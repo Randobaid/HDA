@@ -30,7 +30,6 @@ namespace HDA.Core.Models.HDACore
         public DbSet<ProcedureLookup> ProcedureLookups { get; set; }
         public DbSet<SurgerySeverityLookup> SurgerySeverityLookups { get; set; }
         public DbSet<SurgeryEncounter> SurgeryEncounters { get; set; }
-        
         public DbSet<DepartmentLookup> DepartmentLookups { get; set; }
         public DbSet<OutpatientLocation> OutpatientLocations { get; set; }
         public DbSet<AppointmentStatusLookup> AppointmentStatusLookups { get; set; }
@@ -42,7 +41,8 @@ namespace HDA.Core.Models.HDACore
         public DbSet<InPatientAdmission> InPatientAdmissions { get; set; }
         public DbSet<InPatientTransfer> InPatientTransfers { get; set; }
         public DbSet<InPatientDischarge> InPatientDischarges { get; set; }
-
+        public DbSet<Indicator> Indicators { get; set; }
+        public DbSet<Target> Targets { get; set; }
     }
     
 }

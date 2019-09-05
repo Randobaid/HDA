@@ -880,6 +880,8 @@
     <Compile Include="Models\HDACore\HealthFacility\Service.cs" />
     <Compile Include="Models\HDACore\HealthFacility\SpecialityLookup.cs" />
     <Compile Include="Models\HDACore\HealthFacility\WardLocation.cs" />
+    <Compile Include="Models\HDACore\Indicator\Indicator.cs" />
+    <Compile Include="Models\HDACore\Indicator\Target.cs" />
     <Compile Include="Models\HDACore\Patient\GenderLookup.cs" />
     <Compile Include="Models\HDACore\Patient\MaritalStatusLookup.cs" />
     <Compile Include="Models\HDACore\Patient\Patient.cs" />
