@@ -9,7 +9,8 @@ namespace HDA.Core.Models.HDACore
     {
         public int DrugID { get; set; }
         public int SourceID { get; set; }
-        public string DrugName { get; set; }
+        public string DrugNameEn { get; set; }
+        public string DrugNameAr { get; set; }
         public int DrugClassID { get; set; }
         public virtual DrugClass DrugClass { get; set; }
 

@@ -9,6 +9,8 @@ namespace HDA.Core.Models.HDACore
     {
         public int PrescriptionID { get; set; }
         public int SourceID { get; set; }
+        public int HealthFacilityID { get; set; }
+        public virtual HealthFacility HealthFacility {get; set; }
         public int PatientID { get; set; }
         public virtual Patient Patient { get; set; }
         public DateTime PrescriptionDate { get; set; }
