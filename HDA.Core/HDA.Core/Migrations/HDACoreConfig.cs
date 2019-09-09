@@ -10,7 +10,7 @@ namespace HDA.Core.Migrations
     {
         public HDACoreConfig()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             AutomaticMigrationDataLossAllowed = true;
         }
 
