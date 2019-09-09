@@ -15,5 +15,6 @@ namespace HDA.Core.Models.HDAReports
         public DbSet<OutPatientEncounterTotal> OutPatientEncounterTotals { get; set; }
         public DbSet<InPatientEncounterTotal> InPatientEncounterTotals { get; set; }
         public DbSet<SurgeryTotal> SurgeryTotals { get; set; }
+        public DbSet<PrescriptionTotal> PrescriptionTotals { get; set; }
     }
 }

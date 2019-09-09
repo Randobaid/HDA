@@ -42,6 +42,9 @@ namespace HDA.Core.Models.HDACore
         public DbSet<InPatientAdmission> InPatientAdmissions { get; set; }
         public DbSet<InPatientTransfer> InPatientTransfers { get; set; }
         public DbSet<InPatientDischarge> InPatientDischarges { get; set; }
+        public DbSet<DrugClass> DrugClasses { get; set; }
+        public DbSet<Drug> Drugs { get; set; }
+        public DbSet<Prescription> Prescriptions { get; set; }
 
     }
     
