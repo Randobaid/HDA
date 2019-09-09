@@ -19,8 +19,6 @@ namespace HDA.Core.Models.HDACore
         public int? DirectorateLookupID { get; set; }
         public virtual DirectorateLookup DirectorateLookup { get; set; }
         public DateTime? EffectiveDate { get; set; }
-        public int? Year { get; set; }
-        public int? Month { get; set; }
         public string Value { get; set; }
     }
 }

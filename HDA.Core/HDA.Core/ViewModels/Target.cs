@@ -14,9 +14,6 @@ namespace HDA.Core.ViewModels
         public int? DomainLookupID { get; set; }
         public int? DirectorateLookupID { get; set; }
         public DateTime? EffectiveDate { get; set; }
-        public int? Year { get; set; }
-        public int? Month { get; set; }
-        public string MonthName { get; set; }
         public string Value { get; set; }
     }
 }
