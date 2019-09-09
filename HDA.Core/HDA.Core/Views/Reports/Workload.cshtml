@@ -221,7 +221,7 @@
             </div>
             <br />
             <div class="row">
-                <div class="col-lg-8 col-md-12">
+                <div class="col-lg-12 col-md-12">
                     <div class="card border border-primary bg-light" id="surgeriesDiv" hidden="hidden">
                         <div class="card-header bg-primary text-white">
                             <i class="fa fa-star-o fa-pull-left fa-lg" id="starSurgeriesChart" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
@@ -235,7 +235,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12">
+                @*<div class="col-lg-4 col-md-12">
                     <div class="card border border-primary bg-light" id="monthlyAverageDiv" hidden="hidden">
                         <div class="card-header bg-primary text-white">
                             Monthly Average
@@ -246,11 +246,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
+    </div>
 </div>
-</div>
+
 @section Scripts {
     <script type="text/javascript">
         var facilityTypeId = 0;
@@ -274,20 +275,16 @@
         $(document).ready(function () {
             fInput = document.getElementById("TextHospital");
             aws1 = new Awesomplete(fInput, { minChars: 2 });
-            
             providerAws = new Awesomplete(pInput, { minChars: 2, autoFirst: true });
-
             //$('#demolist li a').on('click', function () {
             //    $('#dropdownMenuButton').text($(this).text());
             //    facilityTypeId = 1; //TODO Get Value from Dropdown
             //    GetInventory();
-                
             //});
 
             $('#hospital_types').multiselect({
                 enableHTML:true,
                 buttonWidth: '100%',
-                
                 includeSelectAllOption: true,
                 allSelectedText:'All Selected',
                 buttonClass: 'btn btn-primary btn-block',
@@ -317,9 +314,7 @@
                     facilityTypeId = 1;//TODO Get Value from Dropdown
                     GetInventory();
                 }
-                
             });
-
         });
 
         $(function () {
@@ -328,7 +323,6 @@
 
             function cb(start, end) {
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-
                 startDate = start.format('YYYY-MM-DD');
                 endDate = end.format('YYYY-MM-DD');
                 if (facilityTypeId > 0) {
@@ -357,12 +351,10 @@
             var result = this.value.split("~");
             this.value = result[1];
             facilityId = result[0];
-            
             $('#TextProvider').val('');
             providerId = 0;
             $("#allProviders").prop('checked', true);
             $('#TextProvider').attr('disabled', true);
-
             GetInventory();
             GetOutPatientEncounters();
             GetInPatientEncounters();
@@ -398,7 +390,6 @@
                     console.log(providerList);
                 }
             });
-
         }
 
         $("#allProviders").change(function () {
@@ -444,27 +435,19 @@
         });
 
         function GetFacilityList(fInput, aws1, facilityTypeId) {
-
-
             fInput.addEventListener('awesomplete-selectcomplete', SelectFacility);
             $.ajax({
                 url: '../api/HealthFacilities/GetHealthFacilities/'+facilityTypeId,
                 type: 'GET',
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
-
                 success: function (data) {
-
                     var serverData = data;
                     var hfList = [];
-
                     for (var i = 0; i < serverData.length; i++) {
-
                         hfList.push({ label: serverData[i]['HealthFacilityName'], value: serverData[i]['ID'] + '~' + serverData[i]['HealthFacilityName'] });
                     }
                     aws1.list = hfList;
-                    //console.log(serverData);
-                    //console.log(hfList);
                 },
                 error: function (data) {
                     console.log(data.d);
@@ -475,7 +458,6 @@
         function GetOutPatientEncounters() {
             if (facilityTypeId > 0) {
                 $('#outPatientDiv').removeAttr('hidden');
-
                 var outPatientEncountersTable = $('#OutPatientEncounters').DataTable({
                     destroy: true,
                     ordering: false,
@@ -508,7 +490,6 @@
                         var chartData = [];
                         var chartType = 'column';
                         var lastYear = [];
-
                         for (var i = 0; i < json.length; i++) {
                             chartLabels.push((json[i]['MonthName']).substring(0, 3));
                             chartData.push(json[i]['Total']);
@@ -516,13 +497,11 @@
                                 lastYear.push(json[i]['TotalPreviousYear']);
                             }
                         }
-
                         if (chartLabels.length > 2) {
                             chartType = 'areaspline';
                         } else {
                             chartType = 'column';
                         }
-
                         new Highcharts.chart('outPatientChart', {
                             chart: { type: chartType },
                             title: { text: '' },
@@ -535,7 +514,6 @@
                             ],
                             credits: false
                         });
-
                         var utils = $.pivotUtilities;
                         var heatmap = utils.renderers["Heatmap"];
                         var sum = utils.aggregators["Integer Sum"];
@@ -545,14 +523,10 @@
                         $('#oppivot').pivot(
                             json,
                             {
-
                                 cols: ['MonthName'],
                                 //vals: ['Total'],
-
                                 aggregator: sum(['Total']),
                                 //aggregator: max(['Total']),
-
-
                                 sorters: {
                                     'MonthName': sortAs(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Decemeber"])
                                 },
@@ -561,7 +535,6 @@
                         );
                     }
                 });
-
             }
         }
 
@@ -583,7 +556,6 @@
                                 }
                             }
                         }, false);
-
                         xhr.addEventListener("progress", function (evt) {
                             if (evt.lengthComputable) {
                                 var percentComplete = evt.loaded / evt.total;
@@ -595,7 +567,6 @@
                                 }
                             }
                         }, false);
-
                         return xhr;
                     },
                     type: 'GET',
@@ -607,13 +578,11 @@
                         + '&PreviousYear=' + showPreviousYear + '',
                     contentType: "application/json; charset=utf-8"
                 }).done(function (json) {
-                    //console.log(json);
                     var chartLabels = [];
                     var series13 = [];
                     var series47 = [];
                     var series8Plus = [];
                     var seriesNotDischarged = [];
-
                     for (var i = 0; i < json.length; i++) {
                         chartLabels.push((json[i]['MonthName']).substring(0, 3));
                         series13.push(json[i]['LOS13Total']);
@@ -621,7 +590,6 @@
                         series8Plus.push(json[i]['LOS8Total']);
                         seriesNotDischarged.push(json[i]['LOSNDTotal']);
                     }
-
                     new Highcharts.chart('inPatientChart', {
                         chart: { type: 'column' },
                         title: { text: '' },
@@ -655,17 +623,14 @@
                         + '&PreviousYear=' + showPreviousYear + '',
                     contentType: "application/json; charset=utf-8"
                 }).done(function (json) {
-                    //if (json.length > 0) {
                     var chartLabels = [];
                     var seriesMinor = [];
                     var seriesMajor = [];
-                  
                     for (var i = 0; i < json.length; i++) {
                         chartLabels.push((json[i]['MonthName']).substring(0, 3));
                         seriesMinor.push(json[i]['MinorSeverityTotal']);
                         seriesMajor.push(json[i]['MajorSeverityTotal']);
                     }
-
                     new Highcharts.chart('surgeriesChart', {
                         chart: { type: 'column' },
                         title: { text: '' },
@@ -685,48 +650,41 @@
 
         function GetMonthlyAverage() {
             if (facilityTypeId > 0) {
-                $('#monthlyAverageDiv').removeAttr('hidden');
-                var data = {
-                    labels: ['OUT', 'IN', 'OR'],
-                    series: [2354, 1523, 320]
-                };
-
-                var options = {
-                    labelInterpolationFnc: function (value) {
-                        return value[0]
-                    }
-                };
-
-                var responsiveOptions = [
-                    ['screen and (min-width: 640px)', {
-                        chartPadding: 30,
-                        labelOffset: 100,
-                        labelDirection: 'explode',
-                        labelInterpolationFnc: function (value) {
-                            return value;
-                        }
-                    }],
-                    ['screen and (min-width: 1024px)', {
-                        labelOffset: 80,
-                        chartPadding: 20
-                    }]
-                ];
-
-                new Chartist.Pie('#monthlyAverageChart', data, options, responsiveOptions);
-                
+                //$('#monthlyAverageDiv').removeAttr('hidden');
+                //new Highcharts.chart('monthlyAverageChart', {
+                //    chart: { type: 'pie' },
+                //    title: { text: '' },
+                //    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
+                //    plotOptions: {
+                //        pie: {
+                //            allowPointSelect: true,
+                //            cursor: 'pointer',
+                //            dataLabels: { enabled: false },
+                //            showInLegend: true
+                //        }
+                //    },
+                //    series: [{
+                //        name: 'Brands',
+                //        colorByPoint: true,
+                //        data: [
+                //            { name: 'OUT', y: 2354 },
+                //            { name: 'IN', y: 1523 },
+                //            { name: 'OR', y: 320 }
+                //        ]
+                //    }],
+                //    credits: false
+                //});
             }
         }
 
         function GetInventory() {
             if (facilityTypeId > 0) {
-
                 $.ajax({
                     type: 'GET',
                     dataType: 'json',
                     url: '../api/HealthFacilities/GetFacilityInventory/'+ facilityId,
                     contentType: "application/json; charset=utf-8"
                 }).done(function (json) {
-                    //console.log(json);
                     $('#NumberOfBeds').text(json['NumberOfBeds']);
                     $('#NumberOfClinics').text(json['NumberOfClinics']);
                     $('#NumberOfOperatingRooms').text(json['NumberOfOperatingRooms']);
@@ -738,10 +696,8 @@
                     GetInPatientEncounters();
                     GetSurgeries();
                     GetMonthlyAverage();
-                    
                 });
             }
         }
-
     </script>
 }

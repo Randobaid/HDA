@@ -200,7 +200,6 @@
     <Content Include="Content\bootstrap-rtl\js\bootstrap.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\chartist.css" />
     <Content Include="Content\datatables.css" />
     <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\font-awesome.css" />
@@ -220,11 +219,6 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\chartist-plugin-accessibility.js" />
-    <Content Include="Scripts\chartist-plugin-legend.js" />
-    <Content Include="Scripts\chartist-plugin-targetline.js" />
-    <Content Include="Scripts\chartist-plugin-threshold.js" />
-    <Content Include="Scripts\chartist.js" />
     <Content Include="Scripts\datatables.js" />
     <Content Include="Scripts\daterangepicker.js" />
     <Content Include="Scripts\bootstrap.min.js.map" />
