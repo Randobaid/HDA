@@ -699,5 +699,34 @@
                 });
             }
         }
+
+        function GetTargets(
+            TargetID = null,
+            IndicatorID = null,
+            HealthFacilityID = null,
+            ProviderID = null,
+            DomainLookupID = null,
+            DirectorateLookupID = null,
+            Year = null,
+            Month = null
+        ) {
+            var url = '../api/targets';
+            var params = '';
+            if (TargetID) { params = params + '&TargetID=' + TargetID; }
+            if (IndicatorID) { params = params + '&IndicatorID=' + IndicatorID; }
+            if (HealthFacilityID) { params = params + '&HealthFacilityID=' + HealthFacilityID; }
+            if (ProviderID) { params = params + '&ProviderID=' + ProviderID; }
+            if (DomainLookupID) { params = params + '&DomainLookupID=' + DomainLookupID; }
+            if (DirectorateLookupID) { params = params + '&DirectorateLookupID=' + DirectorateLookupID; }
+            if (params) { url = url + '?' + params.substr(1); }
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: url,
+                contentType: "application/json; charset=utf-8"
+            }).done(function (json) {
+                return json;
+            });
+        }
     </script>
 }
