@@ -13,7 +13,7 @@ namespace HDA.Core.ViewModels
         public int? ProviderID { get; set; }
         public int? DomainLookupID { get; set; }
         public int? DirectorateLookupID { get; set; }
-        public DateTime? EffectiveDate { get; set; }
+        public DateTime EffectiveDate { get; set; }
         public string Value { get; set; }
     }
 }
