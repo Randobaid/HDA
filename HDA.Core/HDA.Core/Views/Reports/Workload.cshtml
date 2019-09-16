@@ -488,13 +488,17 @@
                     initComplete: function (settings, json) {
                         var chartLabels = [];
                         var chartData = [];
+                        var chartDataTargets = [];
                         var chartType = 'column';
                         var lastYear = [];
+                        var lastYearTargets = [];
                         for (var i = 0; i < json.length; i++) {
                             chartLabels.push((json[i]['MonthName']).substring(0, 3));
                             chartData.push(json[i]['Total']);
+                            chartDataTargets.push(parseInt(json[i]['Target']));
                             if (showPreviousYear == 1) {
                                 lastYear.push(json[i]['TotalPreviousYear']);
+                                lastYearTargets.push(parseInt(json[i]['TargetPreviousYear']));
                             }
                         }
                         if (chartLabels.length > 2) {
@@ -507,10 +511,12 @@
                             title: { text: '' },
                             subtitle: { text: '' },
                             xAxis: { categories: chartLabels },
-                            yAxis: { title: { text: '' }, plotLines: [{ color: '#FF0000', width: 2, value: outpatientTarget }] },
+                            yAxis: { title: { text: '' } },
                             series: [
                                 { name: 'outpatient-encounters', data: chartData },
-                                { name: 'last-year', data: lastYear }
+                                { name: 'outpatient-encounters-targets', data: chartDataTargets, type: 'line' },
+                                { name: 'last-year', data: lastYear },
+                                { name: 'last-year-targets', data: lastYearTargets, type: 'line' }
                             ],
                             credits: false
                         });
@@ -583,24 +589,27 @@
                     var series47 = [];
                     var series8Plus = [];
                     var seriesNotDischarged = [];
+                    var targets = []
                     for (var i = 0; i < json.length; i++) {
                         chartLabels.push((json[i]['MonthName']).substring(0, 3));
                         series13.push(json[i]['LOS13Total']);
                         series47.push(json[i]['LOS47Total']);
                         series8Plus.push(json[i]['LOS8Total']);
                         seriesNotDischarged.push(json[i]['LOSNDTotal']);
+                        targets.push(parseInt(json[i]['Target']));
                     }
                     new Highcharts.chart('inPatientChart', {
                         chart: { type: 'column' },
                         title: { text: '' },
                         subtitle: { text: '' },
                         xAxis: { categories: chartLabels },
-                        yAxis: { title: { text: '' }, plotLines: [{ color: '#FF0000', width: 2, value:  inPatientTarget }] },
+                        yAxis: { title: { text: '' } },
                         series: [
-                            { 'name': '1-3 days', 'data': series13 },
-                            { 'name': '4-7 days', 'data': series47 },
-                            { 'name': '8+ days', 'data': series8Plus },
-                            { 'name': 'Not Discharged', 'data': seriesNotDischarged }
+                            { name: '1-3 days', data: series13 },
+                            { name: '4-7 days', data: series47 },
+                            { name: '8+ days', data: series8Plus },
+                            { name: 'Not Discharged', data: seriesNotDischarged },
+                            { name: 'Target', data: targets, type: 'line'}
                         ],
                         plotOptions: { series: { stacking: 'normal' } },
                         credits: false
@@ -626,20 +635,23 @@
                     var chartLabels = [];
                     var seriesMinor = [];
                     var seriesMajor = [];
+                    var targets = [];
                     for (var i = 0; i < json.length; i++) {
                         chartLabels.push((json[i]['MonthName']).substring(0, 3));
                         seriesMinor.push(json[i]['MinorSeverityTotal']);
                         seriesMajor.push(json[i]['MajorSeverityTotal']);
+                        targets.push(parseInt(json[i]['Target']));
                     }
                     new Highcharts.chart('surgeriesChart', {
                         chart: { type: 'column' },
                         title: { text: '' },
                         subtitle: { text: '' },
                         xAxis: { categories: chartLabels },
-                        yAxis: { title: { text: '' }, plotLines: [{ color: '#FF0000', width: 2, value: surgeriesTarget }] },
+                        yAxis: { title: { text: '' } },
                         series: [
-                            { 'name': 'Minor', 'data': seriesMinor },
-                            { 'name': 'Major', 'data': seriesMajor }
+                            { name: 'Minor', data: seriesMinor },
+                            { name: 'Major', data: seriesMajor },
+                            { name: 'Target', data: targets, type: 'line' }
                         ],
                         plotOptions: { series: { stacking: 'normal' } },
                         credits: false
@@ -698,6 +710,35 @@
                     GetMonthlyAverage();
                 });
             }
+        }
+        
+        function GetTargets(
+            TargetID = null,
+            IndicatorID = null,
+            HealthFacilityID = null,
+            ProviderID = null,
+            DomainLookupID = null,
+            DirectorateLookupID = null,
+            Year = null,
+            Month = null
+        ) {
+            var url = '../api/targets';
+            var params = '';
+            if (TargetID) { params = params + '&TargetID=' + TargetID; }
+            if (IndicatorID) { params = params + '&IndicatorID=' + IndicatorID; }
+            if (HealthFacilityID) { params = params + '&HealthFacilityID=' + HealthFacilityID; }
+            if (ProviderID) { params = params + '&ProviderID=' + ProviderID; }
+            if (DomainLookupID) { params = params + '&DomainLookupID=' + DomainLookupID; }
+            if (DirectorateLookupID) { params = params + '&DirectorateLookupID=' + DirectorateLookupID; }
+            if (params) { url = url + '?' + params.substr(1); }
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: url,
+                contentType: "application/json; charset=utf-8"
+            }).done(function (json) {
+                return json;
+            });
         }
     </script>
 }
