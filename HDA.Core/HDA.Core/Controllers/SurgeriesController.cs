@@ -1,4 +1,5 @@
-﻿using HDA.Core.Models.HDAReports;
+﻿using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace HDA.Core.Controllers
     public class SurgeriesController : ApiController
     {
         private HDAReportsContext db = new HDAReportsContext();
+        private HDACoreContext dbc = new HDACoreContext();
         public IHttpActionResult GetMonthlyTotalsBySeverity([FromUri] WorkloadRequest payload)
         {
 
@@ -25,6 +27,9 @@ namespace HDA.Core.Controllers
                     DateTime toDate = Convert.ToDateTime(payload.ToDate);
 
                     List<SurgeryBySeverityTotal> result = new List<SurgeryBySeverityTotal>();
+                    List<Target> targets = dbc.Targets.Where(t => 
+                        t.Indicator.IndicatorNameEn == "Surgeries"
+                    ).OrderByDescending(tg => tg.EffectiveDate).ToList();
 
                     if(payload.HealthFacilityID == 0)
                     {
@@ -46,14 +51,26 @@ namespace HDA.Core.Controllers
                                 };
                         foreach (var total in a)
                         {
+                            Target target = new Target();
+
+                            foreach(var tgt in targets)
+                            {
+                                if(tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1))
+                                {
+                                    target = tgt;
+                                    break;
+                                }
+                            }
+
                             DateTimeFormatInfo d = new DateTimeFormatInfo();
                             SurgeryBySeverityTotal m = new SurgeryBySeverityTotal
                             {
                                 MonthId = total.MonthId,
                                 MonthName = d.GetMonthName(total.MonthId),
                                 MinorSeverityTotal = total.MinorSeverityTotal,
-                                MajorSeverityTotal = total.MajorSeverityTotal//,
-                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal
+                                MajorSeverityTotal = total.MajorSeverityTotal,
+                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal,
+                                Target = target.Value
                             };
                             result.Add(m);
                         }
@@ -82,14 +99,30 @@ namespace HDA.Core.Controllers
                                 };
                         foreach (var total in a)
                         {
+                            Target target = new Target();
+
+                            foreach(var tgt in targets)
+                            {
+                                if(
+                                    tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
+                                    && tgt.ProviderID == payload.ProviderID
+                                    && tgt.HealthFacilityID == payload.HealthFacilityID
+                                )
+                                {
+                                    target = tgt;
+                                    break;
+                                }
+                            }
+
                             DateTimeFormatInfo d = new DateTimeFormatInfo();
                             SurgeryBySeverityTotal m = new SurgeryBySeverityTotal
                             {
                                 MonthId = total.MonthId,
                                 MonthName = d.GetMonthName(total.MonthId),
                                 MinorSeverityTotal = total.MinorSeverityTotal,
-                                MajorSeverityTotal = total.MajorSeverityTotal//,
-                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal
+                                MajorSeverityTotal = total.MajorSeverityTotal,
+                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal,
+                                Target = target.Value
                             };
                             result.Add(m);
                         }
@@ -116,14 +149,29 @@ namespace HDA.Core.Controllers
                                 };
                         foreach(var total in a)
                         {
+                            Target target = new Target();
+
+                            foreach(var tgt in targets)
+                            {
+                                if(
+                                    tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
+                                    && tgt.HealthFacilityID == payload.HealthFacilityID
+                                )
+                                {
+                                    target = tgt;
+                                    break;
+                                }
+                            }
+                            
                             DateTimeFormatInfo d = new DateTimeFormatInfo();
                             SurgeryBySeverityTotal m = new SurgeryBySeverityTotal
                             {
                                 MonthId = total.MonthId,
                                 MonthName = d.GetMonthName(total.MonthId),
                                 MinorSeverityTotal = total.MinorSeverityTotal,
-                                MajorSeverityTotal = total.MajorSeverityTotal//,
-                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal
+                                MajorSeverityTotal = total.MajorSeverityTotal,
+                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal,
+                                Target = target.Value
                             };
                             result.Add(m);
                         }
