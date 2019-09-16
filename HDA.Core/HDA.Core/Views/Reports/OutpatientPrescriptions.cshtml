@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "OutpatientPrescriptions";
+}
+
+<div class="col-md-12">
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark">
+                    <i class="fa fa-filter fa-lg" aria-hidden="true"></i><b> Filters</b>
+                </div>
+                <div class="card-body text-left">
+                    <div class="row">
+
+                        <div class="form-group col-md-12">
+                            <div class="dropdown">
+                                <select id="hospital_types" multiple="multiple">
+                                    <option value="1">Hospitals</option>
+                                    <option value="2">Comprehensive Centers</option>
+                                    <option value="3">Specialized Medical Centers</option>
+                                    <option value="4">Peripheral Centers</option>
+                                    <option value="5">Primary Centers</option>
+                                    <option value="6">Educational Hospitals</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="col-md-10 col-sm-12">
+                                    <input type="text" class="form-control" id="TextHospital" placeholder="Select Hospital.." disabled="disabled" />
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allHospitals">
+                                        <label class="form-check-label" for="allHospitals">
+                                            All
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="reportrange" class="col-form-label">Reporting Period</label>
+                            <div id="reportrange" class="rounded" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <span></span> <i class="fa fa-caret-down"></i>
+                            </div>
+                            @*<div>
+                                <div class="form-check col-md-12">
+                                    <input class="form-check-input " type="checkbox" value="" id="compareLastYear">
+                                    <label class="form-check-label" for="compareLastYear">
+                                        Compare with Previous Year
+                                    </label>
+                                </div>
+                            </div>*@
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input type="text" placeholder="Select Drug Class.." class="form-control" id="TextDrugClass" disabled="disabled" />
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allDrugClasses">
+                                        <label class="form-check-label" for="allDrugClasses">
+                                            All
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input type="text" placeholder="Select Drug .." class="form-control" id="TextDrug" disabled="disabled" />
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allDrugs">
+                                        <label class="form-check-label" for="allDrugs">
+                                            All
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark">
+                    <i class="fa fa-bullseye fa-lg" aria-hidden="true"></i><b> Targets</b>
+                </div>
+
+            </div>
+
+            <br />
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark">
+                    <i class="fa fa-info-circle fa-lg" aria-hidden="true"></i><b> Additional Information</b>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-9">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Pharmacy Monitoring</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Change Rates</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Prescription Trends</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#hospital_types').multiselect({
+                enableHTML:true,
+                buttonWidth: '100%',
+                includeSelectAllOption: true,
+                allSelectedText:'All Selected',
+                buttonClass: 'btn btn-primary btn-block',
+                buttonText: function (options, select) {
+                    if (options.length === 0) {
+                        return '<i class="fa fa-hospital-o fa-lg" aria-hidden="true"></i> Select Hospital Type';
+                    }
+                    else if (options.length > 3) {
+                        return options.length + ' selected';
+                    }
+                    else {
+                        var labels = [];
+                        options.each(function () {
+                            if ($(this).attr('label') !== undefined) {
+                                labels.push($(this).attr('label'));
+                            }
+                            else {
+                                labels.push($(this).html());
+                            }
+                        });
+                        return labels.join(', ') + '';
+                    }
+                },
+                onDropdownHidden: function (event) {
+                    var selectedOptions = $('#hospital_types option:selected');
+                    console.log(selectedOptions);
+                    facilityTypeId = 1;//TODO Get Value from Dropdown
+                    GetInventory();
+                }
+            });
+        });
+
+        $(function () {
+            var start = moment().startOf('year');
+            var end = moment();
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                startDate = start.format('YYYY-MM-DD');
+                endDate = end.format('YYYY-MM-DD');
+                if (facilityTypeId > 0) {
+                    GetOutPatientEncounters();
+                    GetInPatientEncounters();
+                    GetSurgeries();
+                    GetMonthlyAverage();
+                }
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                alwaysShowCalendars: true,
+                ranges: {
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'Year to Date': [moment().startOf('year'), moment()],
+                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')]
+                }
+            }, cb);
+            cb(start, end);
+        });
+
+     </script>
+}

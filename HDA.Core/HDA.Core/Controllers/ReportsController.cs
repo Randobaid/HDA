@@ -19,5 +19,9 @@ namespace HDA.Core.Controllers
         {
             return View();
         }
+        public ActionResult OutpatientPrescriptions()
+        {
+            return View();
+        }
     }
 }

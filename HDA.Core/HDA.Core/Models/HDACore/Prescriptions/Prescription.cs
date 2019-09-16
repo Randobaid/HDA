@@ -18,6 +18,8 @@ namespace HDA.Core.Models.HDACore
         public virtual Provider Provider { get; set; }
         public int DrugID { get; set; }
         public virtual Drug Drug { get; set; }
+        public int Quantity { get; set; }
+        public int Duration { get; set; }
         public int? RequestedRefills { get; set; }
     }
 }
