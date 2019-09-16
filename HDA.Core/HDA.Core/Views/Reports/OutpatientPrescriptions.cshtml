@@ -268,6 +268,7 @@
             if (this.checked) {
                 $('#TextDrugClass').attr('disabled', true);
                 $('#TextDrugClass').val('');
+                
                 //facilityId = 0;
                 //GetInventory();
                 //GetOutPatientEncounters();
@@ -415,6 +416,7 @@
             this.value = result[1];
             drugClassId = result[0];
             GetDrugs(drugClassId);
+            GetPrescriptionsPerInstitution();
         }
 
         function GetDrugs(selectedDrugClassId) {
@@ -459,9 +461,26 @@
                         + '&DrugId=' + drugId + '',
                     contentType: "application/json; charset=utf-8"
                 }).done(function (json) {
-                    for (var i = 0; i < json.length; <++)
+                    var chartLabels = [];
+                    var series1 = [];
+                    for (var i = 0; i < json.length; i++) {
+                        chartLabels.push((json[i]['MonthName']).substring(0, 3));
+                        series1.push(json[i]['Total']);
+                    }
                     var chart = new Highcharts.chart('prescriptionsPerInstitutionChart', {
-                    chart: { type: 'line' }
+                        chart: { type: 'line' },
+                        title: { text: '' },
+                            subtitle: { text: '' },
+                            xAxis: { categories: chartLabels },
+                        yAxis: {
+                            title: { text: '' }
+                            //, plotLines: [{ color: '#FF0000', width: 2, value: outpatientTarget }]
+                        },
+                            series: [
+                                { name: 'outpatient-prescriptions', data: series1 },
+                                
+                            ],
+                            credits: false
                     });
                 });
 

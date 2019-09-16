@@ -25,7 +25,9 @@ namespace HDA.Core.Controllers
                 h.Month >= fromDate.Month
                 && h.Month <= toDate.Month
                 && h.Year >= fromDate.Year
-                && h.Year <= toDate.Year)
+                && h.Year <= toDate.Year
+                && (payload.DrugClassId > 0)? h.DrugClassID == payload.DrugClassId : true
+                && (payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)
                         group t by new { t.Month, t.Year } into x
                         select new
                         {

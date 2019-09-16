@@ -8,7 +8,7 @@ namespace HDA.Core.Migrations
 {
     internal sealed class HDACoreConfig : DbMigrationsConfiguration<HDACoreContext>
     {
-        public HDACoreConfig()
+        public HDACoreConfig() 
         {
             AutomaticMigrationsEnabled = false;
             AutomaticMigrationDataLossAllowed = true;
@@ -68,11 +68,9 @@ namespace HDA.Core.Migrations
         private void SeedDrugClasses(HDACoreContext context)
         {
             context.DrugClasses.AddOrUpdate(d => d.DrugClassNameEn,
-               new DrugClass
-               {
-                   DrugClassNameEn = "AntiConvulsants",
-
-               });
+               new DrugClass {DrugClassNameEn = "AntiConvulsants"},
+               new DrugClass { DrugClassNameEn = "AntiMalarials" }
+               );
             context.SaveChanges();
         }
 
