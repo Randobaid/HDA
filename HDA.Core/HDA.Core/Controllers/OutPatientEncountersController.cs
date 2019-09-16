@@ -14,7 +14,6 @@ namespace HDA.Core.Controllers
     public class OutPatientEncountersController : ApiController
     {
         private HDACoreContext db = new HDACoreContext();
-        //private HDAReportsContext dbb = new HDAReportsContext();
         
         public IHttpActionResult GetMonthlyTotals([FromUri] WorkloadRequest payload)
         {
@@ -23,7 +22,9 @@ namespace HDA.Core.Controllers
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
                 List<MonthlyTotal> monthlyTotals = new List<MonthlyTotal>();
-                
+                List<Target> targets = db.Targets.Where(t => 
+                    t.Indicator.IndicatorNameEn == "Outpatient Encounters"
+                ).OrderByDescending(tg => tg.EffectiveDate).ToList();
 
                 if(payload.HealthFacilityID == 0)
                 {
@@ -37,6 +38,16 @@ namespace HDA.Core.Controllers
                             select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
                     foreach (var total in g)
                     {
+                        Target target = new Target();
+                        Target targetPrevYear = new Target();
+                        foreach(var tgt in targets)
+                        {
+                            if(tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1))
+                            {
+                                target = tgt;
+                                break;
+                            }
+                        }
                         int totalPrevYear = 0;
                         if (payload.PreviousYear == 1)
                         {
@@ -50,6 +61,14 @@ namespace HDA.Core.Controllers
                             {
                                 totalPrevYear = t.Total;
                             }
+                            foreach(var tgt in targets)
+                            {
+                                if(tgt.EffectiveDate <= new DateTime(fromDate.Year - 1, total.MonthId, 1))
+                                {
+                                    targetPrevYear = tgt;
+                                    break;
+                                }
+                            }
                         }
                         DateTimeFormatInfo d = new DateTimeFormatInfo();
                         MonthlyTotal m = new MonthlyTotal
@@ -58,7 +77,8 @@ namespace HDA.Core.Controllers
                             MonthName = d.GetMonthName(total.MonthId),
                             Total = total.Total,
                             TotalPreviousYear = totalPrevYear,
-                            MonthlyTarget = 100
+                            Target = target.Value,
+                            TargetPreviousYear = targetPrevYear.Value
                         };
                         monthlyTotals.Add(m);
                     }
@@ -66,7 +86,6 @@ namespace HDA.Core.Controllers
                 }
 
                 if (payload.ProviderID > 0 && payload.HealthFacilityID > 0)
-
                 {
                     var g = from t in db.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID 
                         && h.ProviderID == payload.ProviderID
@@ -79,6 +98,20 @@ namespace HDA.Core.Controllers
                             select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
                     foreach (var total in g)
                     {
+                        Target target = new Target();
+                        Target targetPrevYear = new Target();
+                        foreach(var tgt in targets)
+                        {
+                            if(
+                                tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
+                                && tgt.ProviderID == payload.ProviderID
+                                && tgt.HealthFacilityID == payload.HealthFacilityID
+                            )
+                            {
+                                target = tgt;
+                                break;
+                            }
+                        }
                         int totalPrevYear = 0;
                         if (payload.PreviousYear == 1)
                         {
@@ -93,8 +126,19 @@ namespace HDA.Core.Controllers
                             {
                                 totalPrevYear = t.Total;
                             }
+                            foreach(var tgt in targets)
+                            {
+                                if(
+                                    tgt.EffectiveDate <= new DateTime(fromDate.Year - 1, total.MonthId, 1)
+                                    && tgt.ProviderID == payload.ProviderID
+                                    && tgt.HealthFacilityID == payload.HealthFacilityID
+                                )
+                                {
+                                    targetPrevYear = tgt;
+                                    break;
+                                }
+                            }
                         }
-
 
                         DateTimeFormatInfo d = new DateTimeFormatInfo();
                         MonthlyTotal m = new MonthlyTotal
@@ -102,7 +146,9 @@ namespace HDA.Core.Controllers
                             MonthId = total.MonthId,
                             MonthName = d.GetMonthName(total.MonthId),
                             Total = total.Total,
-                            TotalPreviousYear = totalPrevYear
+                            TotalPreviousYear = totalPrevYear,
+                            Target = target.Value,
+                            TargetPreviousYear = targetPrevYear.Value,
                         };
                         monthlyTotals.Add(m);
 
@@ -122,6 +168,19 @@ namespace HDA.Core.Controllers
                         select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
                     foreach (var total in g)
                     {
+                        Target target = new Target();
+                        Target targetPrevYear = new Target();
+                        foreach(var tgt in targets)
+                        {
+                            if(
+                                tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
+                                && tgt.HealthFacilityID == payload.HealthFacilityID
+                            )
+                            {
+                                target = tgt;
+                                break;
+                            }
+                        }
                         int totalPrevYear = 0;
                         if (payload.PreviousYear == 1)
                         {
@@ -135,6 +194,17 @@ namespace HDA.Core.Controllers
                             {
                                 totalPrevYear = t.Total;
                             }
+                            foreach(var tgt in targets)
+                            {
+                                if(
+                                    tgt.EffectiveDate <= new DateTime(fromDate.Year - 1, total.MonthId, 1)
+                                    && tgt.HealthFacilityID == payload.HealthFacilityID
+                                )
+                                {
+                                    targetPrevYear = tgt;
+                                    break;
+                                }
+                            }
                         }
                         DateTimeFormatInfo d = new DateTimeFormatInfo();
                         MonthlyTotal m = new MonthlyTotal
@@ -142,7 +212,9 @@ namespace HDA.Core.Controllers
                             MonthId = total.MonthId,
                             MonthName = d.GetMonthName(total.MonthId),
                             Total = total.Total,
-                            TotalPreviousYear = totalPrevYear
+                            TotalPreviousYear = totalPrevYear,
+                            Target = target.Value,
+                            TargetPreviousYear = targetPrevYear.Value
                         };
                         monthlyTotals.Add(m);
                     }

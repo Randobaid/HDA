@@ -821,6 +821,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\sweetalert2.all.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -860,6 +861,10 @@
     <Compile Include="Migrations\201909161234259_AddDrugIDToPrescriptionTotal.cs" />
     <Compile Include="Migrations\201909161234259_AddDrugIDToPrescriptionTotal.Designer.cs">
       <DependentUpon>201909161234259_AddDrugIDToPrescriptionTotal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909161358480_EditTargetRemoveMonthYear.cs" />
+    <Compile Include="Migrations\201909161358480_EditTargetRemoveMonthYear.Designer.cs">
+      <DependentUpon>201909161358480_EditTargetRemoveMonthYear.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\HDACoreConfig.cs" />
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
@@ -981,6 +986,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909161234259_AddDrugIDToPrescriptionTotal.resx">
       <DependentUpon>201909161234259_AddDrugIDToPrescriptionTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909161358480_EditTargetRemoveMonthYear.resx">
+      <DependentUpon>201909161358480_EditTargetRemoveMonthYear.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
