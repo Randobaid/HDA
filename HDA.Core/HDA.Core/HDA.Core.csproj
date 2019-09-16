@@ -860,7 +860,6 @@
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\HDAReportsConfig.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisLookup.cs" />
     <Compile Include="Models\HDACore\Diagnosis\ProcedureLookup.cs" />
     <Compile Include="Models\HDACore\Diagnosis\SurgerySeverityLookup.cs" />
