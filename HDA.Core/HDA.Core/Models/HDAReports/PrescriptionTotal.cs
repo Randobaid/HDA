@@ -9,10 +9,12 @@ namespace HDA.Core.Models.HDACore
     {
         public int PrescriptionTotalID { get; set; }
         public int HealthFacilityID { get; set; }
+        public int PharmacyID { get; set; }
         public int ProviderID { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }
         public int DrugClassID { get; set; }
+        public int DrugId { get; set; }
         public int Total { get; set; }
 
     }

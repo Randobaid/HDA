@@ -450,14 +450,16 @@
                 $.ajax({
                     type: 'GET',
                     dataType: 'json',
-                    url: '../api/Surgeries/GetMonthlyTotalsBySeverity/?HealthFacilityID=' + facilityId
+                    url: '../api/OutPatientPrescriptions/GetPrescriptionsPerInstitution/?HealthFacilityID=' + facilityId
                         + '&ProviderID=' + providerId
+                        + '&PharmacyID=' + pharmacyId
                         + '&FromDate=' + startDate
                         + '&ToDate=' + endDate
                         + '&DrugClassId=' + drugClassId
                         + '&DrugId=' + drugId + '',
                     contentType: "application/json; charset=utf-8"
                 }).done(function (json) {
+                    for (var i = 0; i < json.length; <++)
                     var chart = new Highcharts.chart('prescriptionsPerInstitutionChart', {
                     chart: { type: 'line' }
                     });
