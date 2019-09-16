@@ -1,5 +1,4 @@
-﻿using HDA.Core.Models.HDACore;
-using HDA.Core.Models.HDAReports;
+﻿using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,6 @@ namespace HDA.Core.Controllers
     {
         private HDAReportsContext db = new HDAReportsContext();
         //private HDAReportsContext dbb = new HDAReportsContext();
-        private HDACoreContext dbc = new HDACoreContext();
         public IHttpActionResult GetMonthlyTotals([FromUri] WorkloadRequest payload)
         {
             if (ModelState.IsValid)
@@ -24,9 +22,7 @@ namespace HDA.Core.Controllers
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
                 List<InPatientLOSTotal> monthlyTotals = new List<InPatientLOSTotal>();
-                List<Target> targets = dbc.Targets.Where(t => 
-                    t.Indicator.IndicatorNameEn == "Inpatient Transfers"
-                ).OrderByDescending(tg => tg.EffectiveDate).ToList();
+
 
                 if(payload.HealthFacilityID == 0)
                 {
@@ -51,17 +47,6 @@ namespace HDA.Core.Controllers
                             };
                     foreach (var total in g)
                     {
-                        Target target = new Target();
-
-                        foreach(var tgt in targets)
-                        {
-                            if(tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1))
-                            {
-                                target = tgt;
-                                break;
-                            }
-                        }
-
                         DateTimeFormatInfo d = new DateTimeFormatInfo();
                         InPatientLOSTotal m = new InPatientLOSTotal
                         {
@@ -70,8 +55,7 @@ namespace HDA.Core.Controllers
                             LOS13Total = total.Total13,
                             LOS47Total = total.Total47,
                             LOS8Total = total.Total8Plus,
-                            LOSNDTotal = total.TotalNotDischarged,
-                            Target = target.Value
+                            LOSNDTotal = total.TotalNotDischarged
                         };
                         monthlyTotals.Add(m);
                     }
@@ -101,21 +85,7 @@ namespace HDA.Core.Controllers
                             };
                     foreach (var total in g)
                     {
-                        Target target = new Target();
-
-                        foreach(var tgt in targets)
-                        {
-                            if(
-                                tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
-                                && tgt.ProviderID == payload.ProviderID
-                                && tgt.HealthFacilityID == payload.HealthFacilityID
-                            )
-                            {
-                                target = tgt;
-                                break;
-                            }
-                        }
-
+                       
                         DateTimeFormatInfo d = new DateTimeFormatInfo();
                         InPatientLOSTotal m = new InPatientLOSTotal
                         {
@@ -123,8 +93,7 @@ namespace HDA.Core.Controllers
                             MonthName = d.GetMonthName(total.MonthId),
                             LOS13Total = total.Total13,
                             LOS47Total = total.Total47,
-                            LOS8Total = total.Total8Plus,
-                            Target = target.Value
+                            LOS8Total = total.Total8Plus
                         };
                         monthlyTotals.Add(m);
                     }
@@ -147,20 +116,7 @@ namespace HDA.Core.Controllers
                             };
                     foreach (var total in g)
                     {
-                        Target target = new Target();
-
-                        foreach(var tgt in targets)
-                        {
-                            if(
-                                tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
-                                && tgt.HealthFacilityID == payload.HealthFacilityID
-                            )
-                            {
-                                target = tgt;
-                                break;
-                            }
-                        }
-
+                       
                         DateTimeFormatInfo d = new DateTimeFormatInfo();
                         InPatientLOSTotal m = new InPatientLOSTotal
                         {
@@ -168,8 +124,7 @@ namespace HDA.Core.Controllers
                             MonthName = d.GetMonthName(total.MonthId),
                             LOS13Total = total.Total13,
                             LOS47Total = total.Total47,
-                            LOS8Total = total.Total8Plus,
-                            Target = target.Value
+                            LOS8Total = total.Total8Plus
                         };
                         monthlyTotals.Add(m);
                     }

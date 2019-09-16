@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,6 +20,7 @@ namespace HDA.Core.Controllers
         public IHttpActionResult Index([FromUri] TargetViewModel query)
         {
             List<TargetViewModel> targets = new List<TargetViewModel>();
+            DateTimeFormatInfo dateTimeFormatInfo = new DateTimeFormatInfo();
             foreach (var target in db.Targets)
             {
                 TargetViewModel t = new TargetViewModel {
@@ -29,6 +31,9 @@ namespace HDA.Core.Controllers
                     DomainLookupID = target.DomainLookupID,
                     DirectorateLookupID = target.DirectorateLookupID,
                     EffectiveDate = target.EffectiveDate,
+                    Year = target.Year,
+                    Month = target.Month,
+                    MonthName = target.Month > 0 ? dateTimeFormatInfo.GetMonthName(target.Month ?? 0) : "",
                     Value = target.Value,
                 };
                 if (!(query is null) && query.TargetID > 0 && t.TargetID != query.TargetID) { continue; }
@@ -37,6 +42,8 @@ namespace HDA.Core.Controllers
                 if (!(query is null) && query.ProviderID > 0 && t.ProviderID != query.ProviderID) { continue; }
                 if (!(query is null) && query.DomainLookupID > 0 && t.DomainLookupID != query.DomainLookupID) { continue; }
                 if (!(query is null) && query.DirectorateLookupID > 0 && t.DirectorateLookupID != query.DirectorateLookupID) { continue; }
+                if (!(query is null) && query.Year > 0 && t.Year != query.Year) { continue; }
+                if (!(query is null) && query.Month > 0 && t.Month != query.Month) { continue; }
                 targets.Add(t);
             }
             return Ok(targets);
@@ -47,6 +54,7 @@ namespace HDA.Core.Controllers
         public IHttpActionResult Details(int id)
         {
             List<TargetViewModel> targets = new List<TargetViewModel>();
+            DateTimeFormatInfo dateTimeFormatInfo = new DateTimeFormatInfo();
             foreach (var target in db.Targets.Where(i => i.TargetID == id))
             {
                 targets.Add(new TargetViewModel {
@@ -57,6 +65,9 @@ namespace HDA.Core.Controllers
                     DomainLookupID = target.DomainLookupID,
                     DirectorateLookupID = target.DirectorateLookupID,
                     EffectiveDate = target.EffectiveDate,
+                    Year = target.Year,
+                    Month = target.Month,
+                    MonthName = target.Month > 0 ? dateTimeFormatInfo.GetMonthName(target.Month ?? 0) : "",
                     Value = target.Value,
                 });
             }

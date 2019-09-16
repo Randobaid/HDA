@@ -46,8 +46,7 @@ namespace HDA.Core
                 "~/Scripts/datatables.js",
                 "~/Scripts/pivot.js",
                 "~/Scripts/bootstrap-multiselect.js",
-                "~/Scripts/highcharts/7.1.2/highcharts.js",
-                "~/Scripts/sweetalert2.all.min.js"
+                "~/Scripts/highcharts/7.1.2/highcharts.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/daterangepicker").Include(
