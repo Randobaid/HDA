@@ -850,22 +850,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909161021317_InitialCreate.cs" />
-    <Compile Include="Migrations\201909161021317_InitialCreate.Designer.cs">
-      <DependentUpon>201909161021317_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909161222493_AddPharmacyIDToPrescriptionTotal.cs" />
-    <Compile Include="Migrations\201909161222493_AddPharmacyIDToPrescriptionTotal.Designer.cs">
-      <DependentUpon>201909161222493_AddPharmacyIDToPrescriptionTotal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909161234259_AddDrugIDToPrescriptionTotal.cs" />
-    <Compile Include="Migrations\201909161234259_AddDrugIDToPrescriptionTotal.Designer.cs">
-      <DependentUpon>201909161234259_AddDrugIDToPrescriptionTotal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909161358480_EditTargetRemoveMonthYear.cs" />
-    <Compile Include="Migrations\201909161358480_EditTargetRemoveMonthYear.Designer.cs">
-      <DependentUpon>201909161358480_EditTargetRemoveMonthYear.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\HDACoreConfig.cs" />
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAReportsConfig.cs" />
@@ -976,20 +960,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909161021317_InitialCreate.resx">
-      <DependentUpon>201909161021317_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909161222493_AddPharmacyIDToPrescriptionTotal.resx">
-      <DependentUpon>201909161222493_AddPharmacyIDToPrescriptionTotal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909161234259_AddDrugIDToPrescriptionTotal.resx">
-      <DependentUpon>201909161234259_AddDrugIDToPrescriptionTotal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909161358480_EditTargetRemoveMonthYear.resx">
-      <DependentUpon>201909161358480_EditTargetRemoveMonthYear.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
