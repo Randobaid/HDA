@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using HDA.Core.Models.HDACore;
 using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 
@@ -12,8 +13,8 @@ namespace HDA.Core.Controllers
 {
     public class OutPatientEncountersController : ApiController
     {
-        private HDAReportsContext db = new HDAReportsContext();
-        private HDAReportsContext dbb = new HDAReportsContext();
+        private HDACoreContext db = new HDACoreContext();
+        //private HDAReportsContext dbb = new HDAReportsContext();
         
         public IHttpActionResult GetMonthlyTotals([FromUri] WorkloadRequest payload)
         {
@@ -39,7 +40,7 @@ namespace HDA.Core.Controllers
                         int totalPrevYear = 0;
                         if (payload.PreviousYear == 1)
                         {
-                            var y = from t in dbb.OutPatientEncounterTotals.Where(h => 
+                            var y = from t in db.OutPatientEncounterTotals.Where(h => 
                                              h.Month == total.MonthId
                                              && h.Year == fromDate.Year - 1
                                              )
@@ -81,7 +82,7 @@ namespace HDA.Core.Controllers
                         int totalPrevYear = 0;
                         if (payload.PreviousYear == 1)
                         {
-                            var y = from t in dbb.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
+                            var y = from t in db.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
                                              && h.ProviderID == payload.ProviderID
                                              && h.Month == total.MonthId
                                              && h.Year == fromDate.Year - 1
@@ -124,7 +125,7 @@ namespace HDA.Core.Controllers
                         int totalPrevYear = 0;
                         if (payload.PreviousYear == 1)
                         {
-                            var y = from t in dbb.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
+                            var y = from t in db.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
                                              && h.Month == total.MonthId
                                              && h.Year == fromDate.Year - 1
                                              )

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using HDA.Core.Models.HDACore;
 
-namespace HDA.Core.Models.HDAReports
+namespace HDA.Core.Models.HDACore
 {
     public class OutPatientEncounterTotal
     {

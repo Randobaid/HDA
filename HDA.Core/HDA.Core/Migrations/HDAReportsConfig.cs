@@ -7,11 +7,11 @@ using System.Web;
 
 namespace HDA.Core.Migrations
 {
-    internal sealed class HDAReportsConfig : DbMigrationsConfiguration<HDAReportsContext>
+    /*internal sealed class HDAReportsConfig : DbMigrationsConfiguration<HDAReportsContext>
     {
         public HDAReportsConfig()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             AutomaticMigrationDataLossAllowed = true;
         }
 
@@ -19,5 +19,5 @@ namespace HDA.Core.Migrations
         {
             base.Seed(context);
         }
-    }
+    }*/
 }

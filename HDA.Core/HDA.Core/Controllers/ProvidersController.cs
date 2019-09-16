@@ -12,13 +12,13 @@ namespace HDA.Core.Controllers
 {
     public class ProvidersController : ApiController
     {
-        private HDAReportsContext db = new HDAReportsContext();
+        //private HDAReportsContext db = new HDAReportsContext();
         private HDACoreContext core = new HDACoreContext();
         public IHttpActionResult GetProviders(int id)
         {
             List<ProviderVM> providers = new List<ProviderVM>();
 
-            var ps = db.OutPatientEncounterTotals.Where(p => p.HealthFacilityID == id).Select(o => o.ProviderID).Distinct();
+            var ps = core.OutPatientEncounterTotals.Where(p => p.HealthFacilityID == id).Select(o => o.ProviderID).Distinct();
             foreach(int providerId in ps)
             {
                 var provider = core.Providers.Where(p => p.ProviderID == providerId).First();

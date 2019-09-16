@@ -41,6 +41,55 @@ namespace HDA.Core.Controllers
             return Ok(healthFacilities);
         }
 
+        public IHttpActionResult GetPharmacies(int id)
+        {
+            List<PharmacyVM> pharmacies = new List<PharmacyVM>();
+            var hfs = db.Pharmacies.Where(i => i.PharmacyID == id);
+            foreach (var hf in hfs)
+            {
+                PharmacyVM h = new PharmacyVM
+                {
+                    ID = hf.PharmacyID,
+                    PharmacyName = hf.PharmacyName,
+                    HealthFacilityID = hf.HealthFacilityID
+                };
+                pharmacies.Add(h);
+            }
+            return Ok(pharmacies);
+        }
+
+        public IHttpActionResult GetDrugClasses()
+        {
+            List<DrugClassVM> drugClasses = new List<DrugClassVM>();
+            var hfs = db.DrugClasses;
+            foreach (var hf in hfs)
+            {
+                DrugClassVM h = new DrugClassVM
+                {
+                    ID = hf.DrugClassID,
+                    DrugClassName = hf.DrugClassNameEn,
+                };
+                drugClasses.Add(h);
+            }
+            return Ok(drugClasses);
+        }
+
+        public IHttpActionResult GetDrugs(int id)
+        {
+            List<DrugVM> drugs = new List<DrugVM>();
+            var hfs = db.Drugs.Where(d=> d.DrugClassID == id);
+            foreach (var hf in hfs)
+            {
+                DrugVM h = new DrugVM
+                {
+                    ID = hf.DrugID,
+                    DrugName = hf.DrugNameEn,
+                };
+                drugs.Add(h);
+            }
+            return Ok(drugs);
+        }
+
         public IHttpActionResult GetFacilityInventory(int id)
         {
             HealthFacilityInventory h = new HealthFacilityInventory();

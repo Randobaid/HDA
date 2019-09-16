@@ -42,19 +42,34 @@
                             </div>
                         </div>
                         <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="col-md-10 col-sm-12">
+                                    <input type="text" class="form-control" id="TextPharmacy" placeholder="Select Pharmacy.." disabled="disabled" />
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allPharmacies">
+                                        <label class="form-check-label" for="allPharmacies">
+                                            All
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
                             <label for="reportrange" class="col-form-label">Reporting Period</label>
                             <div id="reportrange" class="rounded" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
                             </div>
                             @*<div>
-                                <div class="form-check col-md-12">
-                                    <input class="form-check-input " type="checkbox" value="" id="compareLastYear">
-                                    <label class="form-check-label" for="compareLastYear">
-                                        Compare with Previous Year
-                                    </label>
-                                </div>
-                            </div>*@
+                <div class="form-check col-md-12">
+                    <input class="form-check-input " type="checkbox" value="" id="compareLastYear">
+                    <label class="form-check-label" for="compareLastYear">
+                        Compare with Previous Year
+                    </label>
+                </div>
+            </div>*@
                         </div>
                         <div class="form-group col-md-12">
                             <div class="row">
@@ -108,23 +123,61 @@
 
         </div>
         <div class="col-md-9">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Pharmacy Monitoring</a>
+                    <a class="nav-link active" id="pharmacymonitoring-tab" href="#PharmacyMonitoringTab" data-toggle="tab" role="tab">Pharmacy Monitoring</a>
                 </li>
-                <li class="nav-item">
+                @*<li class="nav-item">
                     <a class="nav-link" href="#">Change Rates</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Prescription Trends</a>
-                </li>
+                </li>*@
             </ul>
+           
+            <div class="tab-content border" id="pharmacymonitoring-tabcontent">
+                <br />
+                <div class="col-md-12">
+                    <div id="PharmacyMonitoringTab" class="tab-pane fade show active" role="tabpanel">
+                        <div class="card border border-primary bg-light" id="prescriptionsPerInstitution">
+                            <div class="card-header bg-primary text-white">
+                                <i class="fa fa-star-o fa-pull-left fa-lg" id="" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
+                                Prescriptions Per Institution <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="prescriptionsPerInstitutionProgress"></i>
+                                <i class="fa fa-expand fa-pull-right fa-lg" id=""></i>
+                            </div>
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <div class="ct-chart ct-octave " id="prescriptionsPerInstitutionChart"></div>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+            </div>
         </div>
     </div>
-</div>
+
 
 @section Scripts {
     <script type="text/javascript">
+        var fInput;
+        var facilityAws;
+        var pharmacyTextBox;
+        var pharmacyAws;
+        var facilityTypeId = 0;
+        var facilityId = 0;
+        var providerId = 0;
+        var pharmacyId = 0;
+        var drugClassTextBox;
+        var drugClassAws;
+        var drugClassId = 0;
+
+        var drugTextBox;
+        var drugAws;
+        var drugId = 0;
 
         $(document).ready(function () {
             $('#hospital_types').multiselect({
@@ -157,10 +210,113 @@
                     var selectedOptions = $('#hospital_types option:selected');
                     console.log(selectedOptions);
                     facilityTypeId = 1;//TODO Get Value from Dropdown
-                    GetInventory();
+                    GetPrescriptionsPerInstitution();
                 }
             });
+
+            fInput = document.getElementById("TextHospital");
+            facilityAws = new Awesomplete(fInput, { minChars: 2 });
+            GetFacilityList(fInput, facilityAws, facilityTypeId);
+
+            pharmacyTextBox = document.getElementById("TextPharmacy");
+            pharmacyAws = new Awesomplete(pharmacyTextBox, { minChars: 2 });
+
+            drugClassTextBox = document.getElementById("TextDrugClass");
+            drugClassAws = new Awesomplete(drugClassTextBox, { minChars: 2 });
+
+            GetDrugClasses();
+
+            drugTextBox = document.getElementById("TextDrug");
+            drugAws = new Awesomplete(drugTextBox, { minChars: 2 });
+
+
         });
+
+        $("#allHospitals").change(function () {
+            if (this.checked) {
+                $('#TextHospital').attr('disabled', true);
+                $('#TextHospital').val('');
+                facilityId = 0;
+                //GetInventory();
+                //GetOutPatientEncounters();
+                //GetInPatientEncounters();
+                //GetSurgeries();
+                //GetMonthlyAverage();
+            }
+            else {
+                $('#TextHospital').removeAttr('disabled');
+            }
+        });
+
+        $("#allPharmacies").change(function () {
+            if (this.checked) {
+                $('#TextPharmacy').attr('disabled', true);
+                $('#TextPharmacy').val('');
+                //facilityId = 0;
+                //GetInventory();
+                //GetOutPatientEncounters();
+                //GetInPatientEncounters();
+                //GetSurgeries();
+                //GetMonthlyAverage();
+            }
+            else {
+                $('#TextPharmacy').removeAttr('disabled');
+            }
+        });
+
+        $("#allDrugClasses").change(function () {
+            if (this.checked) {
+                $('#TextDrugClass').attr('disabled', true);
+                $('#TextDrugClass').val('');
+                //facilityId = 0;
+                //GetInventory();
+                //GetOutPatientEncounters();
+                //GetInPatientEncounters();
+                //GetSurgeries();
+                //GetMonthlyAverage();
+            }
+            else {
+                $('#TextDrugClass').removeAttr('disabled');
+            }
+        });
+
+        $("#allDrugs").change(function () {
+            if (this.checked) {
+                $('#TextDrug').attr('disabled', true);
+                $('#TextDrug').val('');
+                drugId = 0;
+                //facilityId = 0;
+                //GetInventory();
+                //GetOutPatientEncounters();
+                //GetInPatientEncounters();
+                //GetSurgeries();
+                //GetMonthlyAverage();
+            }
+            else {
+                $('#TextDrug').removeAttr('disabled');
+            }
+        });
+
+        function GetFacilityList(fInput, aws1, facilityTypeId) {
+            fInput.addEventListener('awesomplete-selectcomplete', SelectFacility);
+            $.ajax({
+                url: '../api/HealthFacilities/GetHealthFacilities/'+1,
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var serverData = data;
+                    var hfList = [];
+                    for (var i = 0; i < serverData.length; i++) {
+                        hfList.push({ label: serverData[i]['HealthFacilityName'], value: serverData[i]['ID'] + '~' + serverData[i]['HealthFacilityName'] });
+                    }
+                    aws1.list = hfList;
+                },
+                error: function (data) {
+                    console.log(data.d);
+                }
+            });
+        }
 
         $(function () {
             var start = moment().startOf('year');
@@ -171,10 +327,7 @@
                 startDate = start.format('YYYY-MM-DD');
                 endDate = end.format('YYYY-MM-DD');
                 if (facilityTypeId > 0) {
-                    GetOutPatientEncounters();
-                    GetInPatientEncounters();
-                    GetSurgeries();
-                    GetMonthlyAverage();
+                    
                 }
             }
 
@@ -191,6 +344,127 @@
             }, cb);
             cb(start, end);
         });
+
+        function SelectFacility() {
+            var result = this.value.split("~");
+            this.value = result[1];
+            facilityId = result[0];
+            $('#TextProvider').val('');
+            providerId = 0;
+            $("#allProviders").prop('checked', true);
+            $('#TextProvider').attr('disabled', true);
+            GetPharmacies(facilityId);
+            //GetInventory();
+            //GetOutPatientEncounters();
+            //GetInPatientEncounters();
+            //GetSurgeries();
+            //GetMonthlyAverage();
+        }
+
+        function GetPharmacies(healthFacilityId) {
+            pharmacyTextBox.addEventListener('awesomplete-selectcomplete', SelectPharmacy);
+            $.ajax({
+                url: '../api/HealthFacilities/GetPharmacies/'+healthFacilityId,
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var serverData = data;
+                    var pharmacyList = [];
+                    for (var i = 0; i < serverData.length; i++) {
+                        pharmacyList.push({ label: serverData[i]['PharmacyName'], value: serverData[i]['ID'] + '~' + serverData[i]['PharmacyName'] });
+                    }
+                    pharmacyAws.list = pharmacyList;
+                },
+                error: function (data) {
+                    console.log(data.d);
+                }
+            });
+        }
+
+        function SelectPharmacy() {
+            var result = this.value.split("~");
+            this.value = result[1];
+            pharmacyId = result[0];
+            alert(pharmacyId);
+        }
+
+        function GetDrugClasses() {
+            drugClassTextBox.addEventListener('awesomplete-selectcomplete', SelectDrugClass);
+            $.ajax({
+                url: '../api/HealthFacilities/GetDrugClasses',
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var serverData = data;
+                    var drugClassList = [];
+                    for (var i = 0; i < serverData.length; i++) {
+                        drugClassList.push({ label: serverData[i]['DrugClassName'], value: serverData[i]['ID'] + '~' + serverData[i]['DrugClassName'] });
+                    }
+                    drugClassAws.list = drugClassList;
+                },
+                error: function (data) {
+                    console.log(data.d);
+                }
+            });
+        }
+
+        function SelectDrugClass() {
+            var result = this.value.split("~");
+            this.value = result[1];
+            drugClassId = result[0];
+            GetDrugs(drugClassId);
+        }
+
+        function GetDrugs(selectedDrugClassId) {
+            drugTextBox.addEventListener('awesomplete-selectcomplete', SelectDrug);
+            $.ajax({
+                url: '../api/HealthFacilities/GetDrugs/'+selectedDrugClassId,
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var serverData = data;
+                    var drugList = [];
+                    for (var i = 0; i < serverData.length; i++) {
+                        drugList.push({ label: serverData[i]['DrugName'], value: serverData[i]['ID'] + '~' + serverData[i]['DrugName'] });
+                    }
+                    drugAws.list = drugList;
+                },
+                error: function (data) {
+                    console.log(data.d);
+                }
+            });
+        }
+
+        function SelectDrug() {
+            var result = this.value.split("~");
+            this.value = result[1];
+            drugId = result[0];
+            //GetDrugs(drugClassId);
+        }
+
+        function GetPrescriptionsPerInstitution() {
+            if (facilityTypeId > 0) {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '../api/Surgeries/GetMonthlyTotalsBySeverity/?HealthFacilityID=' + facilityId
+                        + '&ProviderID=' + providerId
+                        + '&FromDate=' + startDate
+                        + '&ToDate=' + endDate
+                        + '&DrugClassId=' + drugClassId
+                        + '&DrugId=' + drugId + '',
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (json) {
+                    var chart = new Highcharts.chart('prescriptionsPerInstitutionChart', {
+                    chart: { type: 'line' }
+                    });
+                });
+
+            }
+        }
 
      </script>
 }

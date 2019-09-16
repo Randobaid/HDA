@@ -10,4 +10,11 @@ namespace HDA.Core.ViewModels
         public int ID { get; set; }
         public string HealthFacilityName { get; set; }
     }
+
+    public class PharmacyVM
+    {
+        public int ID { get; set; }
+        public int HealthFacilityID { get; set; }
+        public string PharmacyName { get; set; }
+    }
 }

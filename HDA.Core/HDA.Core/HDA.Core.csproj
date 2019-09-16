@@ -841,6 +841,7 @@
     <Compile Include="Controllers\IndicatorsController.cs" />
     <Compile Include="Controllers\InPatientEncountersController.cs" />
     <Compile Include="Controllers\OutPatientEncountersController.cs" />
+    <Compile Include="Controllers\OutPatientPrescriptionsController.cs" />
     <Compile Include="Controllers\ProvidersController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SurgeriesController.cs" />
@@ -848,9 +849,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909091135544_Pharmacy.cs" />
-    <Compile Include="Migrations\201909091135544_Pharmacy.Designer.cs">
-      <DependentUpon>201909091135544_Pharmacy.cs</DependentUpon>
+    <Compile Include="Migrations\201909161021317_InitialCreate.cs" />
+    <Compile Include="Migrations\201909161021317_InitialCreate.Designer.cs">
+      <DependentUpon>201909161021317_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\HDACoreConfig.cs" />
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
@@ -915,6 +916,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\OutpatientPrescriptions.cs" />
     <Compile Include="ViewModels\HealthFacility.cs" />
     <Compile Include="ViewModels\HealthFacilityInventory.cs" />
     <Compile Include="ViewModels\Indicator.cs" />
@@ -963,8 +965,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909091135544_Pharmacy.resx">
-      <DependentUpon>201909091135544_Pharmacy.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909161021317_InitialCreate.resx">
+      <DependentUpon>201909161021317_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

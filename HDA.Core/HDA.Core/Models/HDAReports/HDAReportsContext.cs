@@ -7,7 +7,7 @@ using System.Web;
 
 namespace HDA.Core.Models.HDAReports
 {
-    [DbConfigurationType(typeof(MySqlEFConfiguration))]
+    /*[DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class HDAReportsContext : DbContext
     {
         public HDAReportsContext() : base("hdareports") { }
@@ -16,5 +16,7 @@ namespace HDA.Core.Models.HDAReports
         public DbSet<InPatientEncounterTotal> InPatientEncounterTotals { get; set; }
         public DbSet<SurgeryTotal> SurgeryTotals { get; set; }
         public DbSet<PrescriptionTotal> PrescriptionTotals { get; set; }
+
     }
+    */
 }

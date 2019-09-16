@@ -33,7 +33,47 @@ namespace HDA.Core.Migrations
             SeedHealthFacilities(context);
             SeedDepartments(context);
             SeedMovementLookups(context);
+            SeedPharmacies(context);
+            SeedDrugClasses(context);
+            SeedDrgus(context);
             base.Seed(context);
+        }
+
+        private void SeedDrgus(HDACoreContext context)
+        {
+            context.Drugs.AddOrUpdate(d => d.DrugNameAr,
+                new Drug
+                {
+                    SourceID = 10101,
+                    DrugNameEn = "Levetiracetam 100mg/ml Oral Solution",
+                    DrugClassID = context.DrugClasses.Where(c => c.DrugClassNameEn.ToLower() == "AntiConvulsants".ToLower()).First().DrugClassID
+                });
+            context.SaveChanges();
+        }
+
+        private void SeedPharmacies(HDACoreContext context)
+        {
+           context.Pharmacies.AddOrUpdate(p => p.PharmacyName,
+               new Pharmacy
+               {
+                   PharmacyName = "Al Karak GF OPD Pharmacy",
+                   SourceID = 99283,
+                   HealthFacilityID = context.HealthFacilities.Where(h=> h.HealthFacilityNameEn.ToLower() == "AL KARAK HOSPITAL".ToLower()).First().HealthFacilityID,
+
+               }
+               );
+            context.SaveChanges();
+        }
+
+        private void SeedDrugClasses(HDACoreContext context)
+        {
+            context.DrugClasses.AddOrUpdate(d => d.DrugClassNameEn,
+               new DrugClass
+               {
+                   DrugClassNameEn = "AntiConvulsants",
+
+               });
+            context.SaveChanges();
         }
 
         private void SeedSpecialityLookups(HDACoreContext context)
