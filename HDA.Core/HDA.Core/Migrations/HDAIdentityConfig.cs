@@ -12,8 +12,10 @@ namespace HDA.Core.Migrations
     {
         public HDAIdentityConfig()
         {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationsEnabled = false;
+            //AutomaticMigrationDataLossAllowed = true;
+            MigrationsDirectory = @"Migrations\HDAIdentity";
+            MigrationsNamespace = "HDA.Core.Migrations.HDAIdentity";
         }
         protected override void Seed(HDAIdentityContext context)
         {

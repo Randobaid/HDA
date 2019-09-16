@@ -851,7 +851,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\HDACoreConfig.cs" />
+    <Compile Include="Migrations\HDACore\201909161444254_InitialCreate.cs" />
+    <Compile Include="Migrations\HDACore\201909161444254_InitialCreate.Designer.cs">
+      <DependentUpon>201909161444254_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
+    <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
+    <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
+      <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\HDAReportsConfig.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisLookup.cs" />
     <Compile Include="Models\HDACore\Diagnosis\ProcedureLookup.cs" />
@@ -960,6 +968,14 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\HDACore\201909161444254_InitialCreate.resx">
+      <DependentUpon>201909161444254_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
+      <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

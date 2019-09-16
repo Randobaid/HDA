@@ -12,6 +12,8 @@ namespace HDA.Core.Migrations
         {
             AutomaticMigrationsEnabled = false;
             AutomaticMigrationDataLossAllowed = true;
+            MigrationsDirectory = @"Migrations\HDACore";
+            MigrationsNamespace = "HDA.Core.Migrations.HDACore";
         }
 
         protected override void Seed(HDACoreContext context)
