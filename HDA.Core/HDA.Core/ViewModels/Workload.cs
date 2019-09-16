@@ -16,8 +16,7 @@ namespace HDA.Core.ViewModels
         public string MonthName { get; set; }
         public int Total { get; set; }
         public int TotalPreviousYear { get; set; }
-        public string Target { get; set; }
-        public string TargetPreviousYear { get; set; }
+        public int MonthlyTarget { get; set; }
     }
 
     public class WorkloadRequest
@@ -38,7 +37,6 @@ namespace HDA.Core.ViewModels
         public int LOS47Total { get; set; }
         public int LOS8Total { get; set; }
         public int LOSNDTotal { get; set; }
-        public string Target { get; set; }
 
     }
 
@@ -50,7 +48,6 @@ namespace HDA.Core.ViewModels
         public int MinorSeverityTotal { get; set; }
         public int MajorSeverityTotal { get; set; }
         //public int UndefinedSeverityTotal { get; set; }
-        public string Target { get; set; }
     }
 
 
