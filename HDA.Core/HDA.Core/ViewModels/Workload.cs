@@ -16,6 +16,7 @@ namespace HDA.Core.ViewModels
         public string MonthName { get; set; }
         public int Total { get; set; }
         public int TotalPreviousYear { get; set; }
+        public int MonthlyTarget { get; set; }
     }
 
     public class WorkloadRequest

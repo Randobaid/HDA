@@ -56,7 +56,8 @@ namespace HDA.Core.Controllers
                             MonthId = total.MonthId,
                             MonthName = d.GetMonthName(total.MonthId),
                             Total = total.Total,
-                            TotalPreviousYear = totalPrevYear
+                            TotalPreviousYear = totalPrevYear,
+                            MonthlyTarget = 100
                         };
                         monthlyTotals.Add(m);
                     }
