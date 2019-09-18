@@ -1,0 +1,304 @@
+﻿@{
+    ViewBag.Title = "Data Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>@ViewBag.Title</h5>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border border-primary " style="min-height:250px;">
+                <div class="card-header bg-primary text-white">
+                    Indicators
+                    <i class="fa fa-spinner fa-pulse fa-lg" id="indicatorDataTableSpinner" hidden="hidden"></i>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addIndicatorModal">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add Indicator
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="indicatorDataTable" class="display table table-sm table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>IndicatorID</th>
+                                <th>IndicatorShortName</th>
+                                <th>IndicatorNameEn</th>
+                                <th>IndicatorNameAr</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card border border-primary " style="min-height:250px;">
+                <div class="card-header bg-primary text-white">
+                    Targets
+                    <i class="fa fa-spinner fa-pulse fa-lg" id="targetDataTableSpinner" hidden="hidden"></i>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addTargetModal">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add Target
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="targetDataTable" class="display table table-sm table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>TargetID</th>
+                                <th>IndicatorID</th>
+                                <th>HealthFacilityID</th>
+                                <th>ProviderID</th>
+                                <th>DomainLookupID</th>
+                                <th>DirectorateLookupID</th>
+                                <th>EffectiveDate</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<div>
+
+<div class="modal fade" id="addTargetModal" tabindex="-1" role="dialog" aria-labelledby="addTargetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTargetModalLabel">Add New Target</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="IndicatorId" class="col-form-label">Indicator:</label>
+                            <select class="form-control" name="IndicatorId" required>
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="HealthFacilityId" class="col-form-label">HealthFacility:</label>
+                            <select class="form-control" name="HealthFacilityId">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ProviderId" class="col-form-label">Provider:</label>
+                            <select class="form-control" name="ProviderId">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="DomainLookupId" class="col-form-label">Domain:</label>
+                            <select class="form-control" name="DomainLookupId">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="DirectorateLookupId" class="col-form-label">Directorate:</label>
+                            <select class="form-control" name="DirectorateLookupId">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="EffectiveDate" class="col-form-label">EffectiveDate:</label>
+                            <input type="text" class="form-control" name="EffectiveDate" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Value" class="col-form-label">Value:</label>
+                            <input type="text" class="form-control" name="Value" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <span class="p-2"></span>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addIndicatorModal" tabindex="-1" role="dialog" aria-labelledby="addIndicatorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addIndicatorModalLabel">Add New Indicator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="IndicatorShortName" class="col-form-label">Indicator Short Name:</label>
+                            <input class="form-control" name="IndicatorShortName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="IndicatorNameEn" class="col-form-label">Indicator Name (En):</label>
+                            <input type="text" class="form-control" name="IndicatorNameEn" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="IndicatorNameAr" class="col-form-label">Indicator Name (Ar):</label>
+                            <input type="text" class="form-control" name="IndicatorNameAr" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <span class="p-2"></span>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        
+        var indicators = [];
+        var targets = [];
+        
+        $(document).ready(function () {
+            
+            getAllIndicators();
+            getAllTargets();
+
+            $('input[name="EffectiveDate"]').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                opens: "center",
+                drops: "up",
+                locale: { format: "YYYY-MM-DD" }
+            });
+
+            $("form").validate();
+            
+            $('#addIndicatorModal form').submit(function() {
+                $('#addIndicatorModal').modal('hide');
+                Swal.showLoading();
+                $.ajax({
+                    type: 'POST',
+                    url: '../api/indicators',
+                    data: $('#addIndicatorModal form').serialize()
+                }).done(function (res) {
+                    getAllIndicators();
+                    Swal.fire('Success', 'Indicator added successfully' , 'success');
+                }).fail( function(xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseText , 'error');
+                });
+                return false;
+            });
+
+            $('#addTargetModal form').submit(function() {
+                $('#addTargetModal').modal('hide');
+                Swal.showLoading();
+                $.ajax({
+                    type: 'POST',
+                    url: '../api/targets',
+                    data: $('#addTargetModal form').serialize()
+                }).done(function (res) {
+                    getAllTargets();
+                    Swal.fire('Success', 'Target added successfully' , 'success');
+                }).fail( function(xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseText , 'error');
+                });
+                return false;
+            });
+            
+            function getAllIndicators() {
+                $('#indicatorDataTableSpinner').removeAttr('hidden');
+                var url = '../api/indicators';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (res) {
+                    indicators = res;
+                    populateIndicatorSelects();
+                    populateIndicatorDataTables();
+                });
+            }
+
+            function getAllTargets() {
+                $('#targetDataTableSpinner').removeAttr('hidden');
+                var url = '../api/targets';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (res) {
+                    targets = res;
+                    populateTargetDataTables();
+                });
+            }
+
+            function populateIndicatorSelects() {
+                $('select[name="IndicatorId"]').each(function(){
+                    var element = $(this);
+                    element.empty();
+                    indicators.forEach(function (indicator) {
+                        element.append($("<option></option>")
+                            .attr("value", indicator.IndicatorId)
+                            .text(indicator.IndicatorNameEn));
+                    });
+                });
+            }
+
+            function populateIndicatorDataTables() {
+                $('#indicatorDataTable').DataTable({
+                    data: indicators,
+                    columns: [
+                        { data: 'IndicatorID' },
+                        { data: 'IndicatorShortName' },
+                        { data: 'IndicatorNameEn' },
+                        { data: 'IndicatorNameAr' },
+                    ]
+                });
+                $('#indicatorDataTableSpinner').attr('hidden', true);
+            }
+
+            function populateTargetDataTables() {
+                $('#targetDataTable').DataTable({
+                    data: targets,
+                    columns: [
+                        { data: 'TargetID' },
+                        { data: 'IndicatorID' },
+                        { data: 'HealthFacilityID' },
+                        { data: 'ProviderID' },
+                        { data: 'DomainLookupID' },
+                        { data: 'DirectorateLookupID' },
+                        { data: 'EffectiveDate' },
+                        { data: 'Value' }
+                    ]
+                });
+                $('#targetDataTableSpinner').attr('hidden', true);
+            }
+
+        });
+    </script>
+}
+
