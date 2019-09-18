@@ -25,32 +25,15 @@ namespace HDA.Core.Migrations
             SeedHealthFacilityTypes(context);
             SeedSectionLookups(context);
             SeedSpecialityLookups(context);
-            //SeedServices(context);
             SeedGenderLookups(context);
             SeedMaritalStatusLookups(context);
             SeedSurgerySeverityLookups(context);
-            //SeedLocations(context);
-            //SeedHealthFacilityLocations(context);
             SeedDirectorates(context);
-            SeedHealthFacilities(context);
+            //SeedHealthFacilities(context);
             SeedDepartments(context);
             SeedMovementLookups(context);
-            SeedPharmacies(context);
-            SeedDrugClasses(context);
-            SeedDrgus(context);
+            //SeedPharmacies(context);
             base.Seed(context);
-        }
-
-        private void SeedDrgus(HDACoreContext context)
-        {
-            context.Drugs.AddOrUpdate(d => d.DrugNameAr,
-                new Drug
-                {
-                    SourceID = 10101,
-                    DrugNameEn = "Levetiracetam 100mg/ml Oral Solution",
-                    DrugClassID = context.DrugClasses.Where(c => c.DrugClassNameEn.ToLower() == "AntiConvulsants".ToLower()).First().DrugClassID
-                });
-            context.SaveChanges();
         }
 
         private void SeedPharmacies(HDACoreContext context)
@@ -67,14 +50,6 @@ namespace HDA.Core.Migrations
             context.SaveChanges();
         }
 
-        private void SeedDrugClasses(HDACoreContext context)
-        {
-            context.DrugClasses.AddOrUpdate(d => d.DrugClassNameEn,
-               new DrugClass {DrugClassNameEn = "AntiConvulsants"},
-               new DrugClass { DrugClassNameEn = "AntiMalarials" }
-               );
-            context.SaveChanges();
-        }
 
         private void SeedSpecialityLookups(HDACoreContext context)
         {

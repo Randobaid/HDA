@@ -13,7 +13,8 @@ namespace HDA.Core.Models.HDACore
         public virtual Pharmacy Pharmacy {get; set; }
         public int PatientID { get; set; }
         public virtual Patient Patient { get; set; }
-        public DateTime PrescriptionDate { get; set; }
+        public DateTime IssueDate { get; set; }
+        public DateTime? FillDate { get; set; }
         public int ProviderID { get; set; }
         public virtual Provider Provider { get; set; }
         public int DrugID { get; set; }

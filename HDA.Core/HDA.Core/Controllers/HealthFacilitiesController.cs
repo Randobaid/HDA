@@ -30,7 +30,8 @@ namespace HDA.Core.Controllers
         public IHttpActionResult GetHealthFacilities(int id)
         {
             List<HealthFacilityVM> healthFacilities = new List<HealthFacilityVM>();
-            var hfs = db.HealthFacilities.Where(i => i.HealthFacilityTypeID == id);
+            //var hfs = db.HealthFacilities.Where(i => i.HealthFacilityTypeID == id);
+            var hfs = db.HealthFacilities;
             foreach (var hf in hfs)
             {
                 HealthFacilityVM h = new HealthFacilityVM();
@@ -44,7 +45,7 @@ namespace HDA.Core.Controllers
         public IHttpActionResult GetPharmacies(int id)
         {
             List<PharmacyVM> pharmacies = new List<PharmacyVM>();
-            var hfs = db.Pharmacies.Where(i => i.PharmacyID == id);
+            var hfs = db.Pharmacies.Where(i => i.HealthFacilityID == id);
             foreach (var hf in hfs)
             {
                 PharmacyVM h = new PharmacyVM
@@ -83,7 +84,7 @@ namespace HDA.Core.Controllers
                 DrugVM h = new DrugVM
                 {
                     ID = hf.DrugID,
-                    DrugName = hf.DrugNameEn,
+                    DrugName = hf.DrugGenericName,
                 };
                 drugs.Add(h);
             }

@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-2 col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allPharmacies">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allPharmacies" disabled>
                                         <label class="form-check-label" for="allPharmacies">
                                             All
                                         </label>
@@ -63,13 +63,13 @@
                                 <span></span> <i class="fa fa-caret-down"></i>
                             </div>
                             @*<div>
-                <div class="form-check col-md-12">
-                    <input class="form-check-input " type="checkbox" value="" id="compareLastYear">
-                    <label class="form-check-label" for="compareLastYear">
-                        Compare with Previous Year
-                    </label>
-                </div>
-            </div>*@
+                                    <div class="form-check col-md-12">
+                                        <input class="form-check-input " type="checkbox" value="" id="compareLastYear">
+                                        <label class="form-check-label" for="compareLastYear">
+                                            Compare with Previous Year
+                                        </label>
+                                    </div>
+                                </div>*@
                         </div>
                         <div class="form-group col-md-12">
                             <div class="row">
@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-check">
-                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allDrugs">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allDrugs" disabled>
                                         <label class="form-check-label" for="allDrugs">
                                             All
                                         </label>
@@ -128,37 +128,57 @@
                     <a class="nav-link active" id="pharmacymonitoring-tab" href="#PharmacyMonitoringTab" data-toggle="tab" role="tab">Pharmacy Monitoring</a>
                 </li>
                 @*<li class="nav-item">
-                    <a class="nav-link" href="#">Change Rates</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Prescription Trends</a>
-                </li>*@
+                        <a class="nav-link" href="#">Change Rates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Prescription Trends</a>
+                    </li>*@
             </ul>
-           
+
             <div class="tab-content border" id="pharmacymonitoring-tabcontent">
                 <br />
                 <div class="col-md-12">
                     <div id="PharmacyMonitoringTab" class="tab-pane fade show active" role="tabpanel">
-                        <div class="card border border-primary bg-light" id="prescriptionsPerInstitution">
-                            <div class="card-header bg-primary text-white">
-                                <i class="fa fa-star-o fa-pull-left fa-lg" id="" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
-                                Prescriptions Per Institution <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="prescriptionsPerInstitutionProgress"></i>
-                                <i class="fa fa-expand fa-pull-right fa-lg" id=""></i>
-                            </div>
-                            <div class="card-body">
-                                <div class="col-md-12">
-                                    <div class="ct-chart ct-octave " id="prescriptionsPerInstitutionChart"></div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card border border-primary bg-light" id="prescriptionsPerInstitution">
+                                    <div class="card-header bg-primary text-white">
+                                        <i class="fa fa-star-o fa-pull-left fa-lg" id="" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
+                                        Prescriptions Per Institution <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="prescriptionsPerInstitutionProgress"></i>
+                                        <i class="fa fa-expand fa-pull-right fa-lg" id=""></i>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="ct-chart ct-octave " id="prescriptionsPerInstitutionChart"></div>
+                                        </div>
+                                        <br />
+                                    </div>
                                 </div>
-                                <br />
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border border-primary bg-light" id="prescriptionsPerPharmacy">
+                                    <div class="card-header bg-primary text-white">
+                                        <i class="fa fa-star-o fa-pull-left fa-lg" id="" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
+                                        Prescriptions Per Pharmacy <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="prescriptionsPerInstitutionProgress"></i>
+                                        <i class="fa fa-expand fa-pull-right fa-lg" id=""></i>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="ct-chart ct-octave " id="prescriptionsPerPharmacyChart"></div>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                
+                <br />
             </div>
+
         </div>
     </div>
+</div>
 
 
 @section Scripts {
@@ -178,13 +198,18 @@
         var drugTextBox;
         var drugAws;
         var drugId = 0;
+        var pharmacyNames = [];
+        var numberOfPharmacies = 0;
+
+        var pChart;
+        var presPerPharmacyChart;
 
         $(document).ready(function () {
             $('#hospital_types').multiselect({
-                enableHTML:true,
+                enableHTML: true,
                 buttonWidth: '100%',
                 includeSelectAllOption: true,
-                allSelectedText:'All Selected',
+                allSelectedText: 'All Selected',
                 buttonClass: 'btn btn-primary btn-block',
                 buttonText: function (options, select) {
                     if (options.length === 0) {
@@ -210,7 +235,9 @@
                     var selectedOptions = $('#hospital_types option:selected');
                     console.log(selectedOptions);
                     facilityTypeId = 1;//TODO Get Value from Dropdown
-                    GetPrescriptionsPerInstitution();
+                    prescriptionsTrendChart();
+                    prescriptionsPerPharmacyChart();
+
                 }
             });
 
@@ -237,11 +264,9 @@
                 $('#TextHospital').attr('disabled', true);
                 $('#TextHospital').val('');
                 facilityId = 0;
-                //GetInventory();
-                //GetOutPatientEncounters();
-                //GetInPatientEncounters();
-                //GetSurgeries();
-                //GetMonthlyAverage();
+                prescriptionsTrendChart();
+                prescriptionsPerPharmacyChart();
+                $('#allPharmacies').attr('disabled', true);
             }
             else {
                 $('#TextHospital').removeAttr('disabled');
@@ -252,6 +277,9 @@
             if (this.checked) {
                 $('#TextPharmacy').attr('disabled', true);
                 $('#TextPharmacy').val('');
+                pharmacyId = 0;
+                prescriptionsTrendChart();
+                prescriptionsPerPharmacyChart();
                 //facilityId = 0;
                 //GetInventory();
                 //GetOutPatientEncounters();
@@ -268,7 +296,10 @@
             if (this.checked) {
                 $('#TextDrugClass').attr('disabled', true);
                 $('#TextDrugClass').val('');
-                
+                drugClassId = 0;
+                prescriptionsTrendChart();
+                prescriptionsPerPharmacyChart();
+                $('#allDrugs').attr('disabled', true);
                 //facilityId = 0;
                 //GetInventory();
                 //GetOutPatientEncounters();
@@ -286,6 +317,8 @@
                 $('#TextDrug').attr('disabled', true);
                 $('#TextDrug').val('');
                 drugId = 0;
+                prescriptionsTrendChart();
+                prescriptionsPerPharmacyChart();
                 //facilityId = 0;
                 //GetInventory();
                 //GetOutPatientEncounters();
@@ -301,7 +334,7 @@
         function GetFacilityList(fInput, aws1, facilityTypeId) {
             fInput.addEventListener('awesomplete-selectcomplete', SelectFacility);
             $.ajax({
-                url: '../api/HealthFacilities/GetHealthFacilities/'+1,
+                url: '../api/HealthFacilities/GetHealthFacilities/' + 1,
                 type: 'GET',
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
@@ -328,7 +361,8 @@
                 startDate = start.format('YYYY-MM-DD');
                 endDate = end.format('YYYY-MM-DD');
                 if (facilityTypeId > 0) {
-                    
+                    prescriptionsTrendChart();
+                    prescriptionsPerPharmacyChart();
                 }
             }
 
@@ -354,18 +388,16 @@
             providerId = 0;
             $("#allProviders").prop('checked', true);
             $('#TextProvider').attr('disabled', true);
+            $('#allPharmacies').removeAttr('disabled');
             GetPharmacies(facilityId);
-            //GetInventory();
-            //GetOutPatientEncounters();
-            //GetInPatientEncounters();
-            //GetSurgeries();
-            //GetMonthlyAverage();
+            prescriptionsTrendChart();
+            prescriptionsPerPharmacyChart();
         }
 
         function GetPharmacies(healthFacilityId) {
             pharmacyTextBox.addEventListener('awesomplete-selectcomplete', SelectPharmacy);
             $.ajax({
-                url: '../api/HealthFacilities/GetPharmacies/'+healthFacilityId,
+                url: '../api/HealthFacilities/GetPharmacies/' + healthFacilityId,
                 type: 'GET',
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
@@ -387,7 +419,8 @@
             var result = this.value.split("~");
             this.value = result[1];
             pharmacyId = result[0];
-            alert(pharmacyId);
+            prescriptionsTrendChart();
+            prescriptionsPerPharmacyChart();
         }
 
         function GetDrugClasses() {
@@ -416,13 +449,15 @@
             this.value = result[1];
             drugClassId = result[0];
             GetDrugs(drugClassId);
-            GetPrescriptionsPerInstitution();
+            prescriptionsTrendChart();
+            prescriptionsPerPharmacyChart();
+            $('#allDrugs').removeAttr('disabled');
         }
 
         function GetDrugs(selectedDrugClassId) {
             drugTextBox.addEventListener('awesomplete-selectcomplete', SelectDrug);
             $.ajax({
-                url: '../api/HealthFacilities/GetDrugs/'+selectedDrugClassId,
+                url: '../api/HealthFacilities/GetDrugs/' + selectedDrugClassId,
                 type: 'GET',
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
@@ -444,7 +479,8 @@
             var result = this.value.split("~");
             this.value = result[1];
             drugId = result[0];
-            //GetDrugs(drugClassId);
+            prescriptionsTrendChart();
+            prescriptionsPerPharmacyChart();
         }
 
         function GetPrescriptionsPerInstitution() {
@@ -461,31 +497,161 @@
                         + '&DrugId=' + drugId + '',
                     contentType: "application/json; charset=utf-8"
                 }).done(function (json) {
-                    var chartLabels = [];
                     var series1 = [];
                     for (var i = 0; i < json.length; i++) {
-                        chartLabels.push((json[i]['MonthName']).substring(0, 3));
-                        series1.push(json[i]['Total']);
+                        //chartLabels.push((json[i]['MonthName']).substring(0, 3));
+                        //series1.push(json[i]['Total']);
+                        series1.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['Total']]);
                     }
-                    var chart = new Highcharts.chart('prescriptionsPerInstitutionChart', {
-                        chart: { type: 'line' },
+                    pChart.addSeries({
+                        name: 'Outpatient Prescriptions',
+                        data: series1
+                    });
+
+                });
+
+            }
+        }
+
+        function prescriptionsTrendChart() {
+            pChart = new Highcharts.chart('prescriptionsPerInstitutionChart', {
+                chart: {
+                    type: 'line',
+                    events: {
+                        load: GetPrescriptionsPerInstitution
+                    }
+                },
+                title: { text: '' },
+
+                subtitle: { text: '' },
+                xAxis: { type: 'datetime' },
+                yAxis: {
+                    title: { text: 'Number of Prescriptions' }
+                    //, plotLines: [{ color: '#FF0000', width: 2, value: outpatientTarget }]
+                },
+                /*series: [
+                    { name: 'Outpatient Prescriptions', data: series1 },
+
+                ],*/
+                credits: false
+            });
+        }
+
+        function prescriptionsPerPharmacyChart() {
+            pharmacyNames = [];
+            if (facilityTypeId > 0) {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '../api/OutPatientPrescriptions/GetPrescriptionsPerPharmacy/?HealthFacilityID=' + facilityId
+                        + '&ProviderID=' + providerId
+                        + '&PharmacyID=' + pharmacyId
+                        + '&FromDate=' + startDate
+                        + '&ToDate=' + endDate
+                        + '&DrugClassId=' + drugClassId
+                        + '&DrugId=' + drugId + '',
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (json) {
+                    var pharmacyPrescriptions = [];
+                    var pharmacyQuantities = [];
+                    for (var i = 0; i < json.length; i++) {
+                        pharmacyNames.push(json[i]['PharmacyName']);
+                        pharmacyPrescriptions.push(json[i]['TotalPrescriptions']);
+                        pharmacyQuantities.push(json[i]['TotalQuantity']);
+                    }
+                    var xAxisMax = pharmacyNames.length - 1;
+                    console.log(pharmacyNames);
+                    if (pharmacyNames.length > 10) {
+                        xAxisMax = 10;
+                    }
+                    presPerPharmacyChart = new Highcharts.chart('prescriptionsPerPharmacyChart', {
+                        chart: {
+                            //type: 'column',
+                        },
                         title: { text: '' },
-                            subtitle: { text: '' },
-                            xAxis: { categories: chartLabels },
-                        yAxis: {
-                            title: { text: '' }
+                        subtitle: { text: '' },
+                        xAxis: {
+                            categories: pharmacyNames,
+                            min: 0,
+                            max: xAxisMax
+                        },
+                        scrollbar: {
+                            enabled: true,
+                            barBackgroundColor: 'gray',
+                            barBorderRadius: 7,
+                            barBorderWidth: 0,
+                            buttonBackgroundColor: 'gray',
+                            buttonBorderWidth: 0,
+                            buttonArrowColor: 'yellow',
+                            buttonBorderRadius: 7,
+                            rifleColor: 'yellow',
+                            trackBackgroundColor: 'white',
+                            trackBorderWidth: 1,
+                            trackBorderColor: 'silver',
+                            trackBorderRadius: 7
+                        },
+                        yAxis: [{
+                            title: { text: 'Number of Prescriptions' }
                             //, plotLines: [{ color: '#FF0000', width: 2, value: outpatientTarget }]
                         },
-                            series: [
-                                { name: 'outpatient-prescriptions', data: series1 },
-                                
-                            ],
-                            credits: false
+                         {
+                             title: { text: 'Quantity' },
+                             opposite: true,
+                            //, plotLines: [{ color: '#FF0000', width: 2, value: outpatientTarget }]
+                        },
+                        ],
+
+                        series: [{
+                            name: 'Prescriptions per Pharmacy',
+                            data: pharmacyPrescriptions,
+                            yAxis: 0,
+                            type: 'column',
+                        },
+                        {
+                            name: 'Quantities per Pharmacy',
+                            data: pharmacyQuantities,
+                            yAxis: 1,
+                            type: 'line',
+                        }],
+                        credits: false
                     });
                 });
 
             }
         }
 
-     </script>
+        function GetPrescriptionsPerPharmacy() {
+
+            if (facilityTypeId > 0) {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '../api/OutPatientPrescriptions/GetPrescriptionsPerPharmacy/?HealthFacilityID=' + facilityId
+                        + '&ProviderID=' + providerId
+                        + '&PharmacyID=' + pharmacyId
+                        + '&FromDate=' + startDate
+                        + '&ToDate=' + endDate
+                        + '&DrugClassId=' + drugClassId
+                        + '&DrugId=' + drugId + '',
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (json) {
+                    var pharmacyPrescriptions = [];
+
+                    for (var i = 0; i < json.length; i++) {
+                        pharmacyNames.push(json[i]['PharmacyName']);
+                        pharmacyPrescriptions.push(json[i]['TotalPrescriptions']);
+                    }
+                    numberOfPharmacies = pharmacyNames.length;
+                    alert(numberOfPharmacies);
+                    presPerPharmacyChart.addSeries({
+                        name: 'Prescriptions per Pharmacy',
+                        data: pharmacyPrescriptions
+                    });
+
+                });
+
+            }
+        }
+
+    </script>
 }

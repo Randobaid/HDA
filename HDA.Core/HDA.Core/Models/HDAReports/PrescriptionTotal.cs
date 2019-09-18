@@ -15,7 +15,8 @@ namespace HDA.Core.Models.HDACore
         public int Month { get; set; }
         public int DrugClassID { get; set; }
         public int DrugId { get; set; }
-        public int Total { get; set; }
+        public int TotalPrescriptions { get; set; }
+        public int TotalQuantity { get; set; }
 
     }
 }
