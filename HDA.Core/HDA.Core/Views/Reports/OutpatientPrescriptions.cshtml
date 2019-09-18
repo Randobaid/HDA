@@ -8,10 +8,10 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card text-center border border-primary">
-                <div class="card-header bg-light text-dark">
+                <div class="card-header bg-light text-dark" data-toggle="collapse" data-target="#filtersBody">
                     <i class="fa fa-filter fa-lg" aria-hidden="true"></i><b> Filters</b>
                 </div>
-                <div class="card-body text-left">
+                <div class="card-body text-left" id="filtersBody">
                     <div class="row">
 
                         <div class="form-group col-md-12">
@@ -127,12 +127,12 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="pharmacymonitoring-tab" href="#PharmacyMonitoringTab" data-toggle="tab" role="tab">Pharmacy Monitoring</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#ProviderTrends">Change Rates</a>
+                </li>
                 @*<li class="nav-item">
-                        <a class="nav-link" href="#">Change Rates</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Prescription Trends</a>
-                    </li>*@
+            <a class="nav-link" href="#">Prescription Trends</a>
+        </li>*@
             </ul>
 
             <div class="tab-content border" id="pharmacymonitoring-tabcontent">
@@ -149,7 +149,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="col-md-12">
-                                            <div class="ct-chart ct-octave " id="prescriptionsPerInstitutionChart"></div>
+                                            <div id="prescriptionsPerInstitutionChart" style="max-height:50%;"></div>
                                         </div>
                                         <br />
                                     </div>
@@ -203,6 +203,19 @@
 
         var pChart;
         var presPerPharmacyChart;
+
+        $(function () {
+            Highcharts.setOptions({
+                chart: {
+                    backgroundColor: '#f8f9fa',
+                    plotBackgroundColor: '#ffffff',
+                    spacingBottom: 5,
+                    spacingTop: 5,
+                    spacingLeft: 5,
+                    spacingRight: 5,
+                }
+            });
+        });
 
         $(document).ready(function () {
             $('#hospital_types').multiselect({

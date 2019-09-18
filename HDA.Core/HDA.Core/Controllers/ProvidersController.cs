@@ -19,9 +19,10 @@ namespace HDA.Core.Controllers
             List<ProviderVM> providers = new List<ProviderVM>();
 
             var ps = core.OutPatientEncounterTotals.Where(p => p.HealthFacilityID == id).Select(o => o.ProviderID).Distinct();
-            foreach(int providerId in ps)
+            HDACoreContext providerDb = new HDACoreContext();
+            foreach (int providerId in ps)
             {
-                var provider = core.Providers.Where(p => p.ProviderID == providerId).First();
+                var provider = providerDb.Providers.Where(p => p.ProviderID == providerId).First();
                 ProviderVM pVM = new ProviderVM
                 {
                     ProviderID = provider.ProviderID,

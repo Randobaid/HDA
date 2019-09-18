@@ -49,9 +49,10 @@ namespace HDA.Core.Controllers
                             }
                         }
                         int totalPrevYear = 0;
+                        HDACoreContext newConnection = new HDACoreContext();
                         if (payload.PreviousYear == 1)
                         {
-                            var y = from t in db.OutPatientEncounterTotals.Where(h => 
+                            var y = from t in newConnection.OutPatientEncounterTotals.Where(h => 
                                              h.Month == total.MonthId
                                              && h.Year == fromDate.Year - 1
                                              )
@@ -115,7 +116,8 @@ namespace HDA.Core.Controllers
                         int totalPrevYear = 0;
                         if (payload.PreviousYear == 1)
                         {
-                            var y = from t in db.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
+                            HDACoreContext newConnection = new HDACoreContext();
+                            var y = from t in newConnection.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
                                              && h.ProviderID == payload.ProviderID
                                              && h.Month == total.MonthId
                                              && h.Year == fromDate.Year - 1
@@ -184,7 +186,8 @@ namespace HDA.Core.Controllers
                         int totalPrevYear = 0;
                         if (payload.PreviousYear == 1)
                         {
-                            var y = from t in db.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
+                            HDACoreContext newConnection = new HDACoreContext();
+                            var y = from t in newConnection.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
                                              && h.Month == total.MonthId
                                              && h.Year == fromDate.Year - 1
                                              )
