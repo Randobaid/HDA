@@ -46,21 +46,52 @@ namespace HDA.Core.Controllers
         [HttpGet]
         public IHttpActionResult Details(int id)
         {
-            List<TargetViewModel> targets = new List<TargetViewModel>();
-            foreach (var target in db.Targets.Where(i => i.TargetID == id))
+            Target target = db.Targets.Where(i => i.TargetID == id).FirstOrDefault();
+            TargetViewModel targetVM = new TargetViewModel {
+                TargetID = target.TargetID,
+                IndicatorID = target.IndicatorID,
+                HealthFacilityID = target.HealthFacilityID,
+                ProviderID = target.ProviderID,
+                DomainLookupID = target.DomainLookupID,
+                DirectorateLookupID = target.DirectorateLookupID,
+                EffectiveDate = target.EffectiveDate,
+                Value = target.Value,
+            };
+            return Ok(targetVM);
+        }
+
+        [Route("api/targets")]
+        [HttpPost]
+        public IHttpActionResult Create(Target target)
+        {
+            try
             {
-                targets.Add(new TargetViewModel {
-                    TargetID = target.TargetID,
-                    IndicatorID = target.IndicatorID,
-                    HealthFacilityID = target.HealthFacilityID,
-                    ProviderID = target.ProviderID,
-                    DomainLookupID = target.DomainLookupID,
-                    DirectorateLookupID = target.DirectorateLookupID,
-                    EffectiveDate = target.EffectiveDate,
-                    Value = target.Value,
-                });
+                if (ModelState.IsValid)
+                {
+                    db.Targets.Add(target);
+                    db.SaveChanges();
+                    return Ok(target);
+                }
+                return BadRequest("An error occured while saving your record");
             }
-            return Ok(targets);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Route("api/targets/{id}")]
+        [HttpPost]
+        public IHttpActionResult Edit(int id, Target target)
+        {
+            return Ok();
+        }
+
+        [Route("api/targets/{id}")]
+        [HttpPost]
+        public IHttpActionResult Delete(int id, Target target)
+        {
+            return Ok();
         }
     }
 }

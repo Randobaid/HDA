@@ -8,7 +8,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a href="#" class="dropdown-item">User Management</a>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">Data Management</a>
+            @Html.ActionLink("Data Management", "DataManagement", "Administration", null, new { @class = "dropdown-item" })
         </div>
     </li>
 }
