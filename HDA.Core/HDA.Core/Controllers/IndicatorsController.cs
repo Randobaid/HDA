@@ -25,10 +25,14 @@ namespace HDA.Core.Controllers
             {
                 IndicatorViewModel i = new IndicatorViewModel {
                     IndicatorID = indicator.IndicatorID,
-                    IndicatorName = indicator.IndicatorNameEn,
+                    IndicatorShortName = indicator.IndicatorShortName,
+                    IndicatorNameEn = indicator.IndicatorNameEn,
+                    IndicatorNameAr = indicator.IndicatorNameAr,
                 };
                 if (!(query is null) && query.IndicatorID > 0 && i.IndicatorID != query.IndicatorID) { continue; }
-                if (!(query is null) && !(query.IndicatorName is null) && i.IndicatorName != query.IndicatorName) { continue; }
+                if (!(query is null) && !(query.IndicatorShortName is null) && i.IndicatorShortName != query.IndicatorShortName) { continue; }
+                if (!(query is null) && !(query.IndicatorNameEn is null) && i.IndicatorNameEn != query.IndicatorNameEn) { continue; }
+                if (!(query is null) && !(query.IndicatorNameAr is null) && i.IndicatorNameAr != query.IndicatorNameAr) { continue; }
                 indicators.Add(i);
             }
             return Ok(indicators);
@@ -38,16 +42,48 @@ namespace HDA.Core.Controllers
         [HttpGet]
         public IHttpActionResult Details(int id)
         {
-            List<IndicatorViewModel> indicators = new List<IndicatorViewModel>();
-            DateTimeFormatInfo dateTimeFormatInfo = new DateTimeFormatInfo();
-            foreach (var indicator in db.Indicators.Where(i => i.IndicatorID == id))
+            Indicator indicator = db.Indicators.Where(i => i.IndicatorID == id).FirstOrDefault();
+            IndicatorViewModel indicatorVM = new IndicatorViewModel {
+                IndicatorID = indicator.IndicatorID,
+                IndicatorShortName = indicator.IndicatorShortName,
+                IndicatorNameEn = indicator.IndicatorNameEn,
+                IndicatorNameAr = indicator.IndicatorNameAr,
+            };
+            return Ok(indicatorVM);
+        }
+
+        [Route("api/indicators")]
+        [HttpPost]
+        public IHttpActionResult Create(Indicator indicator)
+        {
+            try
             {
-                indicators.Add(new IndicatorViewModel {
-                    IndicatorID = indicator.IndicatorID,
-                    IndicatorName = indicator.IndicatorNameEn,
-                });
+                if (ModelState.IsValid)
+                {
+                    db.Indicators.Add(indicator);
+                    db.SaveChanges();
+                    return Ok(indicator);
+                }
+                return BadRequest("An error occured while saving your record");
             }
-            return Ok(indicators);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Route("api/indicators/{id}")]
+        [HttpPost]
+        public IHttpActionResult Edit(int id, Indicator indicator)
+        {
+            return Ok();
+        }
+
+        [Route("api/indicators/{id}")]
+        [HttpPost]
+        public IHttpActionResult Delete(int id, Indicator indicator)
+        {
+            return Ok();
         }
     }
 }
