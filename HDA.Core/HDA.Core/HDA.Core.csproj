@@ -1594,8 +1594,10 @@
     <Compile Include="Controllers\OutPatientPrescriptionsController.cs" />
     <Compile Include="Controllers\ProvidersController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SurgeriesController.cs" />
     <Compile Include="Controllers\TargetsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1689,6 +1691,8 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Role.cs" />
+    <Compile Include="ViewModels\User.cs" />
     <Compile Include="ViewModels\OutpatientPrescriptions.cs" />
     <Compile Include="ViewModels\HealthFacility.cs" />
     <Compile Include="ViewModels\HealthFacilityInventory.cs" />

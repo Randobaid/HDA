@@ -10,6 +10,11 @@ namespace HDA.Core.Controllers
     public class AdministrationController : Controller
     {
         // GET: Administration
+        public ActionResult UserManagement()
+        {
+            return View();
+        }
+
         public ActionResult DataManagement()
         {
             return View();
