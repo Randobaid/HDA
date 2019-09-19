@@ -1,0 +1,274 @@
+@{
+    ViewBag.Title = "User Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>@ViewBag.Title</h5>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border border-primary " style="min-height:250px;">
+                <div class="card-header bg-primary text-white">
+                    Users
+                    <i class="fa fa-spinner fa-pulse fa-lg" id="userDataTableSpinner" hidden="hidden"></i>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addUserModal">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add User
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="userDataTable" class="display table table-sm table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>UserName</th>
+                                <th>FirstName</th>
+                                <th>LastName</th>
+                                <th>Email</th>
+                                <th>PhoneNumber</th>
+                                <th>Roles</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card border border-primary " style="min-height:250px;">
+                <div class="card-header bg-primary text-white">
+                    Roles
+                    <i class="fa fa-spinner fa-pulse fa-lg" id="roleDataTableSpinner" hidden="hidden"></i>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addRoleModal">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add Role
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="roleDataTable" class="display table table-sm table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<div>
+
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="FirstName" class="col-form-label">First Name:</label>
+                            <input class="form-control" name="FirstName" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="LastName" class="col-form-label">Last Name:</label>
+                            <input type="text" class="form-control" name="LastName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Email" class="col-form-label">Email:</label>
+                            <input type="email" class="form-control" name="Email" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                            <input type="text" class="form-control" name="PhoneNumber">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" name="Password" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="RoleIds">Roles:</label>
+                            <select multiple class="form-control" name="RoleIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <span class="p-2"></span>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRoleModalLabel">Add New Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" name="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" name="Description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <span class="p-2"></span>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var users = [];
+        var roles = [];
+        
+        $(document).ready(function () {
+            getAllUsers();
+            getAllRoles();
+            
+            $('#addUserModal form').submit(function() {
+                $('#addUserModal').modal('hide');
+                Swal.showLoading();
+                $.ajax({
+                    type: 'POST',
+                    url: '../api/users',
+                    data: $('#addUserModal form').serialize()
+                }).done(function (res) {
+                    $('#addUserModal form').trigger("reset");
+                    getAllUsers();
+                    Swal.fire('Success', 'User added successfully' , 'success');
+                }).fail( function(xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseText , 'error');
+                });
+                return false;
+            });
+
+            $('#addRoleModal form').submit(function() {
+                $('#addRoleModal').modal('hide');
+                Swal.showLoading();
+                $.ajax({
+                    type: 'POST',
+                    url: '../api/roles',
+                    data: $('#addRoleModal form').serialize()
+                }).done(function (res) {
+                    $('#addRoleModal form').trigger("reset");
+                    getAllRoles();
+                    Swal.fire('Success', 'Role added successfully' , 'success');
+                }).fail( function(xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseText , 'error');
+                });
+                return false;
+            });
+            
+            function getAllUsers() {
+                $('#userDataTableSpinner').removeAttr('hidden');
+                var url = '../api/users';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (res) {
+                    users = res;
+                    populateUserDataTables();
+                });
+            }
+
+            function getAllRoles() {
+                $('#roleDataTableSpinner').removeAttr('hidden');
+                var url = '../api/roles';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    contentType: "application/json; charset=utf-8"
+                }).done(function (res) {
+                    roles = res;
+                    populateRoleDataTables();
+                    populateRoleIdsSelects();
+                });
+            }
+
+            function populateUserDataTables() {
+                var dataTableUsers = users.map(user => {
+                    var roleNames = [];
+                    user.Roles.forEach(function (role) {
+                        roleNames.push(role.Name);
+                    });
+                    user.Roles = roleNames.join();
+                    return user;
+                });
+                $('#userDataTable').DataTable({
+                    destroy: true,
+                    data: dataTableUsers,
+                    columns: [
+                        { data: 'UserName' },
+                        { data: 'FirstName' },
+                        { data: 'LastName' },
+                        { data: 'Email' },
+                        { data: 'PhoneNumber' },
+                        { data: 'Roles' },
+                    ]
+                });
+                $('#userDataTableSpinner').attr('hidden', true);
+            }
+
+            function populateRoleDataTables() {
+                $('#roleDataTable').DataTable({
+                    destroy: true,
+                    data: roles,
+                    columns: [
+                        { data: 'Name' },
+                        { data: 'Description' }
+                    ]
+                });
+                $('#roleDataTableSpinner').attr('hidden', true);
+            }
+
+            function populateRoleIdsSelects() {
+                $('select[name="RoleIds"]').each(function(){
+                    var element = $(this);
+                    element.empty();
+                    roles.forEach(function (role) {
+                        element.append($("<option></option>")
+                            .attr("value", role.Id)
+                            .text(role.Name));
+                    });
+                });
+            }
+        });
+    </script>
+}

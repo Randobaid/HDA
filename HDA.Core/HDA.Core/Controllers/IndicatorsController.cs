@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -20,7 +19,6 @@ namespace HDA.Core.Controllers
         public IHttpActionResult Index([FromUri] IndicatorViewModel query)
         {
             List<IndicatorViewModel> indicators = new List<IndicatorViewModel>();
-            DateTimeFormatInfo dateTimeFormatInfo = new DateTimeFormatInfo();
             foreach (var indicator in db.Indicators)
             {
                 IndicatorViewModel i = new IndicatorViewModel {
