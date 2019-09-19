@@ -1634,6 +1634,7 @@
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisLookup.cs" />
     <Compile Include="Models\HDACore\Diagnosis\ProcedureLookup.cs" />
     <Compile Include="Models\HDACore\Diagnosis\SurgerySeverityLookup.cs" />
+    <Compile Include="Models\HDACore\Diagnosis\TestBranck.cs" />
     <Compile Include="Models\HDACore\Encounter\AppointmentStatusLookup.cs" />
     <Compile Include="Models\HDACore\Encounter\AppointmentTypeLookup.cs" />
     <Compile Include="Models\HDACore\Encounter\InPatientAdmission.cs" />
