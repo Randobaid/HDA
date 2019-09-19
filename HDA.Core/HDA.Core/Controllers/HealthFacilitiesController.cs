@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
 using HDA.Core.Models.HDACore;
+using LinqKit;
 
 namespace HDA.Core.Controllers
 {
@@ -32,6 +33,40 @@ namespace HDA.Core.Controllers
             List<HealthFacilityVM> healthFacilities = new List<HealthFacilityVM>();
             //var hfs = db.HealthFacilities.Where(i => i.HealthFacilityTypeID == id);
             var hfs = db.HealthFacilities;
+            foreach (var hf in hfs)
+            {
+                HealthFacilityVM h = new HealthFacilityVM();
+                h.ID = hf.HealthFacilityID;
+                h.HealthFacilityName = hf.HealthFacilityNameEn;
+                healthFacilities.Add(h);
+            }
+            return Ok(healthFacilities);
+        }
+       
+
+        
+        [HttpPost]
+        public IHttpActionResult PostHealthFacilitiesByType([FromBody] List<SelectedFacilityType> payload)
+        {
+            
+            List<HealthFacilityVM> healthFacilities = new List<HealthFacilityVM>();
+
+
+            var searchPredicate = PredicateBuilder.New<HealthFacility>();
+
+            foreach (SelectedFacilityType str in payload)
+            {
+                searchPredicate =
+                  searchPredicate.Or(a => a.HealthFacilityTypeID == str.HealthFacilityTypeId);
+            }
+
+           
+            var hfs = db.HealthFacilities.Where(searchPredicate);
+
+            /*foreach (SelectedFacilityType facilityType in payload)
+            {
+                hfs.Where(t => t.HealthFacilityTypeID == facilityType.HealthFacilityTypeId);
+            }*/
             foreach (var hf in hfs)
             {
                 HealthFacilityVM h = new HealthFacilityVM();

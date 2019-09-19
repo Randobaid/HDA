@@ -70,6 +70,9 @@
     <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="LinqKit, Version=1.1.16.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.1.1.16\lib\net45\LinqKit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -1626,6 +1629,10 @@
     <Compile Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.Designer.cs">
       <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDACore\201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.cs" />
+    <Compile Include="Migrations\HDACore\201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.Designer.cs">
+      <DependentUpon>201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
@@ -1760,6 +1767,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.resx">
       <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.resx">
+      <DependentUpon>201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>

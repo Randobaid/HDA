@@ -46,4 +46,19 @@ namespace HDA.Core.ViewModels
         public int TotalPrescriptions { get; set; }
         public int TotalQuantity { get; set; }
     }
+    public class PrescriptionsPerProvider
+    {
+        public string ProviderName { get; set; }
+        public int TotalPrescriptions { get; set; }
+        
+    }
+
+    public class SummaryCounts
+    {
+        public int TotalFacilities { get; set; }
+        public int TotalPharmacies { get; set; }
+        public int TotalProviders { get; set; }
+        public int TotalDrugClasses { get; set; }
+        public int TotalDrugs { get; set; }
+    }
 }
