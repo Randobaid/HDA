@@ -81,17 +81,58 @@ namespace HDA.Core.Controllers
         }
 
         [Route("api/roles/{id}")]
-        [HttpPost]
-        public IHttpActionResult Edit(string id, RoleViewModel role)
+        [HttpPut]
+        public IHttpActionResult Edit(string id, RoleViewModel roleViewModel)
         {
-            return Ok();
+            var roleManager = new ApplicationRoleManager(new ApplicationRoleStore(db));
+            var role = roleManager.FindById(id);
+            if(role == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    role.Name = roleViewModel.Name;
+                    role.Description = roleViewModel.Description;
+                    roleManager.Update(role);
+                    return this.Details(role.Id);
+                }
+                return BadRequest("An error occured while saving your record");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Route("api/roles/{id}")]
-        [HttpPost]
-        public IHttpActionResult Delete(string id, RoleViewModel role)
+        [HttpDelete]
+        public IHttpActionResult Delete(string id)
         {
-            return Ok();
+            var userManager = new ApplicationUserManager(new ApplicationUserStore(db));
+            var roleManager = new ApplicationRoleManager(new ApplicationRoleStore(db));
+            var role = roleManager.FindById(id);
+            if(role == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                foreach (var user in userManager.Users.ToList())
+                {
+                    if(userManager.IsInRole(user.Id, role.Name)) {
+                        userManager.RemoveFromRole(user.Id, role.Name);
+                    }
+                }
+                roleManager.Delete(role);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

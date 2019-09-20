@@ -57,6 +57,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                     </table>
@@ -194,81 +195,116 @@
                 });
                 return false;
             });
-            
-            function getAllUsers() {
-                $('#userDataTableSpinner').removeAttr('hidden');
-                var url = '../api/users';
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    contentType: "application/json; charset=utf-8"
-                }).done(function (res) {
-                    users = res;
-                    populateUserDataTables();
-                });
-            }
 
-            function getAllRoles() {
-                $('#roleDataTableSpinner').removeAttr('hidden');
-                var url = '../api/roles';
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    contentType: "application/json; charset=utf-8"
-                }).done(function (res) {
-                    roles = res;
-                    populateRoleDataTables();
-                    populateRoleIdsSelects();
-                });
-            }
+            $('#roleDataTable tbody').on('click', 'button', function () {
+                var data = table.row( $(this).parents('tr') ).data();
+                alert( data[0] +"'s salary is: "+ data[ 5 ] );
+            });
 
-            function populateUserDataTables() {
-                var dataTableUsers = users.map(user => {
-                    var roleNames = [];
-                    user.Roles.forEach(function (role) {
-                        roleNames.push(role.Name);
-                    });
-                    user.Roles = roleNames.join();
-                    return user;
-                });
-                $('#userDataTable').DataTable({
-                    destroy: true,
-                    data: dataTableUsers,
-                    columns: [
-                        { data: 'UserName' },
-                        { data: 'FirstName' },
-                        { data: 'LastName' },
-                        { data: 'Email' },
-                        { data: 'PhoneNumber' },
-                        { data: 'Roles' },
-                    ]
-                });
-                $('#userDataTableSpinner').attr('hidden', true);
-            }
-
-            function populateRoleDataTables() {
-                $('#roleDataTable').DataTable({
-                    destroy: true,
-                    data: roles,
-                    columns: [
-                        { data: 'Name' },
-                        { data: 'Description' }
-                    ]
-                });
-                $('#roleDataTableSpinner').attr('hidden', true);
-            }
-
-            function populateRoleIdsSelects() {
-                $('select[name="RoleIds"]').each(function(){
-                    var element = $(this);
-                    element.empty();
-                    roles.forEach(function (role) {
-                        element.append($("<option></option>")
-                            .attr("value", role.Id)
-                            .text(role.Name));
-                    });
-                });
-            }
+            $('.btn.btn-danger.roleDataTableDeleteButton').click(function() {
+                console.log("sdfsd");
+                console.log($(this).data('id'));
+            });    
         });
+
+        function getAllUsers() {
+            $('#userDataTableSpinner').removeAttr('hidden');
+            var url = '../api/users';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                users = res;
+                populateUserDataTables();
+            });
+        }
+
+        function getAllRoles() {
+            $('#roleDataTableSpinner').removeAttr('hidden');
+            var url = '../api/roles';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                roles = res;
+                populateRoleDataTables();
+                populateRoleIdsSelects();
+            });
+        }
+
+        function populateUserDataTables() {
+            var dataTableUsers = users.map(user => {
+                var roleNames = [];
+                user.Roles.forEach(function (role) {
+                    roleNames.push(role.Name);
+                });
+                user.Roles = roleNames.join();
+                return user;
+            });
+            $('#userDataTable').DataTable({
+                destroy: true,
+                data: dataTableUsers,
+                columns: [
+                    { data: 'UserName' },
+                    { data: 'FirstName' },
+                    { data: 'LastName' },
+                    { data: 'Email' },
+                    { data: 'PhoneNumber' },
+                    { data: 'Roles' },
+                ]
+            });
+            $('#userDataTableSpinner').attr('hidden', true);
+        }
+
+        function populateRoleDataTables() {
+            $('#roleDataTable').DataTable({
+                destroy: true,
+                data: roles,
+                columns: [
+                    { data: 'Name' },
+                    { data: 'Description' },
+                    {
+                        searchable: false,
+                        sortable: false,
+                        render: function (data, type, full, meta) {
+                            return '<button type="button" class="btn btn-warning roleDataTableEditButton">Edit</button>' +
+                                '&nbsp;&nbsp;' +
+                                '<button type="button" class="btn btn-danger" onclick="deleteRole(\''+ full.Id +'\')">Delete</button>';
+                        }
+                    }
+                ]
+            });
+            $('#roleDataTableSpinner').attr('hidden', true);
+        }
+
+        function populateRoleIdsSelects() {
+            $('select[name="RoleIds"]').each(function(){
+                var element = $(this);
+                element.empty();
+                roles.forEach(function (role) {
+                    element.append($("<option></option>")
+                        .attr("value", role.Id)
+                        .text(role.Name));
+                });
+            });
+        }
+
+        function deleteRole(id) {
+            Swal.showLoading();
+            var url = '../api/roles/'+ id;
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                getAllUsers();
+                getAllRoles();
+                Swal.fire('Success', 'Role deleted successfully' , 'success');
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseText , 'error');
+            });
+        }
     </script>
 }
