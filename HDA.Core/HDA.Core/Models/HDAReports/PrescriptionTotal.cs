@@ -20,6 +20,7 @@ namespace HDA.Core.Models.HDACore
         public int DrugId { get; set; }
         public int TotalPrescriptions { get; set; }
         public int TotalQuantity { get; set; }
+        public int TotalRefillQuantity { get; set; }
 
     }
 }

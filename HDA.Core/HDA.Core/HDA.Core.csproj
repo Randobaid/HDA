@@ -1633,6 +1633,10 @@
     <Compile Include="Migrations\HDACore\201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.Designer.cs">
       <DependentUpon>201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDACore\201909230712293_Refills.cs" />
+    <Compile Include="Migrations\HDACore\201909230712293_Refills.Designer.cs">
+      <DependentUpon>201909230712293_Refills.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
@@ -1679,6 +1683,7 @@
     <Compile Include="Models\HDACore\Prescriptions\Drug.cs" />
     <Compile Include="Models\HDACore\Prescriptions\DrugClass.cs" />
     <Compile Include="Models\HDACore\Prescriptions\Prescription.cs" />
+    <Compile Include="Models\HDACore\Prescriptions\PrescriptionRefill.cs" />
     <Compile Include="Models\HDACore\Provider\Provider.cs" />
     <Compile Include="Models\HDAIdentity\AccountViewModel.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationRole.cs" />
@@ -1770,6 +1775,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDACore\201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.resx">
       <DependentUpon>201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909230712293_Refills.resx">
+      <DependentUpon>201909230712293_Refills.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
