@@ -731,8 +731,8 @@
                     var averageQuantity = parseInt(json[0]['AverageQuantityPerPrescription']);
                     if (drugId > 0 && averageQuantity > 0) {
                         $('#numAverageQuantityPerDrugCard').text(averageQuantity);
-                        
-                        if (averageQuantity > 60) {
+                        var normalAmountToOrder = parseInt(json[0]['NormalAmountToOrder']);
+                        if (averageQuantity > normalAmountToOrder) {
                             $('#averageQuantityPerDrugCard').removeClass('bg-light text-dark bg-success text-white').addClass('bg-warning text-white');
                         }
                         else {

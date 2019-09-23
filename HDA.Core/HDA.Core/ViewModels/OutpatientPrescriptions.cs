@@ -62,5 +62,6 @@ namespace HDA.Core.ViewModels
         public int TotalDrugClasses { get; set; }
         public int TotalDrugs { get; set; }
         public int AverageQuantityPerPrescription { get; set; }
+        public int? NormalAmountToOrder { get; set; }
     }
 }
