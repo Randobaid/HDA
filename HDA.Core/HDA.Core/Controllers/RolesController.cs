@@ -90,6 +90,10 @@ namespace HDA.Core.Controllers
             {
                 return NotFound();
             }
+            if(role.Name == "Admin")
+            {
+                return BadRequest("You cannot edit the Admin role");
+            }
             try
             {
                 if (ModelState.IsValid)
@@ -117,6 +121,10 @@ namespace HDA.Core.Controllers
             if(role == null)
             {
                 return NotFound();
+            }
+            if(role.Name == "Admin")
+            {
+                return BadRequest("You cannot delete the Admin role");
             }
             try
             {

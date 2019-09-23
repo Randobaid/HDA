@@ -153,6 +153,37 @@
     </div>
 </div>
 
+<div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRoleModalLabel">Edit Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="Id">
+                    <div class="form-group">
+                        <label for="Name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" name="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" name="Description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <span class="p-2"></span>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script type="text/javascript">
         var users = [];
@@ -174,7 +205,7 @@
                     getAllUsers();
                     Swal.fire('Success', 'User added successfully' , 'success');
                 }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseText , 'error');
+                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
                 });
                 return false;
             });
@@ -191,20 +222,35 @@
                     getAllRoles();
                     Swal.fire('Success', 'Role added successfully' , 'success');
                 }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseText , 'error');
+                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
                 });
                 return false;
             });
 
-            $('#roleDataTable tbody').on('click', 'button', function () {
-                var data = table.row( $(this).parents('tr') ).data();
-                alert( data[0] +"'s salary is: "+ data[ 5 ] );
+            $('#editRoleModal form').submit(function() {
+                $('#editRoleModal').modal('hide');
+                var id = $('#editRoleModal form').find('input[name="Id"]').val();
+                Swal.showLoading();
+                $.ajax({
+                    type: 'PUT',
+                    url: '../api/roles/' + id,
+                    data: $('#editRoleModal form').serialize()
+                }).done(function (res) {
+                    $('#editRoleModal form').trigger("reset");
+                    getAllRoles();
+                    getAllUsers();
+                    Swal.fire('Success', 'Role updated successfully' , 'success');
+                }).fail( function(xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                });
+                return false;
             });
 
-            $('.btn.btn-danger.roleDataTableDeleteButton').click(function() {
-                console.log("sdfsd");
-                console.log($(this).data('id'));
-            });    
+            $('#editRoleModal').on('show.bs.modal', function(e) {
+                $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
+                $(e.currentTarget).find('input[name="Name"]').val($(e.relatedTarget).data('name'));
+                $(e.currentTarget).find('textarea[name="Description"]').val($(e.relatedTarget).data('description'));
+            });
         });
 
         function getAllUsers() {
@@ -269,9 +315,11 @@
                         searchable: false,
                         sortable: false,
                         render: function (data, type, full, meta) {
-                            return '<button type="button" class="btn btn-warning roleDataTableEditButton">Edit</button>' +
-                                '&nbsp;&nbsp;' +
-                                '<button type="button" class="btn btn-danger" onclick="deleteRole(\''+ full.Id +'\')">Delete</button>';
+                            return '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editRoleModal"' + 
+                                ' data-Id="' + full.Id + '" data-Name="' + full.Name + '" data-Description="' + full.Description + '">' +
+                                '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
+                                '<button type="button" class="btn btn-danger btn-sm" onclick="deleteRole(\''+ full.Id +'\')">' +
+                                '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
                         }
                     }
                 ]
@@ -292,18 +340,29 @@
         }
 
         function deleteRole(id) {
-            Swal.showLoading();
-            var url = '../api/roles/'+ id;
-            $.ajax({
-                type: 'DELETE',
-                url: url,
-                contentType: "application/json; charset=utf-8"
-            }).done(function (res) {
-                getAllUsers();
-                getAllRoles();
-                Swal.fire('Success', 'Role deleted successfully' , 'success');
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseText , 'error');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.showLoading();
+                    var url = '../api/roles/'+ id;
+                    $.ajax({
+                        type: 'DELETE',
+                        url: url,
+                        contentType: "application/json; charset=utf-8"
+                    }).done(function (res) {
+                        getAllUsers();
+                        getAllRoles();
+                        Swal.fire('Success', 'Role deleted successfully' , 'success');
+                    }).fail( function(xhr, textStatus, errorThrown) {
+                        Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                    });
+                }
             });
         }
     </script>
