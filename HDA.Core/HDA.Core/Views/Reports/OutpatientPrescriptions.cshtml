@@ -201,45 +201,56 @@
             </div>
             
             <div class="row">
-                <div class="col-md-2">
+                <div class="card-deck col-md-12">
+                @*<div class="col-md-2">*@
                     <div class="card bg-purple text-white text-center">
-                        <h5 class="card-header">Hospitals</h5>
+
                         <div class="card-body">
                             <h1 id="numHospitalsCard">0</h1>
                         </div>
+                        <div class="card-footer">Hospitals</div>
                     </div>
+                @*</div>
+                <div class="col-md-2">*@
+                <div class="card bg-purple text-white text-center">
+
+                    <div class="card-body">
+                        <h1 id="numPharmaciesCard">0</h1>
+                    </div>
+                    <div class="card-footer">Pharmacies</div>
                 </div>
-                <div class="col-md-2">
-                    <div class="card bg-purple text-white text-center">
-                        <h5 class="card-header">Pharmacies</h5>
-                        <div class="card-body">
-                            <h1 id="numPharmaciesCard">0</h1>
-                        </div>
+                @*</div>
+                <div class="col-md-2">*@
+                <div class="card bg-purple text-white text-center">
+                    <div class="card-body">
+                        <h1 id="numDrugClassesCard">0</h1>
                     </div>
+                    <div class="card-footer">Drug Classes</div>
                 </div>
-                <div class="col-md-2">
-                    <div class="card bg-purple text-white text-center">
-                        <h5 class="card-header text-white text-center">Drug Classes</h5>
-                        <div class="card-body">
-                            <h1 id="numDrugClassesCard">0</h1>
-                        </div>
+                @*</div>
+                <div class="col-md-2">*@
+                <div class="card bg-purple text-white text-center">
+                    <div class="card-body">
+                        <h1 id="numDrugsCard">0</h1>
                     </div>
+                    <div class="card-footer">Drugs</div>
                 </div>
-                <div class="col-md-2">
-                    <div class="card bg-purple text-white text-center">
-                        <h5 class="card-header text-white text-center">Drugs</h5>
-                        <div class="card-body">
-                            <h1 id="numDrugsCard">0</h1>
-                        </div>
+                @*</div>
+                <div class="col-md-2">*@
+                <div class="card bg-purple text-white text-center">
+                    <div class="card-body">
+                        <h1 id="numProvidersCard">0</h1>
                     </div>
+                    <div class="card-footer">Providers</div>
                 </div>
-                <div class="col-md-2">
-                    <div class="card bg-purple text-white text-center">
-                        <h5 class="card-header">Providers</h5>
-                        <div class="card-body">
-                            <h1 id="numProvidersCard">0</h1>
-                        </div>
+                @*</div>
+                <div class="col-md-2">*@
+                <div class="card bg-light text-dark text-sm-center" id="averageQuantityPerDrugCard">
+                    <div class="card-body">
+                        <h1 id="numAverageQuantityPerDrugCard">N/A</h1>
                     </div>
+                    <div class="card-footer">Average Quantity per Prescription</div>
+                </div>
                 </div>
             </div>
         
@@ -375,8 +386,14 @@
                 $('#TextDrugClass').attr('disabled', true);
                 $('#TextDrugClass').val('');
                 drugClassId = 0;
-                refreshCharts();
+                drugId = 0;
+                $('#TextDrug').val('');
+                $('#TextDrug').attr('disabled', true);
+                $('#allDrugs').prop('checked', true);
                 $('#allDrugs').attr('disabled', true);
+
+                refreshCharts();
+                
             }
             else {
                 $('#TextDrugClass').removeAttr('disabled');
@@ -610,10 +627,12 @@
                 }).done(function (json) {
                     var pharmacyPrescriptions = [];
                     var pharmacyQuantities = [];
+                    var pharmacyRefills = [];
                     for (var i = 0; i < json.length; i++) {
                         pharmacyNames.push(json[i]['PharmacyName']);
                         pharmacyPrescriptions.push(json[i]['TotalPrescriptions']);
                         pharmacyQuantities.push(json[i]['TotalQuantity']);
+                        pharmacyRefills.push(json[i]['TotalRefillQuantity']);
                     }
                     var xAxisMax = pharmacyNames.length - 1;
                     if (pharmacyNames.length > 10) {
@@ -661,21 +680,36 @@
                             data: pharmacyPrescriptions,
                             yAxis: 0,
                             type: 'column',
-                        },
-                        {
-                            name: 'Quantities per Pharmacy',
-                            data: pharmacyQuantities,
-                            yAxis: 1,
-                            type: 'line',
                         }],
                         credits: false
                     });
+                    if (drugId > 0) {
+                        presPerPharmacyChart.addSeries(
+                            {
+                            name: 'Prescription Quantities per Pharmacy',
+                            data: pharmacyQuantities,
+                            yAxis: 1,
+                            type: 'line',
+                            }
+                        );
+                        presPerPharmacyChart.addSeries(
+                            {
+                            name: 'Refill Quantities per Pharmacy',
+                            data: pharmacyRefills,
+                            yAxis: 1,
+                            type: 'line',
+                            }
+                        );
+                        
+                    }
                 });
 
            
         }
 
         function GetSummaryCounts() {
+            $('#numAverageQuantityPerDrugCard').text('N/A');
+            $('#averageQuantityPerDrugCard').removeClass('bg-purple text-white').addClass('bg-light text-dark');
                 $.ajax({
                     type:'POST',
                     data:selectedHospitalTypesJson,
@@ -694,6 +728,18 @@
                     $('#numProvidersCard').text(json[0]['TotalProviders']);
                     $('#numDrugClassesCard').text(json[0]['TotalDrugClasses']);
                     $('#numDrugsCard').text(json[0]['TotalDrugs']);
+                    var averageQuantity = parseInt(json[0]['AverageQuantityPerPrescription']);
+                    if (drugId > 0 && averageQuantity > 0) {
+                        $('#numAverageQuantityPerDrugCard').text(averageQuantity);
+                        
+                        if (averageQuantity > 60) {
+                            $('#averageQuantityPerDrugCard').removeClass('bg-light text-dark bg-success text-white').addClass('bg-warning text-white');
+                        }
+                        else {
+                            $('#averageQuantityPerDrugCard').removeClass('bg-light text-dark bg-warning text-white').addClass('bg-success text-white');
+                        }
+                        
+                    }
                 });
         }
 

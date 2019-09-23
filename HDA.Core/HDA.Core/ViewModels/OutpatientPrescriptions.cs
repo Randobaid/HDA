@@ -45,6 +45,7 @@ namespace HDA.Core.ViewModels
         public string PharmacyName { get; set; }
         public int TotalPrescriptions { get; set; }
         public int TotalQuantity { get; set; }
+        public int TotalRefillQuantity { get; set; }
     }
     public class PrescriptionsPerProvider
     {
@@ -60,5 +61,6 @@ namespace HDA.Core.ViewModels
         public int TotalProviders { get; set; }
         public int TotalDrugClasses { get; set; }
         public int TotalDrugs { get; set; }
+        public int AverageQuantityPerPrescription { get; set; }
     }
 }

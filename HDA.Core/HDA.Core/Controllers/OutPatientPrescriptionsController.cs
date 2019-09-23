@@ -104,7 +104,8 @@ namespace HDA.Core.Controllers
                         {
                             x.Key.PharmacyID,
                             TotalPrescriptions = x.Sum(t => t.TotalPrescriptions),
-                            TotalQuantity = x.Sum(t=>t.TotalQuantity)
+                            TotalQuantity = x.Sum(t=>t.TotalQuantity),
+                            TotalRefills = x.Sum(t=>t.TotalRefillQuantity),
                         };
                 foreach (var total in g.OrderByDescending(d => new { d.TotalPrescriptions }))
                 {
@@ -113,7 +114,8 @@ namespace HDA.Core.Controllers
                     {
                         PharmacyName = pharmDb.Pharmacies.Where(d => d.PharmacyID == total.PharmacyID).First().PharmacyName,
                         TotalPrescriptions = total.TotalPrescriptions,
-                        TotalQuantity = total.TotalQuantity
+                        TotalQuantity = total.TotalQuantity,
+                        TotalRefillQuantity = total.TotalRefills,
                     };
                     monthlyTotals.Add(p);
                 }
@@ -263,6 +265,32 @@ namespace HDA.Core.Controllers
                 && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)).
                 Select(v => v.DrugId).Distinct().Count();
 
+                double AverageQuantityPerPrescription = 0;
+                //try
+                //{
+                var quantitiesPerPrescription = db.PrescriptionTotals.
+                    Where(searchPredicate)
+                    .Where(h =>
+                h.Month >= fromDate.Month
+                && h.Month <= toDate.Month
+                && h.Year >= fromDate.Year
+                && h.Year <= toDate.Year
+                && h.TotalQuantity > 0
+                && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
+                && ((payload.PharmacyID > 0) ? h.PharmacyID == payload.PharmacyID : true)
+                && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
+                && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)).
+                Select(v => (v.TotalQuantity + v.TotalRefillQuantity) / v.TotalPrescriptions);
+                if(quantitiesPerPrescription.Count() > 0)
+                {
+                    AverageQuantityPerPrescription = quantitiesPerPrescription.Average();
+                }
+                //}
+                //catch(Exception ex)
+                //{
+                    //TODO If Average evaluates to null
+                //}
+
 
                 SummaryCounts p = new SummaryCounts
                {
@@ -271,8 +299,9 @@ namespace HDA.Core.Controllers
                         TotalProviders = NumberOfProviders,
                         TotalDrugClasses = NumberOfDrugClasses,
                         TotalDrugs = NumberOfDrugs,
+                        AverageQuantityPerPrescription = (int)Math.Ceiling(AverageQuantityPerPrescription)
                 };
-                    summary.Add(p);
+                summary.Add(p);
                 
 
                 return Ok(summary);
