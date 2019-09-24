@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UsersController : ApiController
     {
         private HDAIdentityContext db = new HDAIdentityContext();

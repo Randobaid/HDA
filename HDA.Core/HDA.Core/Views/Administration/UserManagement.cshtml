@@ -348,6 +348,8 @@
             }).done(function (res) {
                 users = res;
                 populateUserDataTables();
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message , 'error');
             });
         }
 
@@ -362,6 +364,8 @@
                 roles = res;
                 populateRoleDataTables();
                 populateRoleIdsSelects();
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message , 'error');
             });
         }
 
