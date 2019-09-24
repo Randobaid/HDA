@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UsersController : ApiController
     {
         private HDAIdentityContext db = new HDAIdentityContext();
@@ -31,7 +31,8 @@ namespace HDA.Core.Controllers
                     LastName = user.LastName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
-                    Roles = new List<RoleViewModel>()
+                    Roles = new List<RoleViewModel>(),
+                    RoleIds = new List<string>()
                 };
                 foreach(var roleName in userManager.GetRoles(user.Id))
                 {
@@ -42,6 +43,7 @@ namespace HDA.Core.Controllers
                             Name = role.Name,
                             Description = role.Description
                         });
+                        userViewModel.RoleIds.Add(role.Id);
                     }
                 }
                 userViewModels.Add(userViewModel);
@@ -136,17 +138,80 @@ namespace HDA.Core.Controllers
         }
 
         [Route("api/users/{id}")]
-        [HttpPost]
-        public IHttpActionResult Edit(int id, UserViewModel user)
+        [HttpPut]
+        public IHttpActionResult Edit(string id, UserViewModel userViewModel)
         {
-            return Ok();
+            var userManager = new ApplicationUserManager(new ApplicationUserStore(db));
+            var roleManager = new ApplicationRoleManager(new ApplicationRoleStore(db));
+            var user = userManager.FindById(id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            if(user.Email == "admin@hda.core")
+            {
+                return BadRequest("You cannot edit the admin user");
+            }
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    user.FirstName = userViewModel.FirstName;
+                    user.LastName = userViewModel.LastName;
+                    user.Email = userViewModel.Email;
+                    user.PhoneNumber = userViewModel.PhoneNumber;
+                    userManager.Update(user);
+                    if (userViewModel.Password != null && userViewModel.Password != "") {
+                        userManager.RemovePassword(user.Id);
+                        userManager.AddPassword(user.Id, userViewModel.Password);
+                        userManager.SetLockoutEnabled(user.Id, false);
+                    }
+                    foreach (var role in roleManager.Roles.ToList())
+                    {
+                        if (userManager.IsInRole(user.Id, role.Name)) {
+                            userManager.RemoveFromRole(user.Id, role.Name);
+                        }
+                    }
+                    foreach (var roleId in userViewModel.RoleIds)
+                    {
+                        ApplicationRole role = roleManager.FindById(roleId);
+                        if(role != null) {
+                            userManager.AddToRole(user.Id, role.Name);
+                        }
+                    }
+                    return this.Details(user.Id);
+                }
+                return BadRequest("An error occured while saving your record");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Route("api/users/{id}")]
-        [HttpPost]
-        public IHttpActionResult Delete(int id, UserViewModel user)
+        [HttpDelete]
+        public IHttpActionResult Delete(string id)
         {
-            return Ok();
+            var userManager = new ApplicationUserManager(new ApplicationUserStore(db));
+            var user = userManager.FindById(id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            if(user.Email == "admin@hda.core")
+            {
+                return BadRequest("An error occured while deleting the user");
+            }
+            try
+            {
+                userManager.Delete(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
