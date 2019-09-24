@@ -32,6 +32,7 @@
                                 <th>Email</th>
                                 <th>PhoneNumber</th>
                                 <th>Roles</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                     </table>
@@ -101,7 +102,64 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="Password" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" name="Password" required>
+                            <input type="password" class="form-control" name="Password">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="RoleIds">Roles:</label>
+                            <select multiple class="form-control" name="RoleIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <span class="p-2"></span>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                <input type="hidden" name="Id">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="FirstName" class="col-form-label">First Name:</label>
+                            <input class="form-control" name="FirstName" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="LastName" class="col-form-label">Last Name:</label>
+                            <input type="text" class="form-control" name="LastName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Email" class="col-form-label">Email:</label>
+                            <input type="email" class="form-control" name="Email" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                            <input type="text" class="form-control" name="PhoneNumber">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" name="Password">
                         </div>
                     </div>
                     <div class="form-row">
@@ -210,6 +268,33 @@
                 return false;
             });
 
+            $('#editUserModal').on('show.bs.modal', function(e) {
+                $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
+                $(e.currentTarget).find('input[name="FirstName"]').val($(e.relatedTarget).data('firstname'));
+                $(e.currentTarget).find('input[name="LastName"]').val($(e.relatedTarget).data('lastname'));
+                $(e.currentTarget).find('input[name="Email"]').val($(e.relatedTarget).data('email'));
+                $(e.currentTarget).find('input[name="PhoneNumber"]').val($(e.relatedTarget).data('phonenumber'));
+                $(e.currentTarget).find('select[name="RoleIds"]').val($(e.relatedTarget).data('roleids').split(","));
+            });
+
+            $('#editUserModal form').submit(function() {
+                $('#editUserModal').modal('hide');
+                var id = $('#editUserModal form').find('input[name="Id"]').val();
+                Swal.showLoading();
+                $.ajax({
+                    type: 'PUT',
+                    url: '../api/users/' + id,
+                    data: $('#editUserModal form').serialize()
+                }).done(function (res) {
+                    $('#editUserModal form').trigger("reset");
+                    getAllUsers();
+                    Swal.fire('Success', 'User updated successfully' , 'success');
+                }).fail( function(xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                });
+                return false;
+            });
+
             $('#addRoleModal form').submit(function() {
                 $('#addRoleModal').modal('hide');
                 Swal.showLoading();
@@ -225,6 +310,12 @@
                     Swal.fire('Error', xhr.responseJSON.Message , 'error');
                 });
                 return false;
+            });
+
+            $('#editRoleModal').on('show.bs.modal', function(e) {
+                $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
+                $(e.currentTarget).find('input[name="Name"]').val($(e.relatedTarget).data('name'));
+                $(e.currentTarget).find('textarea[name="Description"]').val($(e.relatedTarget).data('description'));
             });
 
             $('#editRoleModal form').submit(function() {
@@ -244,12 +335,6 @@
                     Swal.fire('Error', xhr.responseJSON.Message , 'error');
                 });
                 return false;
-            });
-
-            $('#editRoleModal').on('show.bs.modal', function(e) {
-                $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
-                $(e.currentTarget).find('input[name="Name"]').val($(e.relatedTarget).data('name'));
-                $(e.currentTarget).find('textarea[name="Description"]').val($(e.relatedTarget).data('description'));
             });
         });
 
@@ -299,6 +384,18 @@
                     { data: 'Email' },
                     { data: 'PhoneNumber' },
                     { data: 'Roles' },
+                    {
+                        searchable: false,
+                        sortable: false,
+                        render: function (data, type, full, meta) {
+                            return '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editUserModal"' + 
+                                ' data-id="' + full.Id + '" data-firstname="' + full.FirstName  + '" data-lastname="' + full.LastName  +
+                                '" data-email="' + full.Email  + '" data-phonenumber="' + full.PhoneNumber + '" data-roleids="' + full.RoleIds + '">' +
+                                '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
+                                '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\''+ full.Id +'\')">' +
+                                '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
+                        }
+                    }
                 ]
             });
             $('#userDataTableSpinner').attr('hidden', true);
@@ -316,7 +413,7 @@
                         sortable: false,
                         render: function (data, type, full, meta) {
                             return '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editRoleModal"' + 
-                                ' data-Id="' + full.Id + '" data-Name="' + full.Name + '" data-Description="' + full.Description + '">' +
+                                ' data-id="' + full.Id + '" data-name="' + full.Name + '" data-description="' + full.Description + '">' +
                                 '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
                                 '<button type="button" class="btn btn-danger btn-sm" onclick="deleteRole(\''+ full.Id +'\')">' +
                                 '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
@@ -336,6 +433,32 @@
                         .attr("value", role.Id)
                         .text(role.Name));
                 });
+            });
+        }
+
+        function deleteUser(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.showLoading();
+                    var url = '../api/users/'+ id;
+                    $.ajax({
+                        type: 'DELETE',
+                        url: url,
+                        contentType: "application/json; charset=utf-8"
+                    }).done(function (res) {
+                        getAllUsers();
+                        Swal.fire('Success', 'User deleted successfully' , 'success');
+                    }).fail( function(xhr, textStatus, errorThrown) {
+                        Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                    });
+                }
             });
         }
 
