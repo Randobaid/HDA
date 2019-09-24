@@ -209,6 +209,8 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\pivot.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="DatabaseScripts\hdastaging_hdacore\000 healthfacilities.sql" />
+    <Content Include="DatabaseScripts\ReadMe.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -1589,6 +1591,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\DiseaseManagementController.cs" />
     <Compile Include="Controllers\HealthFacilitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndicatorsController.cs" />
@@ -1637,12 +1640,35 @@
     <Compile Include="Migrations\HDACore\201909230712293_Refills.Designer.cs">
       <DependentUpon>201909230712293_Refills.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDACore\201909240651338_AddDiagnosisCodingSystems.cs" />
+    <Compile Include="Migrations\HDACore\201909240651338_AddDiagnosisCodingSystems.Designer.cs">
+      <DependentUpon>201909240651338_AddDiagnosisCodingSystems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201909240704376_AddDiagnosisCodes.cs" />
+    <Compile Include="Migrations\HDACore\201909240704376_AddDiagnosisCodes.Designer.cs">
+      <DependentUpon>201909240704376_AddDiagnosisCodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201909240738084_PatientDiagnoses.cs" />
+    <Compile Include="Migrations\HDACore\201909240738084_PatientDiagnoses.Designer.cs">
+      <DependentUpon>201909240738084_PatientDiagnoses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201909240831256_DiagnosisTotals.cs" />
+    <Compile Include="Migrations\HDACore\201909240831256_DiagnosisTotals.Designer.cs">
+      <DependentUpon>201909240831256_DiagnosisTotals.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201909241123222_DiagnosisTotals_AddHealthFacilityType.cs" />
+    <Compile Include="Migrations\HDACore\201909241123222_DiagnosisTotals_AddHealthFacilityType.Designer.cs">
+      <DependentUpon>201909241123222_DiagnosisTotals_AddHealthFacilityType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\HDACore\Diagnosis\DiagnosisCode.cs" />
+    <Compile Include="Models\HDACore\Diagnosis\DiagnosisCodingSystem.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisLookup.cs" />
+    <Compile Include="Models\HDACore\Diagnosis\PatientDiagnosis.cs" />
     <Compile Include="Models\HDACore\Diagnosis\ProcedureLookup.cs" />
     <Compile Include="Models\HDACore\Diagnosis\SurgerySeverityLookup.cs" />
     <Compile Include="Models\HDACore\Encounter\AppointmentStatusLookup.cs" />
@@ -1694,6 +1720,7 @@
     <Compile Include="Models\HDAIdentity\ApplicationUserManager.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationUserStore.cs" />
     <Compile Include="Models\HDAIdentity\HDAIdentityContext.cs" />
+    <Compile Include="Models\HDAReports\DiagnosisTotal.cs" />
     <Compile Include="Models\HDAReports\HDAReportsContext.cs" />
     <Compile Include="Models\HDAReports\InPatientEncounterTotal.cs" />
     <Compile Include="Models\HDAReports\OutPatientEncounterTotal.cs" />
@@ -1703,6 +1730,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Diagnosis.cs" />
     <Compile Include="ViewModels\Role.cs" />
     <Compile Include="ViewModels\User.cs" />
     <Compile Include="ViewModels\OutpatientPrescriptions.cs" />
@@ -1736,6 +1764,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Reports\OutpatientPrescriptions.cshtml" />
     <Content Include="Views\Administration\DataManagement.cshtml" />
+    <Content Include="Views\Reports\DiseaseManagement.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1745,6 +1774,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="DatabaseScripts\hdacore_totals\" />
     <Folder Include="Views\Indicators\" />
     <Folder Include="Views\Targets\" />
   </ItemGroup>
@@ -1778,6 +1808,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDACore\201909230712293_Refills.resx">
       <DependentUpon>201909230712293_Refills.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909240651338_AddDiagnosisCodingSystems.resx">
+      <DependentUpon>201909240651338_AddDiagnosisCodingSystems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909240704376_AddDiagnosisCodes.resx">
+      <DependentUpon>201909240704376_AddDiagnosisCodes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909240738084_PatientDiagnoses.resx">
+      <DependentUpon>201909240738084_PatientDiagnoses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909240831256_DiagnosisTotals.resx">
+      <DependentUpon>201909240831256_DiagnosisTotals.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909241123222_DiagnosisTotals_AddHealthFacilityType.resx">
+      <DependentUpon>201909241123222_DiagnosisTotals_AddHealthFacilityType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>

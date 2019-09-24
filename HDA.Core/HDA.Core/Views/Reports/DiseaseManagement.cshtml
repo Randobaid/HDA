@@ -1,0 +1,399 @@
+﻿@{
+    ViewBag.Title = "Disease Management";
+}
+
+<div class="col-md-12">
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark" data-toggle="collapse" data-target="#filtersBody">
+                    <i class="fa fa-filter fa-lg" aria-hidden="true"></i><b> Filters</b>
+                </div>
+                <div class="card-body text-left" id="filtersBody">
+                    <div class="row">
+
+                        <div class="form-group col-md-12">
+                            <div class="dropdown">
+                                <select id="hospital_types" multiple="multiple">
+                                    <option value="1">Hospitals</option>
+                                    <option value="2">Comprehensive Centers</option>
+                                    <option value="3">Specialized Medical Centers</option>
+                                    <option value="4">Peripheral Centers</option>
+                                    <option value="5">Primary Centers</option>
+                                    <option value="6">Educational Hospitals</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="col-md-10 col-sm-12">
+                                    <input type="text" class="form-control" id="TextHospital" placeholder="Select Hospital.." disabled="disabled" />
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allHospitals">
+                                        <label class="form-check-label" for="allHospitals">
+                                            All
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="diagnosis" class="col-form-label">Diagnosis</label>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="diagnosisStartCode" placeholder="Start Code.." />
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="diagnosisEndCode" placeholder="End Code.." disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="reportrange" class="col-form-label">Reporting Period</label>
+                            <div id="reportrange" class="rounded" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <span></span> <i class="fa fa-caret-down"></i>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button class="btn btn-primary btn-block" onclick="refreshCharts();"><i class="fa fa-refresh"></i>&nbsp;Load Charts</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark">
+                    <i class="fa fa-bullseye fa-lg" aria-hidden="true"></i><b> Targets</b>
+                </div>
+
+            </div>
+
+            <br />
+            <div class="card text-center border border-primary">
+                <div class="card-header bg-light text-dark">
+                    <i class="fa fa-info-circle fa-lg" aria-hidden="true"></i><b> Additional Information</b>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card border border-primary bg-light" id="newCasesByAgeGroupDiv">
+                        <div class="card-header bg-primary text-white">
+                            New Cases by Age Group <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="newCasesByAgeGroupProgress"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <div id="newCasesByAgeGroupChart"></div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border border-primary bg-light" id="newCasesByGenderDiv">
+                        <div class="card-header bg-primary text-white">
+                            New Cases by Gender <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="newCasesByGenderProgress"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <div id="newCasesByGenderChart"></div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var fInput;
+        var facilityAws;
+        var facilityId = 0;
+
+        var selectedHospitalTypes = [];
+        var selectedHospitalTypesJson;
+
+        var diagnosisStartCodeId = 0;
+    var diagnosisStartAws;
+    var diagnosisStartCode;
+
+
+        var diagnosisEndCodeId = 0;
+    var diagnosisEndCodeAws;
+    var diagnosisEndCode;
+
+        $(function () {
+            Highcharts.setOptions({
+                chart: {
+                    backgroundColor: '#f8f9fa',
+                    plotBackgroundColor: '#ffffff',
+                    spacingBottom: 5,
+                    spacingTop: 5,
+                    spacingLeft: 5,
+                    spacingRight: 5,
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#hospital_types').multiselect({
+                enableHTML: true,
+                buttonWidth: '100%',
+                includeSelectAllOption: true,
+                allSelectedText: 'All Selected',
+                buttonClass: 'btn btn-primary btn-block',
+                buttonText: function (options, select) {
+                    if (options.length === 0) {
+                        return '<i class="fa fa-hospital-o fa-lg" aria-hidden="true"></i> Select Hospital Type';
+                    }
+                    else if (options.length > 3) {
+                        return options.length + ' selected';
+                    }
+                    else {
+                        var labels = [];
+                        options.each(function () {
+                            if ($(this).attr('label') !== undefined) {
+                                labels.push($(this).attr('label'));
+                            }
+                            else {
+                                labels.push($(this).html());
+                            }
+                        });
+                        return labels.join(', ') + '';
+                    }
+                },
+                onDropdownHidden: function (event) {
+                    selectedHospitalTypes = [];
+                    $.each($('#hospital_types option:selected'), function () {
+                        var a = new Object();
+                        a.HealthFacilityTypeId = $(this).val();
+                        selectedHospitalTypes.push(a);
+                    });
+
+                    selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
+                    GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
+                }
+            });
+
+            fInput = document.getElementById("TextHospital");
+            facilityAws = new Awesomplete(fInput, { minChars: 2 });
+            GetStartCodes();
+        });
+
+        $("#allHospitals").change(function () {
+            if (this.checked) {
+                $('#TextHospital').attr('disabled', true);
+                $('#TextHospital').val('');
+                facilityId = 0;
+            }
+            else {
+                $('#TextHospital').removeAttr('disabled');
+            }
+        });
+
+        function GetFacilityList(fInput, aws1, selectedFacilityTypes) {
+            fInput.addEventListener('awesomplete-selectcomplete', SelectFacility);
+            $.ajax({
+                url: '../api/HealthFacilities/PostHealthFacilitiesByType',
+                type: 'POST',
+                data: selectedFacilityTypes,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var serverData = data;
+                    var hfList = [];
+                    for (var i = 0; i < serverData.length; i++) {
+                        hfList.push({ label: serverData[i]['HealthFacilityName'], value: serverData[i]['ID'] + '~' + serverData[i]['HealthFacilityName'] });
+                    }
+                    aws1.list = hfList;
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function GetStartCodes() {
+            var diagnosisStartCodeTextBox = document.getElementById("diagnosisStartCode");
+            diagnosisStartAws = new Awesomplete(diagnosisStartCodeTextBox, { minChars: 2 });
+            diagnosisStartCodeTextBox.addEventListener('awesomplete-selectcomplete', SelectStartCode);
+
+            $.ajax({
+                url: '../api/DiseaseManagement/GetDiagnosisCodes',
+                type: 'POST',
+                data: '{"DiagnosisCodeID":"0","DiagnosisCode":""}',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var serverData = data;
+                    var codeList = [];
+                    for (var i = 0; i < serverData.length; i++) {
+                        codeList.push({ label: serverData[i]['Code'] + '-' + serverData[i]['CodeName'], value: serverData[i]['DiagnosisCodeID'] + '~' + serverData[i]['Code'] + '~' + serverData[i]['CodeName'] });
+                    }
+                    diagnosisStartAws.list = codeList;
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function GetEndCodes(selectedStartCodeId, selectedStartCode) {
+            var diagnosisEndCodeTextBox = document.getElementById("diagnosisEndCode");
+            diagnosisEndCodeAws = new Awesomplete(diagnosisEndCodeTextBox, { minChars: 2 });
+            diagnosisEndCodeTextBox.addEventListener('awesomplete-selectcomplete', SelectEndCode);
+
+            $.ajax({
+                url: '../api/DiseaseManagement/GetDiagnosisCodes',
+                type: 'POST',
+                data: '{"DiagnosisCodeID":"' + selectedStartCodeId + '","DiagnosisCode":"' + selectedStartCode + '"}',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var serverData = data;
+                    var codeList = [];
+                    for (var i = 0; i < serverData.length; i++) {
+                        codeList.push({ label: serverData[i]['Code'] + '-' + serverData[i]['CodeName'], value: serverData[i]['DiagnosisCodeID'] + '~' + serverData[i]['Code'] + '~' + serverData[i]['CodeName'] });
+                    }
+                    diagnosisEndCodeAws.list = codeList;
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+
+            $('#diagnosisEndCode').attr('disabled', false);
+            $('#diagnosisEndCode').val(selectedStartCode);
+            $('#diagnosisEndCode').value = selectedStartCode;
+            diagnosisEndCodeId = selectedStartCodeId;
+
+        }
+
+        function SelectStartCode() {
+            var result = this.value.split("~");
+            diagnosisStartCode = result[1];
+            this.value = diagnosisStartCode;
+            diagnosisStartCodeId = result[0];
+            GetEndCodes(diagnosisStartCodeId, diagnosisStartCode);
+        }
+
+        function SelectEndCode() {
+            var result = this.value.split("~");
+            diagnosisEndCode = result[1];
+            this.value = diagnosisEndCode
+            diagnosisEndCodeId = result[0];
+        }
+
+        $(function () {
+            var start = moment().startOf('year');
+            var end = moment();
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                startDate = start.format('YYYY-MM-DD');
+                endDate = end.format('YYYY-MM-DD');
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                alwaysShowCalendars: true,
+                ranges: {
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'Year to Date': [moment().startOf('year'), moment()],
+                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')]
+                }
+            }, cb);
+            cb(start, end);
+        });
+
+        function SelectFacility() {
+            var result = this.value.split("~");
+            this.value = result[1];
+            facilityId = result[0];
+        }
+
+        function refreshCharts() {
+            newCaseTrendsByAgeGroup();
+        }
+
+
+
+    function newCaseTrendsByAgeGroup() {
+        if (diagnosisStartCodeId > 0 && diagnosisEndCodeId > 0 && selectedHospitalTypes.length > 0) {
+            $.ajax({
+                type: 'POST',
+                    dataType: 'json',
+                    data: selectedHospitalTypesJson,
+                    url: '../api/DiseaseManagement/GetNewCasesByAgeGroup/?HealthFacilityID=' + facilityId
+                        + '&StartCodeID=' + diagnosisStartCodeId
+                        + '&EndCodeID=' + diagnosisEndCodeId
+                        + '&FromDate=' + startDate
+                        + '&ToDate=' + endDate + '',
+                    contentType: "application/json; charset=utf-8"
+            }).done(function (json) {
+                var series1535 = [];
+                var series3660 = [];
+                var series60Plus = [];
+                for (var i = 0; i < json.length; i++) {
+                    if (json[i]['AgeGroup'] == '15-35') {
+                        series1535.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                    if (json[i]['AgeGroup'] == '36-60') {
+                        series3660.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                    if (json[i]['AgeGroup'] == '60+') {
+                        series60Plus.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                }
+                var chart = new Highcharts.chart('newCasesByAgeGroupChart', {
+                chart: {
+                    type: 'line'
+                },
+                    title: { text: '' },
+
+                subtitle: { text: '' },
+                    credits: false,
+                    xAxis: { type: 'datetime' },
+                    series: [
+                        
+                        {
+                            name: '15-35 Years',
+                            data:series1535,
+                        },
+                        {
+                            name: '36-60 Years',
+                            data:series3660,
+                        }
+                        ,
+                        {
+                            name: '60+ Years',
+                            data:series60Plus,
+                        }
+
+                    ],
+            });
+            });
+
+            
+        }
+        else {
+            alert('missing parameter');
+        }
+    }
+
+
+    </script>
+}

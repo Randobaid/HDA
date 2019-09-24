@@ -29,27 +29,36 @@ namespace HDA.Core.Migrations
             SeedMaritalStatusLookups(context);
             SeedSurgerySeverityLookups(context);
             SeedDirectorates(context);
-            //SeedHealthFacilities(context);
             SeedDepartments(context);
             SeedMovementLookups(context);
-            //SeedPharmacies(context);
+            SeedDiagnosisCodingSystems(context);
+            // TODO SeedDiagnosisCodes(context);
             base.Seed(context);
         }
-
-        private void SeedPharmacies(HDACoreContext context)
+        private void SeedDiagnosisCodingSystems(HDACoreContext context)
         {
-           context.Pharmacies.AddOrUpdate(p => p.PharmacyName,
-               new Pharmacy
-               {
-                   PharmacyName = "Al Karak GF OPD Pharmacy",
-                   SourceID = 99283,
-                   HealthFacilityID = context.HealthFacilities.Where(h=> h.HealthFacilityNameEn.ToLower() == "AL KARAK HOSPITAL".ToLower()).First().HealthFacilityID,
-
-               }
-               );
+            context.DiagnosisCodingSystems.AddOrUpdate(d => d.CodingSystemName,
+                new DiagnosisCodingSystem
+                {
+                    CodingSystemName = "ICD-09-CM",
+                    CodingSystemVersion = "2009",
+                    CodingSystemEffectiveDate = new DateTime(2009, 1, 1)
+                },
+                new DiagnosisCodingSystem
+                {
+                    CodingSystemName = "ICD-10-CM",
+                    CodingSystemVersion = "2012",
+                    CodingSystemEffectiveDate = new DateTime(2020, 1, 1)
+                },
+                new DiagnosisCodingSystem
+                {
+                    CodingSystemName = "SNOMED CT",
+                    CodingSystemVersion = "20190301",
+                    CodingSystemEffectiveDate = new DateTime(2019, 5, 27)
+                }
+                );
             context.SaveChanges();
         }
-
 
         private void SeedSpecialityLookups(HDACoreContext context)
         {

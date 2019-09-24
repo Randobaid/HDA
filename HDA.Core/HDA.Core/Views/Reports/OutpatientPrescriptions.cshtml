@@ -247,7 +247,7 @@
                 <div class="col-md-2">*@
                 <div class="card bg-light text-dark text-sm-center" id="averageQuantityPerDrugCard">
                     <div class="card-body">
-                        <h1 id="numAverageQuantityPerDrugCard">N/A</h1>
+                        <h1 id="numAverageQuantityPerDrugCard">-</h1>
                     </div>
                     <div class="card-footer">Average Quantity per Prescription</div>
                 </div>
@@ -708,7 +708,7 @@
         }
 
         function GetSummaryCounts() {
-            $('#numAverageQuantityPerDrugCard').text('N/A');
+            $('#numAverageQuantityPerDrugCard').text('-');
             $('#averageQuantityPerDrugCard').removeClass('bg-purple text-white').addClass('bg-light text-dark');
                 $.ajax({
                     type:'POST',

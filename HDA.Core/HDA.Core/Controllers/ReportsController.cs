@@ -23,5 +23,9 @@ namespace HDA.Core.Controllers
         {
             return View();
         }
+        public ActionResult DiseaseManagement()
+        {
+            return View();
+        }
     }
 }
