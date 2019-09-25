@@ -1593,6 +1593,7 @@
     <Compile Include="Controllers\OutPatientEncountersController.cs" />
     <Compile Include="Controllers\OutPatientPrescriptionsController.cs" />
     <Compile Include="Controllers\ProvidersController.cs" />
+    <Compile Include="Controllers\RefreshDataController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SurgeriesController.cs" />
@@ -1601,6 +1602,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\HDACoreConfig.cs" />
     <Compile Include="Migrations\HDACore\201909161444254_InitialCreate.cs" />
     <Compile Include="Migrations\HDACore\201909161444254_InitialCreate.Designer.cs">
@@ -1674,6 +1676,7 @@
     <Compile Include="Models\HDACore\Prescriptions\DrugClass.cs" />
     <Compile Include="Models\HDACore\Prescriptions\Prescription.cs" />
     <Compile Include="Models\HDACore\Provider\Provider.cs" />
+    <Compile Include="Models\HDACore\RefreshData\DataRefreshProcedure.cs" />
     <Compile Include="Models\HDAIdentity\AccountViewModel.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationRole.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationRoleManager.cs" />
@@ -1725,6 +1728,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Reports\OutpatientPrescriptions.cshtml" />
     <Content Include="Views\Administration\DataManagement.cshtml" />
+    <Content Include="Views\RefreshData\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

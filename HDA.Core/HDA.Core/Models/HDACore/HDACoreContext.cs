@@ -1,4 +1,5 @@
-﻿using MySql.Data.Entity;
+﻿using HDA.Core.Models.HDACore.RefreshData;
+using MySql.Data.Entity;
 using System.Data.Entity;
 
 namespace HDA.Core.Models.HDACore
@@ -51,6 +52,7 @@ namespace HDA.Core.Models.HDACore
         public DbSet<InPatientEncounterTotal> InPatientEncounterTotals { get; set; }
         public DbSet<SurgeryTotal> SurgeryTotals { get; set; }
         public DbSet<PrescriptionTotal> PrescriptionTotals { get; set; }
+        public DbSet<DataRefreshProcedure> DataRefreshProcedures { get; set; }
     }
     
 }

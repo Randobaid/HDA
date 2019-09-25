@@ -1,0 +1,44 @@
+﻿@model IEnumerable<HDA.Core.Models.HDACore.RefreshData.DataRefreshProcedure>
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="container">
+    <div class="row" style="padding-top:50px;">
+        <div class="col-md-12">
+            <div class="card border border-primary " style="min-height: 100px;">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(x => x.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(x => x.ProcedureName)
+                        </th>
+                    </tr>
+                    @foreach (var param in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(x => param.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => param.ProcedureName)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Execute", "Execute", new { id = param.ProcedureName })
+                            </td>
+                            
+                        </tr>
+                    }
+                </table>
+
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+
+      

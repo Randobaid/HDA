@@ -1,5 +1,6 @@
 ﻿using HDA.Core.Models;
 using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDACore.RefreshData;
 using System;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace HDA.Core.Migrations
             //SeedHealthFacilities(context);
             SeedDepartments(context);
             SeedMovementLookups(context);
+            SeedStoredProcedures(context);
             //SeedPharmacies(context);
             base.Seed(context);
         }
@@ -49,7 +51,15 @@ namespace HDA.Core.Migrations
                );
             context.SaveChanges();
         }
+        private void SeedStoredProcedures(HDACoreContext context)
+        {
+            context.DataRefreshProcedures.AddOrUpdate(m => m.ProcedureName,
+                 new DataRefreshProcedure { ProcedureName = "sp_prescriptiontotals" },
+                 new DataRefreshProcedure { ProcedureName = "sp_inpatientencountertotals" }
 
+                );
+            context.SaveChanges();
+        }
 
         private void SeedSpecialityLookups(HDACoreContext context)
         {
