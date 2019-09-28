@@ -1,16 +1,17 @@
-﻿using HDA.Core.Models.HDACore;
+﻿using HDA.Core.App_Code;
+using HDA.Core.Models.HDACore;
 using HDA.Core.ViewModels;
 using LinqKit;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace HDA.Core.Controllers
 {
+    [Authorize]
     public class OutPatientPrescriptionsController : ApiController
     {
         private HDACoreContext db = new HDACoreContext();
@@ -23,6 +24,8 @@ namespace HDA.Core.Controllers
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
 
                 var searchPredicate = PredicateBuilder.New<PrescriptionTotal>();
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
 
                 foreach (SelectedFacilityType s in selectedFacilityTypes)
                 {
@@ -77,6 +80,8 @@ namespace HDA.Core.Controllers
             if (ModelState.IsValid)
             {
                 var searchPredicate = PredicateBuilder.New<PrescriptionTotal>();
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
 
                 foreach (SelectedFacilityType s in selectedFacilityTypes)
                 {
@@ -135,6 +140,8 @@ namespace HDA.Core.Controllers
             if (ModelState.IsValid)
             {
                 var searchPredicate = PredicateBuilder.New<PrescriptionTotal>();
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
 
                 foreach (SelectedFacilityType s in selectedFacilityTypes)
                 {
@@ -194,6 +201,8 @@ namespace HDA.Core.Controllers
 
 
                     var searchPredicate = PredicateBuilder.New<PrescriptionTotal>();
+                    var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                    searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
 
                     foreach (SelectedFacilityType s in selectedFacilityTypes)
                     {
