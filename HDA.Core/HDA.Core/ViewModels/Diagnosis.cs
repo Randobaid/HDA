@@ -34,4 +34,32 @@ namespace HDA.Core.ViewModels
         public string AgeGroup { get; set; }
         public int Total { get; set; }
     }
+    public class NewCasesByGender
+    {
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int FemaleTotal { get; set; }
+        public int MaleTotal { get; set; }
+    }
+
+    public class TotalsByAgeGroup
+    {
+        public int Total01 { get; set; }
+        public int Total25 { get; set; }
+        public int Total614 { get; set; }
+        public int Total1535 { get; set; }
+        public int Total3660 { get; set; }
+        public int Total60Plus { get; set; }
+    }
+    public class TotalsByGender
+    {
+        public int FemaleTotal { get; set; }
+        public int MaleTotal { get; set; }
+    }
+
+    public class DiagnosisSummary
+    {
+        public int AverageNewCasesPerMonth { get; set; }
+        public int TotalNewCases { get; set; }
+    }
 }
