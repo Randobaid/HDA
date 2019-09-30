@@ -148,10 +148,6 @@ namespace HDA.Core.Controllers
             {
                 return NotFound();
             }
-            if(user.Email == "admin@hda.core")
-            {
-                return BadRequest("You cannot edit the admin user");
-            }
             try
             {
                 if (ModelState.IsValid)
@@ -172,11 +168,17 @@ namespace HDA.Core.Controllers
                             userManager.RemoveFromRole(user.Id, role.Name);
                         }
                     }
-                    foreach (var roleId in userViewModel.RoleIds)
-                    {
-                        ApplicationRole role = roleManager.FindById(roleId);
-                        if(role != null) {
-                            userManager.AddToRole(user.Id, role.Name);
+                    // ensure remaining user has admin role
+                    if (userManager.Users.Count() == 1) {
+                        userManager.AddToRole(user.Id, "Admin");
+                    }
+                    if (userViewModel.RoleIds != null) {
+                        foreach (var roleId in userViewModel.RoleIds)
+                        {
+                            ApplicationRole role = roleManager.FindById(roleId);
+                            if(role != null) {
+                                userManager.AddToRole(user.Id, role.Name);
+                            }
                         }
                     }
                     return this.Details(user.Id);
@@ -199,12 +201,12 @@ namespace HDA.Core.Controllers
             {
                 return NotFound();
             }
-            if(user.Email == "admin@hda.core")
-            {
-                return BadRequest("An error occured while deleting the user");
-            }
             try
             {
+                // ensure we don't delete our last user
+                if (userManager.Users.Count() == 1) {
+                    return BadRequest("Can't delete the only remaining user");
+                }
                 userManager.Delete(user);
                 return Ok();
             }
