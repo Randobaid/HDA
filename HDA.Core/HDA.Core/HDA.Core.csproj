@@ -1661,6 +1661,22 @@
     <Compile Include="Migrations\HDACore\201909241123222_DiagnosisTotals_AddHealthFacilityType.Designer.cs">
       <DependentUpon>201909241123222_DiagnosisTotals_AddHealthFacilityType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDACore\201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.cs" />
+    <Compile Include="Migrations\HDACore\201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.Designer.cs">
+      <DependentUpon>201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201909301334254_add_fk_healthfacilititytotals.cs" />
+    <Compile Include="Migrations\HDACore\201909301334254_add_fk_healthfacilititytotals.Designer.cs">
+      <DependentUpon>201909301334254_add_fk_healthfacilititytotals.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201910010654410_edit_InPatientEncounterTotal.cs" />
+    <Compile Include="Migrations\HDACore\201910010654410_edit_InPatientEncounterTotal.Designer.cs">
+      <DependentUpon>201910010654410_edit_InPatientEncounterTotal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.cs" />
+    <Compile Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.Designer.cs">
+      <DependentUpon>201910010741056_edit_SurgeryTotal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
@@ -1824,6 +1840,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDACore\201909241123222_DiagnosisTotals_AddHealthFacilityType.resx">
       <DependentUpon>201909241123222_DiagnosisTotals_AddHealthFacilityType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.resx">
+      <DependentUpon>201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909301334254_add_fk_healthfacilititytotals.resx">
+      <DependentUpon>201909301334254_add_fk_healthfacilititytotals.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201910010654410_edit_InPatientEncounterTotal.resx">
+      <DependentUpon>201910010654410_edit_InPatientEncounterTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.resx">
+      <DependentUpon>201910010741056_edit_SurgeryTotal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
