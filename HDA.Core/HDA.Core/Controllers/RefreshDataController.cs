@@ -27,6 +27,18 @@ namespace HDA.Core.Controllers
             var proceduresToExecute = _coreContext.DataRefreshProcedures.ToList();
             return View(proceduresToExecute);
         }
+        public ActionResult RunProcedure()
+        {
 
+            //var totolRecordsToMove = _coreContext.Database.SqlQuery<int>(@"SELECT count(PatientPrescriptionId) FROM patientPrescriptions");
+
+            var prescriptionTotals = _coreContext.Database.SqlQuery<PrescriptionTotal>(@"CALL `hdacore`.`sp_prescriptiontotals`();");
+
+            return Json(prescriptionTotals, JsonRequestBehavior.AllowGet);
+
+
+
+
+        }
     }
 }

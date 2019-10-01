@@ -1628,6 +1628,10 @@
     <Compile Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.Designer.cs">
       <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDACore\201909271109443_RefreshProcedures.cs" />
+    <Compile Include="Migrations\HDACore\201909271109443_RefreshProcedures.Designer.cs">
+      <DependentUpon>201909271109443_RefreshProcedures.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
@@ -1765,6 +1769,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.resx">
       <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909271109443_RefreshProcedures.resx">
+      <DependentUpon>201909271109443_RefreshProcedures.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
