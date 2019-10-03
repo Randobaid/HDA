@@ -77,10 +77,18 @@ namespace HDA.Core.Controllers
             return Ok(healthFacilities);
         }
 
-        public IHttpActionResult GetPharmacies(int id)
+        [HttpPost]
+        public IHttpActionResult GetPharmacies([FromBody] List<int> payload)
         {
             List<PharmacyVM> pharmacies = new List<PharmacyVM>();
-            var hfs = db.Pharmacies.Where(i => i.HealthFacilityID == id);
+
+            var selectedHealthFacilitiesSP = PredicateBuilder.New<Pharmacy>();
+            foreach(int id in payload)
+            {
+                selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+            }
+
+            var hfs = db.Pharmacies.Where(selectedHealthFacilitiesSP);
             foreach (var hf in hfs)
             {
                 PharmacyVM h = new PharmacyVM

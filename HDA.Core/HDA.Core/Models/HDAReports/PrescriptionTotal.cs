@@ -12,6 +12,7 @@ namespace HDA.Core.Models.HDACore
         public int DirectorateID { get; set; }
         public int HealthFacilityTypeID { get; set; }
         public int HealthFacilityID { get; set; }
+        public virtual HealthFacility HealthFacility { get; set; }
         public int PharmacyID { get; set; }
         public int ProviderID { get; set; }
         public int Year { get; set; }

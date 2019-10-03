@@ -209,6 +209,8 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\pivot.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="DatabaseScripts\hdastaging_hdacore\000 healthfacilities.sql" />
     <Content Include="DatabaseScripts\ReadMe.txt" />
     <Content Include="favicon.ico" />
@@ -254,6 +256,8 @@
     <Content Include="Content\bootstrap-rtl\js\bootstrap.bundle.min.js.map" />
     <Content Include="Content\bootstrap-rtl\js\bootstrap.js.map" />
     <Content Include="Content\bootstrap-rtl\js\bootstrap.min.js.map" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\IIS.pubxml" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -1575,6 +1579,8 @@
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\sweetalert2.all.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -1676,6 +1682,10 @@
     <Compile Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.cs" />
     <Compile Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.Designer.cs">
       <DependentUpon>201910010741056_edit_SurgeryTotal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201910030857524_editPrescriptionTotal.cs" />
+    <Compile Include="Migrations\HDACore\201910030857524_editPrescriptionTotal.Designer.cs">
+      <DependentUpon>201910030857524_editPrescriptionTotal.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
@@ -1852,6 +1862,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.resx">
       <DependentUpon>201910010741056_edit_SurgeryTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201910030857524_editPrescriptionTotal.resx">
+      <DependentUpon>201910030857524_editPrescriptionTotal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>

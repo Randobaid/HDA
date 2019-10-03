@@ -175,3 +175,12 @@
 }
 
 
+body #toast-container > div {
+    background-color:grey;
+    opacity:inherit;
+    
+}
+
+.smallinput {
+    font-size: 12px !important;
+}

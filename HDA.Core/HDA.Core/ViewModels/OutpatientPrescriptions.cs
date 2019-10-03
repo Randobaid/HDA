@@ -31,9 +31,10 @@ namespace HDA.Core.ViewModels
 
     public class PrescriptionsPerInstitutionTotal
     {
+        public string HealthFacilityName { get; set; }
+        public int HealthFacilityID { get; set; }
         public int Year { get; set; }
         public int MonthId { get; set; }
-        public string MonthName { get; set; }
         public int DrugClass { get; set; }
         public int DrugId { get; set; }
         public int Total { get; set; }

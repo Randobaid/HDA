@@ -14,8 +14,7 @@ namespace HDA.Core
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
+            
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
@@ -29,9 +28,8 @@ namespace HDA.Core
                       "~/Content/font-awesome.min.css",
                       "~/Content/awesomplete.css",
                       "~/Content/daterangepicker.css",
-                      "~/Content/datatables.css",
-                      "~/Content/pivot.css",
-                      "~/Content/bootstrap-multiselect.css"
+                      "~/Content/bootstrap-multiselect.css",
+                      "~/Content/toastr.min.css"
                       )
                       );
 
@@ -43,12 +41,10 @@ namespace HDA.Core
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                 "~/Scripts/app.js",
                 "~/Scripts/awesomplete.js",
-                "~/Scripts/datatables.js",
-                "~/Scripts/pivot.js",
                 "~/Scripts/bootstrap-multiselect.js",
-                //"~/Scripts/highcharts/7.1.2/highcharts.js",
                 "~/Scripts/sweetalert2.all.min.js",
-                "~/Scripts/highstock/highstock.js"
+                "~/Scripts/highstock/highstock.js",
+                "~/Scripts/toastr.min.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/daterangepicker").Include(

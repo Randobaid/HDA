@@ -27,31 +27,33 @@
                         </div>
                         <div class="form-group col-md-12">
                             <div class="row">
-                                <div class="col-md-10 col-sm-12">
+                                <div class="col-md-9 col-sm-12">
                                     <input type="text" class="form-control" id="TextHospital" placeholder="Select Facility.." disabled="disabled" />
                                 </div>
-                                <div class="col-md-2 col-sm-12">
+                                <div class="col-md-3 col-sm-12">
                                     <div class="form-check">
                                         <input class="form-check-input " type="checkbox" checked="checked" value="" id="allHospitals">
-                                        <label class="form-check-label" for="allHospitals">
-                                            All
-                                        </label>
+                                        <label class="form-check-label" for="allHospitals">All</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <table id="selectedFacilitiesTable" class="table table-sm table-hover">
+
+                                <tbody></tbody>
+                            </table>
+                        </div>
 
                         <div class="form-group col-md-12">
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-9">
                                     <input type="text" placeholder="Select Provider.." class="form-control" id="TextProvider" disabled="disabled" />
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-check">
                                         <input class="form-check-input " type="checkbox" checked="checked" value="" id="allProviders">
-                                        <label class="form-check-label" for="allProviders">
-                                            All
-                                        </label>
+                                        <label class="form-check-label" for="allProviders">All</label>
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +64,7 @@
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
                             </div>
-                            
+
                         </div>
                         <div class="form-group col-md-12">
                             <button class="btn btn-primary btn-block" onclick="refreshCharts();"><i class="fa fa-refresh"></i>&nbsp;Load Charts</button>
@@ -173,7 +175,7 @@
                     <div class="card border border-primary bg-light" hidden="hidden" id="inPatientDiv">
                         <div class="card-header bg-primary text-white">
                             <i class="fa fa-star-o fa-pull-left fa-lg" id="starInpatientChart" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
-                            Inpatient Transfers 
+                            Inpatient Transfers
                             <i class="fa fa-expand fa-pull-right fa-lg" id="expandInpatientChart"></i>
                         </div>
                         <div class="card-body">
@@ -181,7 +183,7 @@
                                 <div id="inPatientChart" style="height:300px;"></div>
                             </div>
                             <div class="col-md-12 ">
-                                <br/>
+                                <br />
                             </div>
                         </div>
                     </div>
@@ -201,7 +203,7 @@
                                 <div id="surgeriesChart" style="height:300px;"></div>
                             </div>
                             <div class="col-md-12 ">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -229,21 +231,27 @@
         var facilityAws;
         var selectedHospitalTypesJson;
         var selectedHospitalTypes = [];
+        var selectedHospitals = [];
 
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
 
-    $(document).ajaxStart(function () {
-        $('#ajaxProgress').removeAttr('hidden');
-    });
-    $(document).ajaxStop(function () {
-        $('#ajaxProgress').attr('hidden', true);
-    });
+        $(document).ajaxStart(function () {
+            $('#ajaxProgress').removeAttr('hidden');
+        });
+        $(document).ajaxStop(function () {
+            $('#ajaxProgress').attr('hidden', true);
+        });
 
-        $(document).ready(function () {
+    $(document).ready(function () {
+        toastr.options = {
+            'positionClass': 'toast-bottom-left',
+        }
             fInput = document.getElementById("TextHospital");
-            facilityAws = new Awesomplete(fInput, { minChars: 2 });
+            facilityAws = new Awesomplete(fInput, {
+                minChars: 2,
+            });
             providerAws = new Awesomplete(pInput, { minChars: 2, autoFirst: true });
 
 
@@ -258,7 +266,7 @@
                         return '<i class="fa fa-hospital-o fa-lg" aria-hidden="true"></i> Select Hospital Type';
                     }
                     else if (options.length > 3) {
-                        return options.length + ' selected';
+                        return options.length + ' types selected';
                     }
                     else {
                         var labels = [];
@@ -314,20 +322,38 @@
 
         function SelectFacility() {
             var result = this.value.split("~");
-            this.value = result[1];
-            facilityId = result[0];
+            var healthFacilityName = result[1];
+            var healthFacilityId = result[0];
+            selectedHospitals.push(healthFacilityId);
+            this.value = "";
+            facilityId = healthFacilityId;
+
+            
+            $('#selectedFacilitiesTable > tbody:last-child').append
+                ('<tr><td class="font-weight-bold">' + healthFacilityName + '</td><td><a href="#" onclick="updateTable(this,' + healthFacilityId + ');"><i class="fa fa-trash" ></i></a></td></tr>');
             $('#TextProvider').val('');
             providerId = 0;
             $("#allProviders").prop('checked', true);
             $('#TextProvider').attr('disabled', true);
-            
+
+
+        }
+
+        function updateTable(row, removeId) {
+            $(row).parent().parent().remove();
+            selectedHospitals.splice($.inArray(removeId, selectedHospitals), 1);
+            var t = document.getElementById("selectedFacilitiesTable");
+            if (t.rows.length == 0) {
+                $("#allHospitals").prop('checked', true);
+                $("#allHospitals").change();
+            }
         }
 
         function SelectProvider() {
             var r = this.value.split("~");
             this.value = r[1];
             providerId = r[0];
-            
+
         }
 
         function GetProviders() {
@@ -355,7 +381,7 @@
                 $('#TextProvider').attr('disabled', true);
                 $('#TextProvider').val('');
                 providerId = 0;
-                
+
             }
             else {
                 $('#TextProvider').removeAttr('disabled');
@@ -368,7 +394,9 @@
                 $('#TextHospital').attr('disabled', true);
                 $('#TextHospital').val('');
                 facilityId = 0;
-                
+                selectedHospitals = [];
+                $('#selectedFacilitiesTable').empty();
+                $('#selectedFacilitiesTable').append('<tbody></tbody>');
             }
             else {
                 $('#TextHospital').removeAttr('disabled');
@@ -384,6 +412,7 @@
             }
             GetOutPatientEncounters();
         });
+
 
         function GetFacilityList(fInput, aws1, selectedFacilityTypes) {
             fInput.addEventListener('awesomplete-selectcomplete', SelectFacility);
@@ -408,12 +437,18 @@
         }
 
         function GetOutPatientEncounters() {
-
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
+            
             $('#outPatientDiv').removeAttr('hidden');
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                data: selectedHospitalTypesJson,
+                data: payloadJson,
                 url: '../api/OutPatientEncounters/GetMonthlyTotals/?HealthFacilityID=' + facilityId
                     + '&ProviderID=' + providerId
                     + '&FromDate=' + startDate
@@ -465,39 +500,19 @@
         }
 
         function GetInPatientEncounters() {
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
 
             $('#inPatientDiv').removeAttr('hidden');
             $('#inpatientProgress').removeAttr('hidden');
             $.ajax({
-                //xhr: function () {
-                //    var xhr = new window.XMLHttpRequest();
-                //    xhr.upload.addEventListener("progress", function (evt) {
-                //        if (evt.lengthComputable) {
-                //            var percentComplete = (evt.loaded / evt.total) * 100;
-                //            if (percentComplete < 1) {
-                //                $('#inpatientProgress').removeAttr('hidden');
-                //            }
-                //            else {
-                //                $('#inpatientProgress').attr('hidden', true);
-                //            }
-                //        }
-                //    }, false);
-                //    xhr.addEventListener("progress", function (evt) {
-                //        if (evt.lengthComputable) {
-                //            var percentComplete = (evt.loaded / evt.total) * 100;
-                //            if (percentComplete < 1) {
-                //                $('#inpatientProgress').removeAttr('hidden');
-                //            }
-                //            else {
-                //                $('#inpatientProgress').attr('hidden', true);
-                //            }
-                //        }
-                //    }, false);
-                //    return xhr;
-                //},
                 type: 'POST',
                 dataType: 'json',
-                data: selectedHospitalTypesJson,
+                data: payloadJson,
                 url: '../api/InPatientEncounters/GetMonthlyTotals/?HealthFacilityID=' + facilityId
                     + '&ProviderID=' + providerId
                     + '&FromDate=' + startDate
@@ -541,12 +556,18 @@
         }
 
         function GetSurgeries() {
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
 
             $('#surgeriesDiv').removeAttr('hidden');
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                data: selectedHospitalTypesJson,
+                data: payloadJson,
                 url: '../api/Surgeries/GetMonthlyTotalsBySeverity/?HealthFacilityID=' + facilityId
                     + '&ProviderID=' + providerId
                     + '&FromDate=' + startDate
@@ -581,35 +602,6 @@
                 });
             });
 
-        }
-
-        function GetMonthlyAverage() {
-            if (facilityTypeId > 0) {
-                //$('#monthlyAverageDiv').removeAttr('hidden');
-                //new Highcharts.chart('monthlyAverageChart', {
-                //    chart: { type: 'pie' },
-                //    title: { text: '' },
-                //    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
-                //    plotOptions: {
-                //        pie: {
-                //            allowPointSelect: true,
-                //            cursor: 'pointer',
-                //            dataLabels: { enabled: false },
-                //            showInLegend: true
-                //        }
-                //    },
-                //    series: [{
-                //        name: 'Brands',
-                //        colorByPoint: true,
-                //        data: [
-                //            { name: 'OUT', y: 2354 },
-                //            { name: 'IN', y: 1523 },
-                //            { name: 'OR', y: 320 }
-                //        ]
-                //    }],
-                //    credits: false
-                //});
-            }
         }
 
         function GetInventory() {
@@ -664,12 +656,15 @@
             });
         }
 
-    function refreshCharts() {
-        if (selectedHospitalTypes.length > 0) {
-            GetOutPatientEncounters();
-            GetInPatientEncounters();
-            GetSurgeries();
+        function refreshCharts() {
+            if (selectedHospitalTypes.length > 0) {
+                GetOutPatientEncounters();
+                GetInPatientEncounters();
+                GetSurgeries();
+            }
+            else {
+                toastr.warning('At least one hospital type must be selected');
+            }
         }
-    }
     </script>
 }

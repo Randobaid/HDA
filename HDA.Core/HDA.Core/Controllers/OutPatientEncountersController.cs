@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.App_Code;
 using HDA.Core.Models.HDACore;
-using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using LinqKit;
 using Microsoft.AspNet.Identity;
@@ -18,40 +14,68 @@ namespace HDA.Core.Controllers
     {
         private HDACoreContext db = new HDACoreContext();
         [HttpPost]
-        public IHttpActionResult GetMonthlyTotals([FromUri] WorkloadRequest payload, [FromBody] List<SelectedFacilityType> selectedFacilityTypes)
+        public IHttpActionResult GetMonthlyTotals([FromUri] WorkloadRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
             if (ModelState.IsValid)
             {
+                var selectedFacilitiesPayload = selectedFacilityPayload.First();
+
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
+
                 List<MonthlyTotal> monthlyTotals = new List<MonthlyTotal>();
                 List<Target> targets = db.Targets.Where(t =>
                     t.Indicator.IndicatorNameEn == "Outpatient Encounters"
                 ).OrderByDescending(tg => tg.EffectiveDate).ToList();
 
-                var searchPredicate = PredicateBuilder.New<OutPatientEncounterTotal>();
+                /* Search Predicates */
+                var baseOutPatientEncounterTotalSP = PredicateBuilder.New<OutPatientEncounterTotal>();
+                baseOutPatientEncounterTotalSP = baseOutPatientEncounterTotalSP.And(a => a.Total > 0);
+
+                var baseHealthFacilitySP = PredicateBuilder.New<HealthFacility>();
+                baseHealthFacilitySP = baseHealthFacilitySP.And(a => a.HealthFacilityID > 0);
+
+                var healthFacilitySP_healthFacilityType = PredicateBuilder.New<HealthFacility>();
+                var healthFacilitySP_healthFacility = PredicateBuilder.New<HealthFacility>();
+
+
+                var outpatientEncounterTotalSP = PredicateBuilder.New<OutPatientEncounterTotal>();
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
-                //searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
-                var anotherSP = PredicateBuilder.New<HealthFacility>();
-                foreach (SelectedFacilityType s in selectedFacilityTypes)
+                
+                
+                
+                foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
-                    searchPredicate =
-                      searchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
-                    anotherSP =
-                      anotherSP.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
+                    outpatientEncounterTotalSP = outpatientEncounterTotalSP.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
+                    healthFacilitySP_healthFacilityType = healthFacilitySP_healthFacilityType.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
+
+                var selectedHealthFacilitiesSP = PredicateBuilder.New<OutPatientEncounterTotal>();
+                if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
+                {
+                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    {
+                        selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+                        healthFacilitySP_healthFacility = healthFacilitySP_healthFacility.Or(a => a.HealthFacilityID == id);
+                    }
+                }
+
+                /* Search Predicates */
+
                 List<HealthFacility> healthFacilities = db.HealthFacilities.
-                    Where(anotherSP).
-                    Where(h => (payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true).ToList();
+                    Where(healthFacilitySP_healthFacilityType).
+                    Where((healthFacilitySP_healthFacility.IsStarted) ? healthFacilitySP_healthFacility : baseHealthFacilitySP).ToList();
                 int NumberOfClinics = healthFacilities.Select(t => t.EstimatedClinics).Sum();
+
+
                 var g = from t in db.OutPatientEncounterTotals.
-                        Where(searchPredicate).
+                        Where(outpatientEncounterTotalSP).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP: baseOutPatientEncounterTotalSP).
                         Where(h =>
                         h.Month >= fromDate.Month
                         && h.Month <= toDate.Month
                         && h.Year >= fromDate.Year
                         && h.Year <= toDate.Year
-                        && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
                         && ((payload.ProviderID > 0) ? h.ProviderID == payload.ProviderID : true))
 
                         group t by new { t.Year, t.Month } into x
@@ -77,10 +101,12 @@ namespace HDA.Core.Controllers
                     HDACoreContext newConnection = new HDACoreContext();
                     if (payload.PreviousYear == 1)
                     {
-                        var y = from t in newConnection.OutPatientEncounterTotals.Where(h =>
+                        var y = from t in newConnection.OutPatientEncounterTotals.
+                                Where(outpatientEncounterTotalSP).
+                                Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseOutPatientEncounterTotalSP).
+                                Where(h =>
                                          h.Month == total.MonthId
                                          && h.Year == fromDate.Year - 1
-                                         && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
                                          && ((payload.ProviderID > 0) ? h.ProviderID == payload.ProviderID : true)
                                          )
                                 group t by new { t.Year, t.Month } into x
@@ -104,12 +130,11 @@ namespace HDA.Core.Controllers
                             }
                         }
                     }
-                    DateTimeFormatInfo d = new DateTimeFormatInfo();
+                    
                     MonthlyTotal m = new MonthlyTotal
                     {
                         Year = total.Year,
                         MonthId = total.MonthId,
-                        MonthName = d.GetMonthName(total.MonthId),
                         Total = total.Total,
                         TotalPreviousYear = totalPrevYear,
                         Target = Convert.ToInt32(target.Value) * NumberOfClinics ,
