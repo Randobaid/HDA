@@ -150,40 +150,40 @@
         <div class="col-md-9">
             <div class="row">
                 <div class="col-lg-6 col-md-12">
-                    <div class="card border border-primary bg-light" hidden="hidden" id="outPatientDiv">
+                    <div class="card border border-primary bg-light" id="outPatientDiv">
                         <div class="card-header bg-primary text-white">
                             <i class="fa fa-star-o fa-pull-left fa-lg" id="starOutpatientChart" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
                             Outpatient Encounters
                             <i class="fa fa-expand fa-pull-right fa-lg" id="expandOutpatientChart" data-toggle="tooltip" data-placement="top" title="Expand this chart to see more information"></i>
                         </div>
                         <div class="card-body">
-                            <div class="col-md-12">
+                            <div class="prompt"><i class="fa fa-info-circle fa-2x"></i> <b>Select a Hospital Type to View this Chart</b></div>
+                            <div class="col-md-12 chart" hidden>
                                 <div id="outPatientChart" style="height:300px;"></div>
-                            </div>
-                            <div>
-                                <div class="form-check col-md-12">
-                                    <input class="form-check-input " type="checkbox" value="" id="compareLastYear">
-                                    <label class="form-check-label" for="compareLastYear">
-                                        Compare with Previous Year
-                                    </label>
+                                <div>
+                                    <div class="form-check col-md-12">
+                                        <input class="form-check-input " type="checkbox" value="" id="compareLastYear">
+                                        <label class="form-check-label" for="compareLastYear">
+                                            Compare with Previous Year
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
-                    <div class="card border border-primary bg-light" hidden="hidden" id="inPatientDiv">
+                    <div class="card border border-primary bg-light" id="inPatientDiv">
                         <div class="card-header bg-primary text-white">
                             <i class="fa fa-star-o fa-pull-left fa-lg" id="starInpatientChart" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
                             Inpatient Transfers
                             <i class="fa fa-expand fa-pull-right fa-lg" id="expandInpatientChart"></i>
                         </div>
                         <div class="card-body">
+                            <div class="prompt"><i class="fa fa-info-circle fa-2x"></i> <b>Select a Hospital Type to View this Chart</b></div>
                             <div class="col-md-12">
-                                <div id="inPatientChart" style="height:300px;"></div>
-                            </div>
-                            <div class="col-md-12 ">
-                                <br />
+                                <div class="chart" id="inPatientChart" style="height:300px;" hidden></div>
                             </div>
                         </div>
                     </div>
@@ -192,18 +192,16 @@
             <br />
             <div class="row">
                 <div class="col-lg-12 col-md-12">
-                    <div class="card border border-primary bg-light" id="surgeriesDiv" hidden="hidden">
+                    <div class="card border border-primary bg-light" id="surgeriesDiv" >
                         <div class="card-header bg-primary text-white">
                             <i class="fa fa-star-o fa-pull-left fa-lg" id="starSurgeriesChart" data-toggle="tooltip" data-placement="top" title="Star this chart to place it on your dashboard"></i>
                             Surgeries
                             <i class="fa fa-expand fa-pull-right fa-lg" id="expandSurgeriesChart" data-toggle="tooltip" data-placement="top" title="Expand this chart to see more information"></i>
                         </div>
                         <div class="card-body ">
+                            <div class="prompt"><i class="fa fa-info-circle fa-2x"></i> <b>Select a Hospital Type to View this Chart</b></div>
                             <div class="col-md-12 ">
-                                <div id="surgeriesChart" style="height:300px;"></div>
-                            </div>
-                            <div class="col-md-12 ">
-
+                                <div class="chart" id="surgeriesChart" style="height:300px;" hidden></div>
                             </div>
                         </div>
                     </div>
@@ -658,6 +656,8 @@
 
         function refreshCharts() {
             if (selectedHospitalTypes.length > 0) {
+                $('.prompt').attr('hidden', true);
+                $('.chart').attr('hidden', false);
                 GetOutPatientEncounters();
                 GetInPatientEncounters();
                 GetSurgeries();

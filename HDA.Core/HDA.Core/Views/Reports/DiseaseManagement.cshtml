@@ -9,6 +9,7 @@
             <div class="card text-center border border-primary">
                 <div class="card-header bg-light text-dark" data-toggle="collapse" data-target="#filtersBody">
                     <i class="fa fa-filter fa-lg" aria-hidden="true"></i><b> Filters</b>
+                    <i class="fa fa-spinner fa-pulse fa-lg" hidden id="ajaxProgress"></i>
                 </div>
                 <div class="card-body text-left" id="filtersBody">
                     <div class="row">
@@ -28,7 +29,7 @@
                         <div class="form-group col-md-12">
                             <div class="row">
                                 <div class="col-md-10 col-sm-12">
-                                    <input type="text" class="form-control" id="TextHospital" placeholder="Select Hospital.." disabled="disabled" />
+                                    <input type="text" class="form-control" id="TextHospital" placeholder="Select Facility.." disabled="disabled" />
                                 </div>
                                 <div class="col-md-2 col-sm-12">
                                     <div class="form-check">
@@ -39,6 +40,12 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-12">
+                            <table id="selectedFacilitiesTable" class="table table-sm table-hover">
+
+                                <tbody></tbody>
+                            </table>
                         </div>
                         <div class="form-group col-md-12">
                             <label for="diagnosis" class="col-form-label">Diagnosis</label>
@@ -84,87 +91,86 @@
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-10">
+
                     <div class="card border border-primary bg-light" id="newCasesByAgeGroupDiv">
                         <div class="card-header bg-primary text-white">
                             New Cases by Age Group <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="newCasesByAgeGroupProgress"></i>
                         </div>
                         <div class="card-body">
-                            <div class="col-md-12">
-                                <div id="newCasesByAgeGroupChart" style="height:300px;"></div>
+                            <div class="row">
+                                
+                                <div class="col-md-8">
+                                    <div class="prompt"><i class="fa fa-info-circle fa-2x"></i> <b>Select a Facility Type and Diagnosis to View this Chart</b></div>
+                                    <div class="chart" id="newCasesByAgeGroupChart" style="height:300px;" hidden></div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="chart" id="totalByAgeGroupChart" style="height:300px;" hidden></div>
+                                </div>
                             </div>
-                            <br />
+
                         </div>
                     </div>
+
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2">
+                    <div class="card bg-purple text-white text-center">
+                        <div class="card-body">
+                            <h1 id="numAverageCasesPerMonthCard">-</h1>
+                        </div>
+                        <div class="card-footer">Average New Cases per Month</div>
+                    </div>
+                    <hr />
+                    <div class="card bg-purple text-white text-center">
+                        <div class="card-body">
+                            <h1 id="numTotalNewCasesCard">-</h1>
+                        </div>
+                        <div class="card-footer">Total</div>
+                    </div>
+                </div>
+
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-10">
                     <div class="card border border-primary bg-light" id="newCasesByGenderDiv">
                         <div class="card-header bg-primary text-white">
                             New Cases by Gender <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="newCasesByGenderProgress"></i>
                         </div>
                         <div class="card-body">
-                            <div class="col-md-12">
-                                <div id="newCasesByGenderChart" style="height:300px;"></div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="prompt"><i class="fa fa-info-circle fa-2x"></i> <b>Select a Facility Type and Diagnosis to View this Chart</b></div>
+                                    <div class="chart" id="newCasesByGenderChart" style="height:300px;" hidden></div>
+                                </div>
+                                <br />
+                                <div class="col-md-4">
+                                    <div class="chart" id="totalByGenderChart" style="height:300px;" hidden></div>
+                                </div>
                             </div>
-                            <br />
                         </div>
                     </div>
                 </div>
-            </div>
-            <hr />
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="card border border-primary bg-light" id="totalByAgeGroupDiv">
-                        @*<div class="card-header bg-primary text-white">
-                                New Cases by Age Group <i class="fa fa-spinner fa-pulse fa-lg" hidden="hidden" id="newCasesByAgeGroupProgress"></i>
-                            </div>*@
-                        <div class="card-body">
-                            <div class="col-md-12">
-                                <div id="totalByAgeGroupChart" style="height:300px;"></div>
-                            </div>
-                            <br />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="card border border-primary bg-light" id="totalByAgeGroupDiv">
-
-                        <div class="card-body">
-                            <div class="col-md-12">
-                                <div id="totalByGenderChart" style="height:300px;"></div>
-                            </div>
-                            <br />
-                        </div>
-                    </div>
-
-                </div>
-
                 <div class="col-md-2">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card bg-purple text-white text-center">
-                                <div class="card-body">
-                                    <h1 id="numAverageCasesPerMonthCard">-</h1>
-                                </div>
-                                <div class="card-footer">Average New Cases per Month</div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <hr />
-                        </div>
-                        <div class="col-md-12">
-                            <div class="card bg-purple text-white text-center">
-                                <div class="card-body">
-                                    <h1 id="numTotalNewCasesCard">-</h1>
-                                </div>
-                                <div class="card-footer">Total</div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+
+        </div>
+        <div class="col-md-12">
+
+
         </div>
     </div>
+
 </div>
 
 
@@ -185,21 +191,33 @@
         var diagnosisEndCodeId = 0;
         var diagnosisEndCodeAws;
         var diagnosisEndCode;
+        var selectedHospitals = [];
 
         $(function () {
             Highcharts.setOptions({
                 chart: {
                     backgroundColor: '#f8f9fa',
                     plotBackgroundColor: '#ffffff',
-                    spacingBottom: 0,
-                    spacingTop: 5,
-                    spacingLeft: 5,
-                    spacingRight: 5,
+                    //spacingBottom: 5,
+                    //spacingTop: 5,
+                    //spacingLeft: 5,
+                    //spacingRight: 5,
                 }
             });
         });
 
-        $(document).ready(function () {
+        $(document).ajaxStart(function () {
+            $('#ajaxProgress').removeAttr('hidden');
+        });
+
+        $(document).ajaxStop(function () {
+            $('#ajaxProgress').attr('hidden', true);
+        });
+
+    $(document).ready(function () {
+            toastr.options = {
+            'positionClass': 'toast-bottom-left',
+        }
             $('#hospital_types').multiselect({
                 enableHTML: true,
                 buttonWidth: '100%',
@@ -249,6 +267,9 @@
                 $('#TextHospital').attr('disabled', true);
                 $('#TextHospital').val('');
                 facilityId = 0;
+                selectedHospitals = [];
+                $('#selectedFacilitiesTable').empty();
+                $('#selectedFacilitiesTable').append('<tbody></tbody>');
             }
             else {
                 $('#TextHospital').removeAttr('disabled');
@@ -374,258 +395,340 @@
 
         function SelectFacility() {
             var result = this.value.split("~");
-            this.value = result[1];
-            facilityId = result[0];
+            var healthFacilityName = result[1];
+            var healthFacilityId = result[0];
+            selectedHospitals.push(healthFacilityId);
+            this.value = "";
+
+            $('#selectedFacilitiesTable > tbody:last-child').append
+                ('<tr><td class="font-weight-bold">' + healthFacilityName + '</td><td><a href="#" onclick="updateTable(this,' + healthFacilityId + ');"><i class="fa fa-trash" ></i></a></td></tr>');
+
+        }
+        function updateTable(row, removeId) {
+            $(row).parent().parent().remove();
+            selectedHospitals.splice($.inArray(removeId, selectedHospitals), 1);
+            var t = document.getElementById("selectedFacilitiesTable");
+            if (t.rows.length == 0) {
+                $("#allHospitals").prop('checked', true);
+                $("#allHospitals").change();
+            }
         }
 
         function refreshCharts() {
             if (diagnosisStartCodeId > 0 && diagnosisEndCodeId > 0 && selectedHospitalTypes.length > 0) {
+                $('.prompt').attr('hidden', true);
+                $('.chart').attr('hidden', false);
                 newCaseTrendsByAgeGroup();
                 newCaseTrendsByGender();
                 totalByAgeGroup();
                 totalsByGender();
                 cardSummaries();
             }
+            else {
+                toastr.warning('At least one hospital type and one diagnosis code must be selected');
+            }
 
         }
+
         function newCaseTrendsByAgeGroup() {
-            if (diagnosisStartCodeId > 0 && diagnosisEndCodeId > 0 && selectedHospitalTypes.length > 0) {
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    data: selectedHospitalTypesJson,
-                    url: '../api/DiseaseManagement/GetNewCasesByAgeGroup/?HealthFacilityID=' + facilityId
-                        + '&StartCodeID=' + diagnosisStartCodeId
-                        + '&EndCodeID=' + diagnosisEndCodeId
-                        + '&FromDate=' + startDate
-                        + '&ToDate=' + endDate + '',
-                    contentType: "application/json; charset=utf-8"
-                }).done(function (json) {
-                    var series1535 = [];
-                    var series3660 = [];
-                    var series60Plus = [];
-                    for (var i = 0; i < json.length; i++) {
-                        if (json[i]['AgeGroup'] == '15-35') {
-                            series1535.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
-                        }
-                        if (json[i]['AgeGroup'] == '36-60') {
-                            series3660.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
-                        }
-                        if (json[i]['AgeGroup'] == '60+') {
-                            series60Plus.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
-                        }
-                    }
-                    var chart = new Highcharts.chart('newCasesByAgeGroupChart', {
-                        chart: {
-                            type: 'line'
-                        },
-                        title: { text: '' },
-
-                        subtitle: { text: '' },
-                        credits: false,
-                        xAxis: { type: 'datetime' },
-                        series: [
-
-                            {
-                                name: '15-35 Years',
-                                data: series1535,
-                            },
-                            {
-                                name: '36-60 Years',
-                                data: series3660,
-                            }
-                            ,
-                            {
-                                name: '60+ Years',
-                                data: series60Plus,
-                            }
-
-                        ],
-                        yAxis: {
-                            title: {
-                                text: 'Number of Patients'
-                            }
-                        }
-                    });
-                });
-            }
-            else {
-                alert('missing parameter');
-            }
-        }
-
-        function newCaseTrendsByGender() {
-            if (diagnosisStartCodeId > 0 && diagnosisEndCodeId > 0 && selectedHospitalTypes.length > 0) {
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    data: selectedHospitalTypesJson,
-                    url: '../api/DiseaseManagement/GetNewCasesByGender/?HealthFacilityID=' + facilityId
-                        + '&StartCodeID=' + diagnosisStartCodeId
-                        + '&EndCodeID=' + diagnosisEndCodeId
-                        + '&FromDate=' + startDate
-                        + '&ToDate=' + endDate + '',
-                    contentType: "application/json; charset=utf-8"
-                }).done(function (json) {
-                    var seriesFemale = [];
-                    var seriesMale = [];
-
-                    for (var i = 0; i < json.length; i++) {
-                        seriesFemale.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['FemaleTotal']]);
-                        seriesMale.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['MaleTotal']]);
-                    }
-                    var chart = new Highcharts.chart('newCasesByGenderChart', {
-                        chart: {
-                            type: 'column'
-                        },
-                        title: { text: '' },
-                        subtitle: { text: '' },
-                        plotOptions: { series: { stacking: 'normal' } },
-                        credits: false,
-                        xAxis: { type: 'datetime' },
-                        series: [
-                            {
-                                name: 'Female',
-                                data: seriesFemale,
-                            },
-                            {
-                                name: 'Male',
-                                data: seriesMale,
-                            }
-                        ],
-                        yAxis: {
-                            title: {
-                                text: 'Number of Patients'
-                            }
-                        }
-                    });
-                });
-            }
-            else {
-                alert('missing parameter');
-            }
-        }
-
-        function totalByAgeGroup() {
-            if (diagnosisStartCodeId > 0 && diagnosisEndCodeId > 0 && selectedHospitalTypes.length > 0) {
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    data: selectedHospitalTypesJson,
-                    url: '../api/DiseaseManagement/GetTotalsByAgeGroup/?HealthFacilityID=' + facilityId
-                        + '&StartCodeID=' + diagnosisStartCodeId
-                        + '&EndCodeID=' + diagnosisEndCodeId
-                        + '&FromDate=' + startDate
-                        + '&ToDate=' + endDate + '',
-                    contentType: "application/json; charset=utf-8"
-                }).done(function (json) {
-                    console.log(json);
-                    var chart = new Highcharts.chart('totalByAgeGroupChart', {
-                        chart: {
-                            type: 'pie'
-                        },
-                        title: { text: 'Age Group Summary' },
-                        subtitle: { text: '' },
-                        plotOptions: {
-                            pie: {
-                                allowPointSelect: true,
-                                cursor: 'pointer',
-                                dataLabels: {
-                                    enabled: true,
-                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                                }
-                            }
-                        },
-                        credits: false,
-                        series:
-                            [{
-                                name: 'Age Groups',
-                                colorByPoint: true,
-                                data: [
-                                    {
-                                        name: '15-35 Years',
-                                        y: json[0]['Total1535'],
-                                    },
-                                    {
-                                        name: '36-60 Years',
-                                        y: json[0]['Total3660'],
-                                    }
-                                    ,
-                                    {
-                                        name: '60+ Years',
-                                        y: json[0]['Total60Plus'],
-                                    }
-                                ]
-                            }],
-
-                    });
-                });
-            }
-            else {
-                alert('missing parameter');
-            }
-        }
-
-        function totalsByGender() {
-            if (diagnosisStartCodeId > 0 && diagnosisEndCodeId > 0 && selectedHospitalTypes.length > 0) {
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    data: selectedHospitalTypesJson,
-                    url: '../api/DiseaseManagement/GetTotalsByGender/?HealthFacilityID=' + facilityId
-                        + '&StartCodeID=' + diagnosisStartCodeId
-                        + '&EndCodeID=' + diagnosisEndCodeId
-                        + '&FromDate=' + startDate
-                        + '&ToDate=' + endDate + '',
-                    contentType: "application/json; charset=utf-8"
-                }).done(function (json) {
-                    console.log(json);
-                    var chart = new Highcharts.chart('totalByGenderChart', {
-                        chart: {
-                            type: 'pie'
-                        },
-                        title: { text: 'Gender Summary' },
-                        subtitle: { text: '' },
-                        plotOptions: {
-                            pie: {
-                                allowPointSelect: true,
-                                cursor: 'pointer',
-                                dataLabels: {
-                                    enabled: true,
-                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                                }
-                            }
-                        },
-                        credits: false,
-                        series:
-                            [{
-                                name: 'Gender',
-                                colorByPoint: true,
-                                data: [
-                                    {
-                                        name: 'Female',
-                                        y: json[0]['FemaleTotal'],
-                                    },
-                                    {
-                                        name: 'Male',
-                                        y: json[0]['MaleTotal'],
-                                    }
-                                ]
-                            }],
-
-                    });
-                });
-            }
-            else {
-                alert('missing parameter');
-            }
-        }
-
-        function cardSummaries() {
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
 
             $.ajax({
                 type: 'POST',
-                data: selectedHospitalTypesJson,
+                dataType: 'json',
+                data: payloadJson,
+                url: '../api/DiseaseManagement/GetNewCasesByAgeGroup/?HealthFacilityID=' + facilityId
+                    + '&StartCodeID=' + diagnosisStartCodeId
+                    + '&EndCodeID=' + diagnosisEndCodeId
+                    + '&FromDate=' + startDate
+                    + '&ToDate=' + endDate + '',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (json) {
+                var series01 = [];
+                var series25 = [];
+                var series614 = [];
+                var series1535 = [];
+                var series3660 = [];
+                var series60Plus = [];
+                for (var i = 0; i < json.length; i++) {
+                    if (json[i]['AgeGroup'] == '0-1') {
+                        series01.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                    if (json[i]['AgeGroup'] == '2-5') {
+                        series25.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                    if (json[i]['AgeGroup'] == '6-14') {
+                        series614.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                    if (json[i]['AgeGroup'] == '15-35') {
+                        series1535.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                    if (json[i]['AgeGroup'] == '36-60') {
+                        series3660.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                    if (json[i]['AgeGroup'] == '60+') {
+                        series60Plus.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['Total']]);
+                    }
+                }
+                var chart = new Highcharts.chart('newCasesByAgeGroupChart', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: { text: '' },
+
+                    subtitle: { text: '' },
+                    credits: false,
+                    xAxis: { type: 'datetime' },
+                    series: [
+                        {
+                            name: '0-1 Years',
+                            data: series01,
+                        },
+                        {
+                            name: '2-5 Years',
+                            data: series25,
+                        },
+                        {
+                            name: '6-14 Years',
+                            data: series614,
+                        },
+
+                        {
+                            name: '15-35 Years',
+                            data: series1535,
+                        },
+                        {
+                            name: '36-60 Years',
+                            data: series3660,
+                        }
+                        ,
+                        {
+                            name: '60+ Years',
+                            data: series60Plus,
+                        }
+
+                    ],
+                    yAxis: {
+                        title: {
+                            text: 'Number of Patients'
+                        }
+                    }
+                });
+            });
+
+        }
+
+        function newCaseTrendsByGender() {
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
+
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: payloadJson,
+                url: '../api/DiseaseManagement/GetNewCasesByGender/?HealthFacilityID=' + facilityId
+                    + '&StartCodeID=' + diagnosisStartCodeId
+                    + '&EndCodeID=' + diagnosisEndCodeId
+                    + '&FromDate=' + startDate
+                    + '&ToDate=' + endDate + '',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (json) {
+                var seriesFemale = [];
+                var seriesMale = [];
+
+                for (var i = 0; i < json.length; i++) {
+                    seriesFemale.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['FemaleTotal']]);
+                    seriesMale.push([Date.UTC(json[i]['Year'], json[i]['Month'] - 1), json[i]['MaleTotal']]);
+                }
+                var chart = new Highcharts.chart('newCasesByGenderChart', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: { text: '' },
+                    subtitle: { text: '' },
+                    plotOptions: { series: { stacking: 'normal' } },
+                    credits: false,
+                    xAxis: { type: 'datetime' },
+                    series: [
+                        {
+                            name: 'Female',
+                            data: seriesFemale,
+                        },
+                        {
+                            name: 'Male',
+                            data: seriesMale,
+                        }
+                    ],
+                    yAxis: {
+                        title: {
+                            text: 'Number of Patients'
+                        }
+                    }
+                });
+            });
+
+        }
+
+        function totalByAgeGroup() {
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: payloadJson,
+                url: '../api/DiseaseManagement/GetTotalsByAgeGroup/?HealthFacilityID=' + facilityId
+                    + '&StartCodeID=' + diagnosisStartCodeId
+                    + '&EndCodeID=' + diagnosisEndCodeId
+                    + '&FromDate=' + startDate
+                    + '&ToDate=' + endDate + '',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (json) {
+                console.log(json);
+                var chart = new Highcharts.chart('totalByAgeGroupChart', {
+                    chart: {
+                        type: 'pie',
+                        plotBackgroundColor: '#f8f9fa',
+                    },
+                    title: { text: '' },
+                    subtitle: { text: '' },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                distance: 10
+                            },
+                            //showInLegend: true,
+                        }
+                    },
+                    credits: false,
+                    series:
+                        [{
+                            name: 'Age Groups',
+                            colorByPoint: true,
+                            
+                            data: [
+                                {
+                                    name: '0-1 Years',
+                                    y: json[0]['Total01'],
+                                },
+                                {
+                                    name: '2-5 Years',
+                                    y: json[0]['Total25'],
+                                },
+                                {
+                                    name: '6-14 Years',
+                                    y: json[0]['Total614'],
+                                },
+                                {
+                                    name: '15-35 Years',
+                                    y: json[0]['Total1535'],
+                                },
+                                {
+                                    name: '36-60 Years',
+                                    y: json[0]['Total3660'],
+                                }
+                                ,
+                                {
+                                    name: '60+ Years',
+                                    y: json[0]['Total60Plus'],
+                                }
+                            ]
+                        }],
+
+                });
+            });
+
+        }
+
+        function totalsByGender() {
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: payloadJson,
+                url: '../api/DiseaseManagement/GetTotalsByGender/?HealthFacilityID=' + facilityId
+                    + '&StartCodeID=' + diagnosisStartCodeId
+                    + '&EndCodeID=' + diagnosisEndCodeId
+                    + '&FromDate=' + startDate
+                    + '&ToDate=' + endDate + '',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (json) {
+                console.log(json);
+                var chart = new Highcharts.chart('totalByGenderChart', {
+                    chart: {
+                        type: 'pie',
+                        plotBackgroundColor: '#f8f9fa',
+                    },
+                    title: { text: '' },
+                    subtitle: { text: '' },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>:{point.percentage:.1f}%',
+                                distance: 10,
+                                //color:'#ffffff'
+                            },
+                            //showInLegend: true,
+                        }
+                    },
+                    credits: false,
+                    series:
+                        [{
+                            name: 'Gender',
+                            colorByPoint: true,
+                            data: [
+                                {
+                                    name: 'Female',
+                                    y: json[0]['FemaleTotal'],
+                                },
+                                {
+                                    name: 'Male',
+                                    y: json[0]['MaleTotal'],
+                                }
+                            ]
+                        }],
+
+                });
+            });
+
+        }
+
+        function cardSummaries() {
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
+
+            $.ajax({
+                type: 'POST',
+                data: payloadJson,
                 dataType: 'json',
                 url: '../api/DiseaseManagement/GetSummaries/?HealthFacilityID=' + facilityId
                     + '&StartCodeID=' + diagnosisStartCodeId

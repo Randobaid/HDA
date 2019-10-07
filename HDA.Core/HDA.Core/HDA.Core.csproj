@@ -1792,6 +1792,7 @@
     <Content Include="Views\Reports\OutpatientPrescriptions.cshtml" />
     <Content Include="Views\Administration\DataManagement.cshtml" />
     <Content Include="Views\Reports\DiseaseManagement.cshtml" />
+    <Content Include="Views\Administration\UserManagement.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

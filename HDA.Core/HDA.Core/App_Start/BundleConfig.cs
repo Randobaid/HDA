@@ -23,13 +23,13 @@ namespace HDA.Core
                 "~/Scripts/bootstrap.bundle.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      //"~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/font-awesome.min.css",
                       "~/Content/awesomplete.css",
                       "~/Content/daterangepicker.css",
                       "~/Content/bootstrap-multiselect.css",
-                      "~/Content/toastr.min.css"
+                      "~/Content/toastr.min.css",
+                      "~/Content/datatables.css"
                       )
                       );
 
@@ -44,7 +44,8 @@ namespace HDA.Core
                 "~/Scripts/bootstrap-multiselect.js",
                 "~/Scripts/sweetalert2.all.min.js",
                 "~/Scripts/highstock/highstock.js",
-                "~/Scripts/toastr.min.js"
+                "~/Scripts/toastr.min.js",
+                "~/Scripts/datatables.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/daterangepicker").Include(

@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
 using LinqKit;
@@ -38,33 +36,45 @@ namespace HDA.Core.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetNewCasesByAgeGroup([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityType> selectedFacilityTypes)
+        public IHttpActionResult GetNewCasesByAgeGroup([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
             if (ModelState.IsValid)
             {
+                var selectedFacilitiesPayload = selectedFacilityPayload.First();
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
 
                 var facilityTypeSearchPredicate = PredicateBuilder.New<DiagnosisTotal>();
                 
 
-                foreach (SelectedFacilityType s in selectedFacilityTypes)
+                foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
                     facilityTypeSearchPredicate =
                       facilityTypeSearchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
 
-               
+                var baseDiagnosisTotalSP = PredicateBuilder.New<DiagnosisTotal>();
+                baseDiagnosisTotalSP = baseDiagnosisTotalSP.And(d => d.DiagnosisTotalID > 0);
+                var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
+                if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
+                {
+                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    {
+                        selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+
+                    }
+                }
+
 
                 List<NewCasesByAgeGroup> newCases = new List<NewCasesByAgeGroup>();
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
                                 && h.Year >= fromDate.Year
                                 && h.Year <= toDate.Year
-                                && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
                                 && h.DiagnosisCodeID >= payload.StartCodeID
                                 && h.DiagnosisCodeID <= payload.EndCodeID)
                         group t by new {t.Year, t.Month, t.AgeGroup } into x
@@ -73,7 +83,7 @@ namespace HDA.Core.Controllers
                             x.Key.Year,
                             x.Key.Month,
                             x.Key.AgeGroup,
-                            Total = x.Sum(t => t.Total),
+                            Total = x.Sum(t => (int?)t.Total) ?? 0,
                         };
                 foreach(var total in n.OrderBy(d => new { d.Year, d.Month}))
                 {
@@ -97,33 +107,42 @@ namespace HDA.Core.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetNewCasesByGender([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityType> selectedFacilityTypes)
+        public IHttpActionResult GetNewCasesByGender([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
             if (ModelState.IsValid)
             {
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
-
+                var selectedFacilitiesPayload = selectedFacilityPayload.First();
                 var facilityTypeSearchPredicate = PredicateBuilder.New<DiagnosisTotal>();
 
 
-                foreach (SelectedFacilityType s in selectedFacilityTypes)
+                foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
                     facilityTypeSearchPredicate =
                       facilityTypeSearchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
 
+                var baseDiagnosisTotalSP = PredicateBuilder.New<DiagnosisTotal>();
+                baseDiagnosisTotalSP = baseDiagnosisTotalSP.And(d => d.DiagnosisTotalID > 0);
+                var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
+                if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
+                {
+                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    {
+                        selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
 
-
+                    }
+                }
                 List<NewCasesByGender> newCases = new List<NewCasesByGender>();
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
                                 && h.Year >= fromDate.Year
                                 && h.Year <= toDate.Year
-                                && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
                                 && h.DiagnosisCodeID >= payload.StartCodeID
                                 && h.DiagnosisCodeID <= payload.EndCodeID)
                         group t by new { t.Year, t.Month } into x
@@ -153,31 +172,40 @@ namespace HDA.Core.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetTotalsByAgeGroup([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityType> selectedFacilityTypes)
+        public IHttpActionResult GetTotalsByAgeGroup([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
             if (ModelState.IsValid)
             {
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
-
+                var selectedFacilitiesPayload = selectedFacilityPayload.First();
                 var facilityTypeSearchPredicate = PredicateBuilder.New<DiagnosisTotal>();
-                foreach (SelectedFacilityType s in selectedFacilityTypes)
+                foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
                     facilityTypeSearchPredicate =
                       facilityTypeSearchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
 
-
+                var baseDiagnosisTotalSP = PredicateBuilder.New<DiagnosisTotal>();
+                baseDiagnosisTotalSP = baseDiagnosisTotalSP.And(d => d.DiagnosisTotalID > 0);
+                var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
+                if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
+                {
+                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    {
+                        selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+                    }
+                }
 
                 List<TotalsByAgeGroup> totalCases = new List<TotalsByAgeGroup>();
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
                                 && h.Year >= fromDate.Year
                                 && h.Year <= toDate.Year
-                                && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
                                 && h.DiagnosisCodeID >= payload.StartCodeID
                                 && h.DiagnosisCodeID <= payload.EndCodeID)
                         group t by 1
@@ -212,31 +240,41 @@ namespace HDA.Core.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetTotalsByGender([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityType> selectedFacilityTypes)
+        public IHttpActionResult GetTotalsByGender([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
             if (ModelState.IsValid)
             {
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
-
+                var selectedFacilitiesPayload = selectedFacilityPayload.First();
                 var facilityTypeSearchPredicate = PredicateBuilder.New<DiagnosisTotal>();
-                foreach (SelectedFacilityType s in selectedFacilityTypes)
+                foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
                     facilityTypeSearchPredicate =
                       facilityTypeSearchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
 
+                var baseDiagnosisTotalSP = PredicateBuilder.New<DiagnosisTotal>();
+                baseDiagnosisTotalSP = baseDiagnosisTotalSP.And(d => d.DiagnosisTotalID > 0);
+                var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
+                if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
+                {
+                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    {
+                        selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+                    }
+                }
 
 
                 List<TotalsByGender> totalCases = new List<TotalsByGender>();
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
                                 && h.Year >= fromDate.Year
                                 && h.Year <= toDate.Year
-                                && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
                                 && h.DiagnosisCodeID >= payload.StartCodeID
                                 && h.DiagnosisCodeID <= payload.EndCodeID)
                         group t by 1
@@ -268,36 +306,46 @@ namespace HDA.Core.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetSummaries([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityType> selectedFacilityTypes)
+        public IHttpActionResult GetSummaries([FromUri] DiseaseManagementRequestPayload payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
             if (ModelState.IsValid)
             {
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
-
-
-                int AverageNewCasesPerMonth = 0;
-                int TotalNewCases = 0;
+                var selectedFacilitiesPayload = selectedFacilityPayload.First();
 
                 var facilityTypeSearchPredicate = PredicateBuilder.New<DiagnosisTotal>();
-                foreach (SelectedFacilityType s in selectedFacilityTypes)
+                foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
                     facilityTypeSearchPredicate =
                       facilityTypeSearchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
+
+                var baseDiagnosisTotalSP = PredicateBuilder.New<DiagnosisTotal>();
+                baseDiagnosisTotalSP = baseDiagnosisTotalSP.And(d => d.DiagnosisTotalID > 0);
+                var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
+                if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
+                {
+                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    {
+                        selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+                    }
+                }
+
                 int NumberOfMonths = db.DiagnosisTotals.
-                        Where(facilityTypeSearchPredicate)
-                        .Where(h =>
+                        Where(facilityTypeSearchPredicate).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
+                        Where(h =>
                     h.Month >= fromDate.Month
                     && h.Month <= toDate.Month
                     && h.Year >= fromDate.Year
-                    && h.Year <= toDate.Year
-                    && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true))
+                    && h.Year <= toDate.Year)
                    .Select(v => new { v.Year, v.Month }).Distinct().Count();
 
                 List<Summary> summaries = new List<Summary>();
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
