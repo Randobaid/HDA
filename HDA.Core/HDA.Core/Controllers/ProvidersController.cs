@@ -14,6 +14,20 @@ namespace HDA.Core.Controllers
     {
         //private HDAReportsContext db = new HDAReportsContext();
         private HDACoreContext core = new HDACoreContext();
+        public IHttpActionResult GetProviders()
+        {
+            List<ProviderVM> providers = new List<ProviderVM>();
+            foreach (var provider in core.Providers)
+            {
+                ProviderVM pVM = new ProviderVM
+                {
+                    ProviderID = provider.ProviderID,
+                    ProviderName = provider.ProviderNameEn
+                };
+                providers.Add(pVM);
+            }
+            return Ok(providers);
+        }
         public IHttpActionResult GetProviders(int id)
         {
             List<ProviderVM> providers = new List<ProviderVM>();

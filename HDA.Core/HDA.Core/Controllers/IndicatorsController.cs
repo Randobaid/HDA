@@ -41,6 +41,10 @@ namespace HDA.Core.Controllers
         public IHttpActionResult Details(int id)
         {
             Indicator indicator = db.Indicators.Where(i => i.IndicatorID == id).FirstOrDefault();
+            if(indicator == null)
+            {
+                return NotFound();
+            }
             IndicatorViewModel indicatorVM = new IndicatorViewModel {
                 IndicatorID = indicator.IndicatorID,
                 IndicatorShortName = indicator.IndicatorShortName,
@@ -71,17 +75,51 @@ namespace HDA.Core.Controllers
         }
 
         [Route("api/indicators/{id}")]
-        [HttpPost]
-        public IHttpActionResult Edit(int id, Indicator indicator)
+        [HttpPut]
+        public IHttpActionResult Edit(int id, IndicatorViewModel indicatorViewModel)
         {
-            return Ok();
+            Indicator indicator = db.Indicators.Where(i => i.IndicatorID == id).FirstOrDefault();
+            if(indicator == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    indicator.IndicatorShortName = indicatorViewModel.IndicatorShortName;
+                    indicator.IndicatorNameEn = indicatorViewModel.IndicatorNameEn;
+                    indicator.IndicatorNameAr = indicatorViewModel.IndicatorNameAr;
+                    db.SaveChanges();
+                    return this.Details(indicator.IndicatorID);
+                }
+                return BadRequest("An error occured while updating your record");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Route("api/indicators/{id}")]
-        [HttpPost]
-        public IHttpActionResult Delete(int id, Indicator indicator)
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
         {
-            return Ok();
+            Indicator indicator = db.Indicators.Where(i => i.IndicatorID == id).FirstOrDefault();
+            if(indicator == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                db.Indicators.Remove(indicator);
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
