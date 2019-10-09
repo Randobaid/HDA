@@ -1699,6 +1699,10 @@
     <Compile Include="Migrations\HDAReports\201910091050021_InitialCreate.Designer.cs">
       <DependentUpon>201910091050021_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDAReports\201910091343456_RemoveFK_PrescriptionsTotal.cs" />
+    <Compile Include="Migrations\HDAReports\201910091343456_RemoveFK_PrescriptionsTotal.Designer.cs">
+      <DependentUpon>201910091343456_RemoveFK_PrescriptionsTotal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisCode.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisCodingSystem.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisLookup.cs" />
@@ -1891,6 +1895,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAReports\201910091050021_InitialCreate.resx">
       <DependentUpon>201910091050021_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAReports\201910091343456_RemoveFK_PrescriptionsTotal.resx">
+      <DependentUpon>201910091343456_RemoveFK_PrescriptionsTotal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

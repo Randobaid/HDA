@@ -48,7 +48,7 @@ namespace HDA.Core.Controllers
                     }
                 }
 
-
+                HDAReportsContext hfDb = new HDAReportsContext();
                 List<PrescriptionsPerInstitutionTotal> monthlyTotals = new List<PrescriptionsPerInstitutionTotal>();
 
                 if (selectedFacilitiesPayload.HealthFacilities.Count == 0 || selectedFacilitiesPayload.HealthFacilities.Count > 5)
@@ -95,10 +95,10 @@ namespace HDA.Core.Controllers
                                 && ((payload.PharmacyID > 0) ? h.PharmacyID == payload.PharmacyID : true)
                                 && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
                                 && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true))
-                            group t by new {t.HealthFacility.HealthFacilityNameEn, t.HealthFacilityID, t.Year, t.Month } into x
+                            group t by new {t.HealthFacilityID, t.Year, t.Month } into x
                             select new
                             {
-                                HealthFacilityName = x.Key.HealthFacilityNameEn,
+                                //HealthFacilityName = hfDb.HealthFacilities.Where(a=> a.HealthFacilityID == x.Key.HealthFacilityID).First().HealthFacilityNameEn,
                                 x.Key.HealthFacilityID,
                                 x.Key.Year,
                                 MonthId = x.Key.Month,
@@ -108,7 +108,7 @@ namespace HDA.Core.Controllers
                     {
                         PrescriptionsPerInstitutionTotal p = new PrescriptionsPerInstitutionTotal
                         {
-                            HealthFacilityName = total.HealthFacilityName,
+                            HealthFacilityName = hfDb.HealthFacilities.Where(a => a.HealthFacilityID == total.HealthFacilityID).First().HealthFacilityNameEn,
                             HealthFacilityID = total.HealthFacilityID,
                             Year = total.Year,
                             MonthId = total.MonthId,
@@ -204,7 +204,7 @@ namespace HDA.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetPrescriptionsPerFacility([FromUri] OPRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
-            HDAReportsContext providerQuery = new HDAReportsContext();
+            //HDAReportsContext providerQuery = new HDAReportsContext();
             if (ModelState.IsValid)
             {
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
@@ -228,12 +228,11 @@ namespace HDA.Core.Controllers
                     foreach (int id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
-
                     }
                 }
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
-
+                HDAReportsContext hfDb = new HDAReportsContext();
                 List<PrescriptionsPerInstitutionTotal> monthlyTotals = new List<PrescriptionsPerInstitutionTotal>();
                 var g = from t in db.PrescriptionTotals.
                         Where(searchPredicate).
@@ -246,11 +245,11 @@ namespace HDA.Core.Controllers
                 && ((payload.PharmacyID > 0) ? h.PharmacyID == payload.PharmacyID : true)
                 && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
                 && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true))
-                        group t by new {t.HealthFacilityID, t.HealthFacility.HealthFacilityNameEn } into x
+                        group t by new {t.HealthFacilityID } into x
                         select new
                         {
                             x.Key.HealthFacilityID,
-                            HealthFacilityName = x.Key.HealthFacilityNameEn,
+                            //HealthFacilityName = hfDb.HealthFacilities.Where(a=> a.HealthFacilityID == x.Key.HealthFacilityID).First().HealthFacilityNameEn,
                             Total = x.Sum(t => t.TotalPrescriptions),
                         };
                 var result = g.OrderByDescending(d => new { d.Total });
@@ -259,7 +258,7 @@ namespace HDA.Core.Controllers
 
                     PrescriptionsPerInstitutionTotal p = new PrescriptionsPerInstitutionTotal
                     {
-                        HealthFacilityName = total.HealthFacilityName,
+                        HealthFacilityName = hfDb.HealthFacilities.Where(a => a.HealthFacilityID == total.HealthFacilityID).First().HealthFacilityNameEn,
                         Total = total.Total,
                     };
                     monthlyTotals.Add(p);
