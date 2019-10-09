@@ -211,7 +211,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
-    <Content Include="DatabaseScripts\hdastaging_hdacore\000 healthfacilities.sql" />
+    <Content Include="DatabaseScripts\hdacore_hdareports\000 healthfacilities.sql" />
     <Content Include="DatabaseScripts\ReadMe.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -1694,6 +1694,11 @@
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDAReportsConfig.cs" />
+    <Compile Include="Migrations\HDAReports\201910090739454_InitialCreate.cs" />
+    <Compile Include="Migrations\HDAReports\201910090739454_InitialCreate.Designer.cs">
+      <DependentUpon>201910090739454_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisCode.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisCodingSystem.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisLookup.cs" />
@@ -1719,19 +1724,15 @@
     <Compile Include="Models\HDACore\Geography\Governorate.cs" />
     <Compile Include="Models\HDACore\HDACoreContext.cs" />
     <Compile Include="Models\HDACore\HealthFacility\HealthFacility.cs" />
-    <Compile Include="Models\HDACore\HealthFacility\HealthFacilityLocation.cs" />
-    <Compile Include="Models\HDACore\HealthFacility\HealthFacilityLocationService.cs" />
     <Compile Include="Models\HDACore\HealthFacility\HealthFacilityType.cs" />
-    <Compile Include="Models\HDACore\HealthFacility\Location.cs" />
     <Compile Include="Models\HDACore\Geography\Region.cs" />
     <Compile Include="Models\HDACore\HealthFacility\OutpatientLocation.cs" />
     <Compile Include="Models\HDACore\HealthFacility\Pharmacy.cs" />
     <Compile Include="Models\HDACore\HealthFacility\SectionLookup.cs" />
-    <Compile Include="Models\HDACore\HealthFacility\Service.cs" />
     <Compile Include="Models\HDACore\HealthFacility\SpecialityLookup.cs" />
     <Compile Include="Models\HDACore\HealthFacility\WardLocation.cs" />
-    <Compile Include="Models\HDACore\Indicator\Indicator.cs" />
-    <Compile Include="Models\HDACore\Indicator\Target.cs" />
+    <Compile Include="Models\HDAReports\Indicator\Indicator.cs" />
+    <Compile Include="Models\HDAReports\Indicator\Target.cs" />
     <Compile Include="Models\HDACore\Patient\GenderLookup.cs" />
     <Compile Include="Models\HDACore\Patient\MaritalStatusLookup.cs" />
     <Compile Include="Models\HDACore\Patient\Patient.cs" />
@@ -1749,19 +1750,33 @@
     <Compile Include="Models\HDAIdentity\ApplicationUserManager.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationUserStore.cs" />
     <Compile Include="Models\HDAIdentity\HDAIdentityContext.cs" />
+    <Compile Include="Models\HDAReports\Country.cs" />
+    <Compile Include="Models\HDAReports\DiagnosisCode.cs" />
+    <Compile Include="Models\HDAReports\DiagnosisCodingSystem.cs" />
     <Compile Include="Models\HDAReports\DiagnosisTotal.cs" />
+    <Compile Include="Models\HDAReports\Directorate.cs" />
+    <Compile Include="Models\HDAReports\Domain.cs" />
+    <Compile Include="Models\HDAReports\Drug.cs" />
+    <Compile Include="Models\HDAReports\DrugClass.cs" />
+    <Compile Include="Models\HDAReports\Gender.cs" />
+    <Compile Include="Models\HDAReports\Governorate.cs" />
     <Compile Include="Models\HDAReports\HDAReportsContext.cs" />
+    <Compile Include="Models\HDAReports\HealthFacility.cs" />
+    <Compile Include="Models\HDAReports\HealthFacilityType.cs" />
     <Compile Include="Models\HDAReports\InPatientEncounterTotal.cs" />
     <Compile Include="Models\HDAReports\OutPatientEncounterTotal.cs" />
+    <Compile Include="Models\HDAReports\Pharmacy.cs" />
     <Compile Include="Models\HDAReports\PrescriptionTotal.cs" />
+    <Compile Include="Models\HDAReports\Provider.cs" />
+    <Compile Include="Models\HDAReports\Region.cs" />
     <Compile Include="Models\HDAReports\SurgeryTotal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Diagnosis.cs" />
-    <Compile Include="ViewModels\DirectorateLookup.cs" />
-    <Compile Include="ViewModels\DomainLookup.cs" />
+    <Compile Include="ViewModels\Directorate.cs" />
+    <Compile Include="ViewModels\Domain.cs" />
     <Compile Include="ViewModels\Role.cs" />
     <Compile Include="ViewModels\User.cs" />
     <Compile Include="ViewModels\OutpatientPrescriptions.cs" />
@@ -1806,7 +1821,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DatabaseScripts\hdacore_totals\" />
+    <Folder Include="DatabaseScripts\hdareports_totals\" />
     <Folder Include="Views\Indicators\" />
     <Folder Include="Views\Targets\" />
   </ItemGroup>
@@ -1873,6 +1888,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAReports\201910090739454_InitialCreate.resx">
+      <DependentUpon>201910090739454_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

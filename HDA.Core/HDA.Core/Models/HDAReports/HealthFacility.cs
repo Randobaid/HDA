@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace HDA.Core.Models.HDACore
+namespace HDA.Core.Models.HDAReports
 {
     public class HealthFacility
     {
@@ -16,15 +16,15 @@ namespace HDA.Core.Models.HDACore
         public string HealthFacilityNameAr { get; set; }
         public int GovernorateID { get; set; }
         public virtual Governorate Governorate { get; set; }
-        public int? DomainLookupID { get; set; }
-        public virtual DomainLookup DomainLookup { get; set; }
+        public int? DomainID { get; set; }
+        public virtual Domain Domain { get; set; }
         public int? HealthFacilityTypeID { get; set; }
         public virtual HealthFacilityType HealthFacilityType { get; set; }
         public int EstimatedClinics { get; set; }
         public int EstimatedBeds { get; set; }
         public int EstimatedOperatingRooms { get; set; }
         public int DirectorateLookupID { get; set; }
-        public virtual DirectorateLookup DirectorateLookup { get; set; }
+        public virtual Directorate Directorate { get; set; }
         public int EHRActivationYear { get; set; }
     }
 }

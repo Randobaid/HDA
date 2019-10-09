@@ -1,5 +1,4 @@
 ﻿using HDA.Core.App_Code;
-using HDA.Core.Models.HDACore;
 using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using LinqKit;
@@ -17,7 +16,7 @@ namespace HDA.Core.Controllers
     [Authorize]
     public class InPatientEncountersController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
         [HttpPost]
         public IHttpActionResult GetMonthlyTotals([FromUri] InPatientEncountersRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {

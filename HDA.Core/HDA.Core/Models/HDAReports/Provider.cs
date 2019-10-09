@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace HDA.Core.Models.HDACore
+namespace HDA.Core.Models.HDAReports
 {
     public class Provider
     {
@@ -19,7 +19,7 @@ namespace HDA.Core.Models.HDACore
         public string ProviderNameAr { get; set; }
         //public int SpecialityLookupID { get; set; }
         //public virtual SpecialityLookup SpecialityLookup { get; set; }
-        public int DomainLookupID { get; set; }
-        public virtual DomainLookup DomainLookup { get; set; }
+        public int DomainID { get; set; }
+        public virtual Domain Domain { get; set; }
     }
 }

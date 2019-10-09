@@ -1,4 +1,4 @@
-﻿using HDA.Core.Models.HDACore;
+﻿using HDA.Core.Models.HDAReports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace HDA.Core.Controllers
 {
     public class DiseaseManagementController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
         [HttpPost]
         public IHttpActionResult GetDiagnosisCodes([FromBody] SelectedStartCode selectedStartCode)
         {
@@ -150,8 +150,8 @@ namespace HDA.Core.Controllers
                         {
                             x.Key.Year,
                             x.Key.Month,
-                            FemaleTotal = x.Where(w => w.GenderLookup.GenderEn.ToLower() == "female").Sum(t => (int?)t.Total) ?? 0,
-                            MaleTotal = x.Where(w => w.GenderLookup.GenderEn.ToLower() == "male").Sum(t => (int?)t.Total) ?? 0,
+                            FemaleTotal = x.Where(w => w.Gender.GenderEn.ToLower() == "female").Sum(t => (int?)t.Total) ?? 0,
+                            MaleTotal = x.Where(w => w.Gender.GenderEn.ToLower() == "male").Sum(t => (int?)t.Total) ?? 0,
                         };
                 foreach (var total in n.OrderBy(d => new { d.Year, d.Month }))
                 {
@@ -281,8 +281,8 @@ namespace HDA.Core.Controllers
                         into x
                         select new
                         {
-                            TotalFemale = x.Where(w => w.GenderLookup.GenderEn.ToLower() == "female").Sum(t => (int?)t.Total) ?? 0,
-                            TotalMale = x.Where(w => w.GenderLookup.GenderEn.ToLower() == "male").Sum(t => (int?)t.Total) ?? 0,
+                            TotalFemale = x.Where(w => w.Gender.GenderEn.ToLower() == "female").Sum(t => (int?)t.Total) ?? 0,
+                            TotalMale = x.Where(w => w.Gender.GenderEn.ToLower() == "male").Sum(t => (int?)t.Total) ?? 0,
                         };
                 foreach (var total in n)
                 {

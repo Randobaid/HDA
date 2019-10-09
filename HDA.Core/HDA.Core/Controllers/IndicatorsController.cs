@@ -5,14 +5,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
 
 namespace HDA.Core.Controllers
 {
     [Authorize]
     public class IndicatorsController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
 
         [Route("api/indicators")]
         [HttpGet]

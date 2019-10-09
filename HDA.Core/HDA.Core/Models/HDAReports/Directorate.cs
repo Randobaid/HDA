@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace HDA.Core.ViewModels
+namespace HDA.Core.Models.HDAReports
 {
-    public class DirectorateLookupViewModel
+    public class Directorate
     {
-        public int DirectorateLookupID { get; set; }
+        public int DirectorateID { get; set; }
         public string DirectorateNameEn { get; set; }
         public string DirectorateNameAr { get; set; }
     }

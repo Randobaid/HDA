@@ -5,14 +5,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
 
 namespace HDA.Core.Controllers
 {
     [Authorize]
     public class TargetsController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
 
         [Route("api/targets")]
         [HttpGet]
@@ -21,11 +21,11 @@ namespace HDA.Core.Controllers
             List<TargetViewModel> targets = new List<TargetViewModel>();
             foreach (var target in db.Targets)
             {
-                Indicator indicator = new HDACoreContext().Indicators.Where(i => i.IndicatorID == target.IndicatorID).FirstOrDefault();
-                HealthFacility healthFacility = new HDACoreContext().HealthFacilities.Where(h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
-                Provider provider = new HDACoreContext().Providers.Where(i => i.ProviderID == target.ProviderID).FirstOrDefault();
-                DomainLookup domainLookup = new HDACoreContext().DomainLookups.Where(i => i.DomainLookupID == target.DomainLookupID).FirstOrDefault();
-                DirectorateLookup directorateLookup = new HDACoreContext().DirectorateLookups.Where(i => i.DirectorateLookupID == target.DirectorateLookupID).FirstOrDefault();
+                Indicator indicator = new HDAReportsContext().Indicators.Where(i => i.IndicatorID == target.IndicatorID).FirstOrDefault();
+                HealthFacility healthFacility = new HDAReportsContext().HealthFacilities.Where(h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
+                Provider provider = new HDAReportsContext().Providers.Where(i => i.ProviderID == target.ProviderID).FirstOrDefault();
+                Domain domain = new HDAReportsContext().Domains.Where(i => i.DomainID == target.DomainID).FirstOrDefault();
+                Directorate directorate = new HDAReportsContext().Directorates.Where(i => i.DirectorateID == target.DirectorateID).FirstOrDefault();
                 TargetViewModel t = new TargetViewModel {
                     TargetID = target.TargetID,
                     IndicatorID = target.IndicatorID,
@@ -45,19 +45,19 @@ namespace HDA.Core.Controllers
                         ProviderID = provider.ProviderID,
                         ProviderName = provider.ProviderNameEn,
                     } : new ProviderVM {},
-                    DomainLookupID = target.DomainLookupID,
-                    DomainLookup = target.DomainLookupID != null ? new DomainLookupViewModel {
-                        DomainLookupID = domainLookup.DomainLookupID,
-                        DomainCode = domainLookup.DomainCode,
-                        DomainNameEn = domainLookup.DomainNameEn,
-                        DomainNameAr = domainLookup.DomainNameAr,
-                    } : new DomainLookupViewModel {},
-                    DirectorateLookupID = target.DirectorateLookupID,
-                    DirectorateLookup = target.DirectorateLookupID != null ? new DirectorateLookupViewModel {
-                        DirectorateLookupID = directorateLookup.DirectorateLookupID,
-                        DirectorateNameEn = directorateLookup.DirectorateNameEn,
-                        DirectorateNameAr = directorateLookup.DirectorateNameAr,
-                    } : new DirectorateLookupViewModel {},
+                    DomainID = target.DomainID,
+                    Domain = target.DomainID != null ? new DomainViewModel {
+                        DomainID = domain.DomainID,
+                        DomainCode = domain.DomainCode,
+                        DomainNameEn = domain.DomainNameEn,
+                        DomainNameAr = domain.DomainNameAr,
+                    } : new DomainViewModel {},
+                    DirectorateID = target.DirectorateID,
+                    Directorate = target.DirectorateID != null ? new DirectorateViewModel {
+                        DirectorateID = directorate.DirectorateID,
+                        DirectorateNameEn = directorate.DirectorateNameEn,
+                        DirectorateNameAr = directorate.DirectorateNameAr,
+                    } : new DirectorateViewModel {},
                     EffectiveDate = target.EffectiveDate,
                     Value = target.Value,
                 };
@@ -65,8 +65,8 @@ namespace HDA.Core.Controllers
                 if (!(query is null) && query.IndicatorID > 0 && t.IndicatorID != query.IndicatorID) { continue; }
                 if (!(query is null) && query.HealthFacilityID > 0 && t.HealthFacilityID != query.HealthFacilityID) { continue; }
                 if (!(query is null) && query.ProviderID > 0 && t.ProviderID != query.ProviderID) { continue; }
-                if (!(query is null) && query.DomainLookupID > 0 && t.DomainLookupID != query.DomainLookupID) { continue; }
-                if (!(query is null) && query.DirectorateLookupID > 0 && t.DirectorateLookupID != query.DirectorateLookupID) { continue; }
+                if (!(query is null) && query.DomainID > 0 && t.DomainID != query.DomainID) { continue; }
+                if (!(query is null) && query.DirectorateID > 0 && t.DirectorateID != query.DirectorateID) { continue; }
                 targets.Add(t);
             }
             return Ok(targets);
@@ -81,11 +81,11 @@ namespace HDA.Core.Controllers
             {
                 return NotFound();
             }
-            Indicator indicator = new HDACoreContext().Indicators.Where(i => i.IndicatorID == target.IndicatorID).FirstOrDefault();
-            HealthFacility healthFacility = new HDACoreContext().HealthFacilities.Where(h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
-            Provider provider = new HDACoreContext().Providers.Where(i => i.ProviderID == target.ProviderID).FirstOrDefault();
-            DomainLookup domainLookup = new HDACoreContext().DomainLookups.Where(i => i.DomainLookupID == target.DomainLookupID).FirstOrDefault();
-            DirectorateLookup directorateLookup = new HDACoreContext().DirectorateLookups.Where(i => i.DirectorateLookupID == target.DirectorateLookupID).FirstOrDefault();
+            Indicator indicator = new HDAReportsContext().Indicators.Where(i => i.IndicatorID == target.IndicatorID).FirstOrDefault();
+            HealthFacility healthFacility = new HDAReportsContext().HealthFacilities.Where(h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
+            Provider provider = new HDAReportsContext().Providers.Where(i => i.ProviderID == target.ProviderID).FirstOrDefault();
+            Domain domain = new HDAReportsContext().Domains.Where(i => i.DomainID == target.DomainID).FirstOrDefault();
+            Directorate directorate = new HDAReportsContext().Directorates.Where(i => i.DirectorateID == target.DirectorateID).FirstOrDefault();
             TargetViewModel targetViewModel = new TargetViewModel {
                 TargetID = target.TargetID,
                 IndicatorID = target.IndicatorID,
@@ -105,19 +105,19 @@ namespace HDA.Core.Controllers
                     ProviderID = provider.ProviderID,
                     ProviderName = provider.ProviderNameEn,
                 } : new ProviderVM {},
-                DomainLookupID = target.DomainLookupID,
-                DomainLookup = target.DomainLookupID != null ? new DomainLookupViewModel {
-                    DomainLookupID = domainLookup.DomainLookupID,
-                    DomainCode = domainLookup.DomainCode,
-                    DomainNameEn = domainLookup.DomainNameEn,
-                    DomainNameAr = domainLookup.DomainNameAr,
-                } : new DomainLookupViewModel {},
-                DirectorateLookupID = target.DirectorateLookupID,
-                DirectorateLookup = target.DirectorateLookupID != null ? new DirectorateLookupViewModel {
-                    DirectorateLookupID = directorateLookup.DirectorateLookupID,
-                    DirectorateNameEn = directorateLookup.DirectorateNameEn,
-                    DirectorateNameAr = directorateLookup.DirectorateNameAr,
-                } : new DirectorateLookupViewModel {},
+                DomainID = target.DomainID,
+                Domain = target.DomainID != null ? new DomainViewModel {
+                    DomainID = domain.DomainID,
+                    DomainCode = domain.DomainCode,
+                    DomainNameEn = domain.DomainNameEn,
+                    DomainNameAr = domain.DomainNameAr,
+                } : new DomainViewModel {},
+                DirectorateID = target.DirectorateID,
+                Directorate = target.DirectorateID != null ? new DirectorateViewModel {
+                    DirectorateID = directorate.DirectorateID,
+                    DirectorateNameEn = directorate.DirectorateNameEn,
+                    DirectorateNameAr = directorate.DirectorateNameAr,
+                } : new DirectorateViewModel {},
                 EffectiveDate = target.EffectiveDate,
                 Value = target.Value,
             };
@@ -160,8 +160,8 @@ namespace HDA.Core.Controllers
                     target.IndicatorID = targetViewModel.IndicatorID;
                     target.HealthFacilityID = targetViewModel.HealthFacilityID;
                     target.ProviderID = targetViewModel.ProviderID;
-                    target.DomainLookupID = targetViewModel.DomainLookupID;
-                    target.DirectorateLookupID = targetViewModel.DirectorateLookupID;
+                    target.DomainID = targetViewModel.DomainID;
+                    target.DirectorateID = targetViewModel.DirectorateID;
                     target.EffectiveDate = targetViewModel.EffectiveDate;
                     target.Value = targetViewModel.Value;
                     db.SaveChanges();

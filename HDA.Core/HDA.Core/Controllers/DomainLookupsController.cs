@@ -5,66 +5,66 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
 
 namespace HDA.Core.Controllers
 {
     [Authorize]
-    public class DomainLookupsController : ApiController
+    public class DomainsController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
 
-        [Route("api/domain-lookups")]
+        [Route("api/domain-s")]
         [HttpGet]
-        public IHttpActionResult Index([FromUri] DomainLookupViewModel query)
+        public IHttpActionResult Index([FromUri] DomainViewModel query)
         {
-            List<DomainLookupViewModel> domainLookups = new List<DomainLookupViewModel>();
-            foreach (var domainLookup in db.DomainLookups)
+            List<DomainViewModel> domains = new List<DomainViewModel>();
+            foreach (var domain in db.Domains)
             {
-                DomainLookupViewModel i = new DomainLookupViewModel {
-                    DomainLookupID = domainLookup.DomainLookupID,
-                    DomainCode = domainLookup.DomainCode,
-                    DomainNameEn = domainLookup.DomainNameEn,
-                    DomainNameAr = domainLookup.DomainNameAr,
+                DomainViewModel i = new DomainViewModel {
+                    DomainID = domain.DomainID,
+                    DomainCode = domain.DomainCode,
+                    DomainNameEn = domain.DomainNameEn,
+                    DomainNameAr = domain.DomainNameAr,
                 };
-                if (!(query is null) && query.DomainLookupID > 0 && i.DomainLookupID != query.DomainLookupID) { continue; }
+                if (!(query is null) && query.DomainID > 0 && i.DomainID != query.DomainID) { continue; }
                 if (!(query is null) && !(query.DomainCode is null) && i.DomainCode != query.DomainCode) { continue; }
                 if (!(query is null) && !(query.DomainNameEn is null) && i.DomainNameEn != query.DomainNameEn) { continue; }
                 if (!(query is null) && !(query.DomainNameAr is null) && i.DomainNameAr != query.DomainNameAr) { continue; }
-                domainLookups.Add(i);
+                domains.Add(i);
             }
-            return Ok(domainLookups);
+            return Ok(domains);
         }
 
-        [Route("api/domain-lookups/{id}")]
+        [Route("api/domain-s/{id}")]
         [HttpGet]
         public IHttpActionResult Details(int id)
         {
-            DomainLookup domainLookup = db.DomainLookups.Where(i => i.DomainLookupID == id).FirstOrDefault();
-            if(domainLookup == null)
+            Domain domain = db.Domains.Where(i => i.DomainID == id).FirstOrDefault();
+            if(domain == null)
             {
                 return NotFound();
             }
-            DomainLookupViewModel domainLookupVM = new DomainLookupViewModel {
-                DomainLookupID = domainLookup.DomainLookupID,
-                DomainCode = domainLookup.DomainCode,
-                DomainNameEn = domainLookup.DomainNameEn,
-                DomainNameAr = domainLookup.DomainNameAr,
+            DomainViewModel domainVM = new DomainViewModel {
+                DomainID = domain.DomainID,
+                DomainCode = domain.DomainCode,
+                DomainNameEn = domain.DomainNameEn,
+                DomainNameAr = domain.DomainNameAr,
             };
-            return Ok(domainLookupVM);
+            return Ok(domainVM);
         }
 
-        [Route("api/domain-lookups")]
+        [Route("api/domain-s")]
         [HttpPost]
-        public IHttpActionResult Create(DomainLookup domainLookup)
+        public IHttpActionResult Create(Domain domain)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    db.DomainLookups.Add(domainLookup);
+                    db.Domains.Add(domain);
                     db.SaveChanges();
-                    return Ok(domainLookup);
+                    return Ok(domain);
                 }
                 return BadRequest("An error occured while saving your record");
             }
@@ -74,12 +74,12 @@ namespace HDA.Core.Controllers
             }
         }
 
-        [Route("api/domain-lookups/{id}")]
+        [Route("api/domain-s/{id}")]
         [HttpPut]
-        public IHttpActionResult Edit(int id, DomainLookupViewModel domainLookupViewModel)
+        public IHttpActionResult Edit(int id, DomainViewModel domainViewModel)
         {
-            DomainLookup domainLookup = db.DomainLookups.Where(i => i.DomainLookupID == id).FirstOrDefault();
-            if(domainLookup == null)
+            Domain domain = db.Domains.Where(i => i.DomainID == id).FirstOrDefault();
+            if(domain == null)
             {
                 return NotFound();
             }
@@ -87,11 +87,11 @@ namespace HDA.Core.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    domainLookup.DomainCode = domainLookupViewModel.DomainCode;
-                    domainLookup.DomainNameEn = domainLookupViewModel.DomainNameEn;
-                    domainLookup.DomainNameAr = domainLookupViewModel.DomainNameAr;
+                    domain.DomainCode = domainViewModel.DomainCode;
+                    domain.DomainNameEn = domainViewModel.DomainNameEn;
+                    domain.DomainNameAr = domainViewModel.DomainNameAr;
                     db.SaveChanges();
-                    return this.Details(domainLookup.DomainLookupID);
+                    return this.Details(domain.DomainID);
                 }
                 return BadRequest("An error occured while updating your record");
             }
@@ -101,18 +101,18 @@ namespace HDA.Core.Controllers
             }
         }
 
-        [Route("api/domain-lookups/{id}")]
+        [Route("api/domain-s/{id}")]
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            DomainLookup domainLookup = db.DomainLookups.Where(i => i.DomainLookupID == id).FirstOrDefault();
-            if(domainLookup == null)
+            Domain domain = db.Domains.Where(i => i.DomainID == id).FirstOrDefault();
+            if(domain == null)
             {
                 return NotFound();
             }
             try
             {
-                db.DomainLookups.Remove(domainLookup);
+                db.Domains.Remove(domain);
                 db.SaveChanges();
                 return Ok();
             }

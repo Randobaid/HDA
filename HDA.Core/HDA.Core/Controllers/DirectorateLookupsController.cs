@@ -5,63 +5,63 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
 
 namespace HDA.Core.Controllers
 {
     [Authorize]
-    public class DirectorateLookupsController : ApiController
+    public class DirectoratesController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
 
-        [Route("api/directorate-lookups")]
+        [Route("api/directorate-s")]
         [HttpGet]
-        public IHttpActionResult Index([FromUri] DirectorateLookupViewModel query)
+        public IHttpActionResult Index([FromUri] DirectorateViewModel query)
         {
-            List<DirectorateLookupViewModel> directorateLookups = new List<DirectorateLookupViewModel>();
-            foreach (var directorateLookup in db.DirectorateLookups)
+            List<DirectorateViewModel> directorates = new List<DirectorateViewModel>();
+            foreach (var directorate in db.Directorates)
             {
-                DirectorateLookupViewModel i = new DirectorateLookupViewModel {
-                    DirectorateLookupID = directorateLookup.DirectorateLookupID,
-                    DirectorateNameEn = directorateLookup.DirectorateNameEn,
-                    DirectorateNameAr = directorateLookup.DirectorateNameAr,
+                DirectorateViewModel i = new DirectorateViewModel {
+                    DirectorateID = directorate.DirectorateID,
+                    DirectorateNameEn = directorate.DirectorateNameEn,
+                    DirectorateNameAr = directorate.DirectorateNameAr,
                 };
-                if (!(query is null) && query.DirectorateLookupID > 0 && i.DirectorateLookupID != query.DirectorateLookupID) { continue; }
+                if (!(query is null) && query.DirectorateID > 0 && i.DirectorateID != query.DirectorateID) { continue; }
                 if (!(query is null) && !(query.DirectorateNameEn is null) && i.DirectorateNameEn != query.DirectorateNameEn) { continue; }
                 if (!(query is null) && !(query.DirectorateNameAr is null) && i.DirectorateNameAr != query.DirectorateNameAr) { continue; }
-                directorateLookups.Add(i);
+                directorates.Add(i);
             }
-            return Ok(directorateLookups);
+            return Ok(directorates);
         }
 
-        [Route("api/directorate-lookups/{id}")]
+        [Route("api/directorate-s/{id}")]
         [HttpGet]
         public IHttpActionResult Details(int id)
         {
-            DirectorateLookup directorateLookup = db.DirectorateLookups.Where(i => i.DirectorateLookupID == id).FirstOrDefault();
-            if(directorateLookup == null)
+            Directorate directorate = db.Directorates.Where(i => i.DirectorateID == id).FirstOrDefault();
+            if(directorate == null)
             {
                 return NotFound();
             }
-            DirectorateLookupViewModel directorateLookupVM = new DirectorateLookupViewModel {
-                DirectorateLookupID = directorateLookup.DirectorateLookupID,
-                DirectorateNameEn = directorateLookup.DirectorateNameEn,
-                DirectorateNameAr = directorateLookup.DirectorateNameAr,
+            DirectorateViewModel directorateVM = new DirectorateViewModel {
+                DirectorateID = directorate.DirectorateID,
+                DirectorateNameEn = directorate.DirectorateNameEn,
+                DirectorateNameAr = directorate.DirectorateNameAr,
             };
-            return Ok(directorateLookupVM);
+            return Ok(directorateVM);
         }
 
-        [Route("api/directorate-lookups")]
+        [Route("api/directorate-s")]
         [HttpPost]
-        public IHttpActionResult Create(DirectorateLookup directorateLookup)
+        public IHttpActionResult Create(Directorate directorate)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    db.DirectorateLookups.Add(directorateLookup);
+                    db.Directorates.Add(directorate);
                     db.SaveChanges();
-                    return Ok(directorateLookup);
+                    return Ok(directorate);
                 }
                 return BadRequest("An error occured while saving your record");
             }
@@ -71,12 +71,12 @@ namespace HDA.Core.Controllers
             }
         }
 
-        [Route("api/directorate-lookups/{id}")]
+        [Route("api/directorate-s/{id}")]
         [HttpPut]
-        public IHttpActionResult Edit(int id, DirectorateLookupViewModel directorateLookupViewModel)
+        public IHttpActionResult Edit(int id, DirectorateViewModel directorateViewModel)
         {
-            DirectorateLookup directorateLookup = db.DirectorateLookups.Where(i => i.DirectorateLookupID == id).FirstOrDefault();
-            if(directorateLookup == null)
+            Directorate directorate = db.Directorates.Where(i => i.DirectorateID == id).FirstOrDefault();
+            if(directorate == null)
             {
                 return NotFound();
             }
@@ -84,10 +84,10 @@ namespace HDA.Core.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    directorateLookup.DirectorateNameEn = directorateLookupViewModel.DirectorateNameEn;
-                    directorateLookup.DirectorateNameAr = directorateLookupViewModel.DirectorateNameAr;
+                    directorate.DirectorateNameEn = directorateViewModel.DirectorateNameEn;
+                    directorate.DirectorateNameAr = directorateViewModel.DirectorateNameAr;
                     db.SaveChanges();
-                    return this.Details(directorateLookup.DirectorateLookupID);
+                    return this.Details(directorate.DirectorateID);
                 }
                 return BadRequest("An error occured while updating your record");
             }
@@ -97,18 +97,18 @@ namespace HDA.Core.Controllers
             }
         }
 
-        [Route("api/directorate-lookups/{id}")]
+        [Route("api/directorate-s/{id}")]
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            DirectorateLookup directorateLookup = db.DirectorateLookups.Where(i => i.DirectorateLookupID == id).FirstOrDefault();
-            if(directorateLookup == null)
+            Directorate directorate = db.Directorates.Where(i => i.DirectorateID == id).FirstOrDefault();
+            if(directorate == null)
             {
                 return NotFound();
             }
             try
             {
-                db.DirectorateLookups.Remove(directorateLookup);
+                db.Directorates.Remove(directorate);
                 db.SaveChanges();
                 return Ok();
             }

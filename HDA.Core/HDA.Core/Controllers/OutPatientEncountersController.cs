@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using HDA.Core.App_Code;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using LinqKit;
 using Microsoft.AspNet.Identity;
@@ -12,7 +12,7 @@ namespace HDA.Core.Controllers
 {
     public class OutPatientEncountersController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
         [HttpPost]
         public IHttpActionResult GetMonthlyTotals([FromUri] WorkloadRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
@@ -98,7 +98,7 @@ namespace HDA.Core.Controllers
                         }
                     }
                     int totalPrevYear = 0;
-                    HDACoreContext newConnection = new HDACoreContext();
+                    HDAReportsContext newConnection = new HDAReportsContext();
                     if (payload.PreviousYear == 1)
                     {
                         var y = from t in newConnection.OutPatientEncounterTotals.

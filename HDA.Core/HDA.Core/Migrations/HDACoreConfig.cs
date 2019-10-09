@@ -18,7 +18,7 @@ namespace HDA.Core.Migrations
 
         protected override void Seed(HDACoreContext context)
         {
-            SeedCountries(context);
+            /*SeedCountries(context);
             SeedRegions(context);
             SeedGovernorates(context);
             SeedDomains(context);
@@ -32,10 +32,10 @@ namespace HDA.Core.Migrations
             SeedDepartments(context);
             SeedMovementLookups(context);
             SeedDiagnosisCodingSystems(context);
-            // TODO SeedDiagnosisCodes(context);
+            // TODO SeedDiagnosisCodes(context);*/
             base.Seed(context);
         }
-        private void SeedDiagnosisCodingSystems(HDACoreContext context)
+        /*private void SeedDiagnosisCodingSystems(HDACoreContext context)
         {
             context.DiagnosisCodingSystems.AddOrUpdate(d => d.CodingSystemName,
                 new DiagnosisCodingSystem
@@ -108,9 +108,11 @@ namespace HDA.Core.Migrations
         private void SeedMaritalStatusLookups(HDACoreContext context)
         {
             context.MaritalStatusLookups.AddOrUpdate(m => m.MaritalStatusEn,
-                new MaritalStatusLookup { MaritalStatusEn = "Single", MaritalStatusAr = "أعزب" },
-                new MaritalStatusLookup { MaritalStatusEn = "Married", MaritalStatusAr = "متزوج" },
-                new MaritalStatusLookup { MaritalStatusEn = "Divorced", MaritalStatusAr = "خالع" }
+                new MaritalStatusLookup { MaritalStatusEn = "Single" },
+                new MaritalStatusLookup { MaritalStatusEn = "Married"},
+                new MaritalStatusLookup { MaritalStatusEn = "Divorced" },
+                new MaritalStatusLookup { MaritalStatusEn = "Widowed" },
+                new MaritalStatusLookup { MaritalStatusEn = "Others" }
                 );
             context.SaveChanges();
         }
@@ -119,7 +121,9 @@ namespace HDA.Core.Migrations
         {
             context.GenderLookups.AddOrUpdate(g => g.GenderEn,
                 new GenderLookup { GenderEn = "Female", GenderAr = "أنثى" },
-                new GenderLookup { GenderEn = "Male", GenderAr = "ذكر" });
+                new GenderLookup { GenderEn = "Male", GenderAr = "ذكر" },
+                new GenderLookup { GenderEn = "Undefined" }
+                );
             context.SaveChanges();
         }
 
@@ -216,7 +220,7 @@ namespace HDA.Core.Migrations
 
                 );
             context.SaveChanges();
-        }
+        }*/
 
         /*private void SeedServices(HDACoreContext context)
         {
@@ -347,7 +351,7 @@ namespace HDA.Core.Migrations
 
             context.SaveChanges();
         }*/
-
+        /*
         private void SeedDepartments(HDACoreContext context)
         {
             context.DepartmentLookups.AddOrUpdate(d => d.DepartmentCode,
@@ -391,6 +395,6 @@ namespace HDA.Core.Migrations
                 );
             context.SaveChanges();
         }
-
+        */
     }
 }

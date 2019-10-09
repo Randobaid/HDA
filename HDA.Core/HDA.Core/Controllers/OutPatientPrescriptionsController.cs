@@ -1,5 +1,5 @@
 ﻿using HDA.Core.App_Code;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using LinqKit;
 using Microsoft.AspNet.Identity;
@@ -14,7 +14,7 @@ namespace HDA.Core.Controllers
     [Authorize]
     public class OutPatientPrescriptionsController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
         [HttpPost]
         public IHttpActionResult GetPrescriptionsPerInstitution([FromUri] OPRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
@@ -128,7 +128,7 @@ namespace HDA.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetPrescriptionsPerPharmacy([FromUri] OPRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
-            HDACoreContext pharmDb = new HDACoreContext();
+            HDAReportsContext pharmDb = new HDAReportsContext();
             if (ModelState.IsValid)
             {
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
@@ -204,7 +204,7 @@ namespace HDA.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetPrescriptionsPerFacility([FromUri] OPRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
-            HDACoreContext providerQuery = new HDACoreContext();
+            HDAReportsContext providerQuery = new HDAReportsContext();
             if (ModelState.IsValid)
             {
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();

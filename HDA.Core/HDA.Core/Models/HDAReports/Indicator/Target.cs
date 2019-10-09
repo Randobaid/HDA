@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace HDA.Core.Models.HDACore
+namespace HDA.Core.Models.HDAReports
 {
     public class Target
     {
@@ -14,10 +14,10 @@ namespace HDA.Core.Models.HDACore
         public virtual HealthFacility HealthFacility { get; set; }
         public int? ProviderID { get; set; }
         public virtual Provider Provider { get; set; }
-        public int? DomainLookupID { get; set; }
-        public virtual DomainLookup DomainLookup { get; set;}
-        public int? DirectorateLookupID { get; set; }
-        public virtual DirectorateLookup DirectorateLookup { get; set; }
+        public int? DomainID { get; set; }
+        public virtual Domain Domain { get; set;}
+        public int? DirectorateID { get; set; }
+        public virtual Directorate Directorate { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string Value { get; set; }
     }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace HDA.Core.Models.HDACore
+namespace HDA.Core.Models.HDAReports
 {
     public class Indicator
     {

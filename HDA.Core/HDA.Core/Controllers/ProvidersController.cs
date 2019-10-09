@@ -1,5 +1,4 @@
-﻿using HDA.Core.Models.HDACore;
-using HDA.Core.Models.HDAReports;
+﻿using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace HDA.Core.Controllers
     public class ProvidersController : ApiController
     {
         //private HDAReportsContext db = new HDAReportsContext();
-        private HDACoreContext core = new HDACoreContext();
+        private HDAReportsContext core = new HDAReportsContext();
         public IHttpActionResult GetProviders()
         {
             List<ProviderVM> providers = new List<ProviderVM>();
@@ -33,7 +32,7 @@ namespace HDA.Core.Controllers
             List<ProviderVM> providers = new List<ProviderVM>();
 
             var ps = core.OutPatientEncounterTotals.Where(p => p.HealthFacilityID == id).Select(o => o.ProviderID).Distinct();
-            HDACoreContext providerDb = new HDACoreContext();
+            HDAReportsContext providerDb = new HDAReportsContext();
             foreach (int providerId in ps)
             {
                 var provider = providerDb.Providers.Where(p => p.ProviderID == providerId).First();
