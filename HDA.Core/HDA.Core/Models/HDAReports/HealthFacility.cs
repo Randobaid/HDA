@@ -23,7 +23,7 @@ namespace HDA.Core.Models.HDAReports
         public int EstimatedClinics { get; set; }
         public int EstimatedBeds { get; set; }
         public int EstimatedOperatingRooms { get; set; }
-        public int DirectorateLookupID { get; set; }
+        public int DirectorateID { get; set; }
         public virtual Directorate Directorate { get; set; }
         public int EHRActivationYear { get; set; }
     }

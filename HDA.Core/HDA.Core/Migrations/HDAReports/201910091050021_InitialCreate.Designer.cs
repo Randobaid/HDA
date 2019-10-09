@@ -13,7 +13,7 @@ namespace HDA.Core.Migrations.HDAReports
         
         string IMigrationMetadata.Id
         {
-            get { return "201910090739454_InitialCreate"; }
+            get { return "201910091050021_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

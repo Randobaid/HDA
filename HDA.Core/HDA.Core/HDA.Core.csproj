@@ -1695,9 +1695,9 @@
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\HDAReportsConfig.cs" />
-    <Compile Include="Migrations\HDAReports\201910090739454_InitialCreate.cs" />
-    <Compile Include="Migrations\HDAReports\201910090739454_InitialCreate.Designer.cs">
-      <DependentUpon>201910090739454_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\HDAReports\201910091050021_InitialCreate.cs" />
+    <Compile Include="Migrations\HDAReports\201910091050021_InitialCreate.Designer.cs">
+      <DependentUpon>201910091050021_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisCode.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisCodingSystem.cs" />
@@ -1889,8 +1889,8 @@
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDAReports\201910090739454_InitialCreate.resx">
-      <DependentUpon>201910090739454_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\HDAReports\201910091050021_InitialCreate.resx">
+      <DependentUpon>201910091050021_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

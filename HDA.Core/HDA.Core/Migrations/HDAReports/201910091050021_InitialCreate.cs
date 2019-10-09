@@ -119,12 +119,11 @@ namespace HDA.Core.Migrations.HDAReports
                         EstimatedClinics = c.Int(nullable: false),
                         EstimatedBeds = c.Int(nullable: false),
                         EstimatedOperatingRooms = c.Int(nullable: false),
-                        DirectorateLookupID = c.Int(nullable: false),
+                        DirectorateID = c.Int(nullable: false),
                         EHRActivationYear = c.Int(nullable: false),
-                        Directorate_DirectorateID = c.Int(),
                     })
                 .PrimaryKey(t => t.HealthFacilityID)
-                .ForeignKey("Directorates", t => t.Directorate_DirectorateID)
+                .ForeignKey("Directorates", t => t.DirectorateID, cascadeDelete: true)
                 .ForeignKey("Domains", t => t.DomainID)
                 .ForeignKey("Governorates", t => t.GovernorateID, cascadeDelete: true)
                 .ForeignKey("HealthFacilityTypes", t => t.HealthFacilityTypeID)
@@ -132,7 +131,7 @@ namespace HDA.Core.Migrations.HDAReports
                 .Index(t => t.GovernorateID)
                 .Index(t => t.DomainID)
                 .Index(t => t.HealthFacilityTypeID)
-                .Index(t => t.Directorate_DirectorateID);
+                .Index(t => t.DirectorateID);
             
             CreateTable(
                 "Governorates",
@@ -373,7 +372,7 @@ namespace HDA.Core.Migrations.HDAReports
             DropForeignKey("Governorates", "RegionID", "Regions");
             DropForeignKey("Regions", "CountryID", "Countries");
             DropForeignKey("HealthFacilities", "DomainID", "Domains");
-            DropForeignKey("HealthFacilities", "Directorate_DirectorateID", "Directorates");
+            DropForeignKey("HealthFacilities", "DirectorateID", "Directorates");
             DropForeignKey("DiagnosisTotals", "GenderID", "Genders");
             DropForeignKey("DiagnosisTotals", "DomainID", "Domains");
             DropForeignKey("DiagnosisTotals", "DirectorateID", "Directorates");
@@ -394,7 +393,7 @@ namespace HDA.Core.Migrations.HDAReports
             DropIndex("Drugs", new[] { "DrugClassID" });
             DropIndex("Regions", new[] { "CountryID" });
             DropIndex("Governorates", new[] { "RegionID" });
-            DropIndex("HealthFacilities", new[] { "Directorate_DirectorateID" });
+            DropIndex("HealthFacilities", new[] { "DirectorateID" });
             DropIndex("HealthFacilities", new[] { "HealthFacilityTypeID" });
             DropIndex("HealthFacilities", new[] { "DomainID" });
             DropIndex("HealthFacilities", new[] { "GovernorateID" });
