@@ -309,11 +309,9 @@ namespace HDA.Core.Controllers
 
                     List<SummaryCounts> summary = new List<SummaryCounts>();
                     double AverageQuantityPerPrescription = 0;
+                    int TotalQuantityPerDrug = 0;
                     int? NormalAmountToOrder = 0;
-                    if (payload.DrugId > 0)
-                    {
-                        NormalAmountToOrder = db.Drugs.Where(d => d.DrugID == payload.DrugId).First().NormalAmountToOrder;
-                    }
+                    
 
                     List<PrescriptionTotal> totals = db.PrescriptionTotals.
                                         Where(searchPredicate).
@@ -328,7 +326,13 @@ namespace HDA.Core.Controllers
                                         && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
                                         && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)).ToList();
 
-                    AverageQuantityPerPrescription = (totals.Select(v => v.TotalQuantity).Sum() + totals.Select(v => v.TotalRefillQuantity).Sum()) / totals.Select(v => v.TotalPrescriptions).Sum();
+                    if (payload.DrugId > 0)
+                    {
+                        NormalAmountToOrder = db.Drugs.Where(d => d.DrugID == payload.DrugId).First().NormalAmountToOrder;
+                        TotalQuantityPerDrug = totals.Select(v => v.TotalQuantity).Sum() + totals.Select(v => v.TotalRefillQuantity).Sum();
+                        AverageQuantityPerPrescription = TotalQuantityPerDrug / totals.Select(v => v.TotalPrescriptions).Sum();
+                    }
+
                     SummaryCounts p = new SummaryCounts
                     {
                         TotalFacilities = totals.Select(v => v.HealthFacilityID).Distinct().Count(),
@@ -336,6 +340,7 @@ namespace HDA.Core.Controllers
                         TotalProviders = totals.Select(v => v.ProviderID).Distinct().Count(),
                         TotalDrugClasses = totals.Select(v => v.DrugClassID).Distinct().Count(),
                         TotalDrugs = totals.Select(v => v.DrugId).Distinct().Count(),
+                        TotalQuantityPerDrug = TotalQuantityPerDrug,
                         AverageQuantityPerPrescription = (int)Math.Ceiling(AverageQuantityPerPrescription),
                         NormalAmountToOrder = NormalAmountToOrder == null ? 0 : NormalAmountToOrder,
                     };
