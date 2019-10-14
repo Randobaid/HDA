@@ -2,11 +2,6 @@
 @{
     ViewBag.Title = "OutpatientPrescriptions";
 }
-<style>
-    .card-footer{
-        font-size:12px !important;
-    }
-</style>
 <div class="col-md-12">
     <br />
     <div class="row">
@@ -151,6 +146,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="col-md-12">
+                                                <div class="facilityPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select a Facility to View this Chart</i></div>
                                                 <div id="prescriptionsPerPharmacyChart"></div>
                                             </div>
                                             <br />
@@ -164,7 +160,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="col-md-12">
-                                                <div id="drugPrompt"><i class="fa fa-info-circle fa-2x"></i> <b>Select a Drug to View this Chart</b></div>
+                                                <div id="drugPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select a Drug to View this Chart</i></div>
                                                 <div id="quantitiesPerPharmacyChart"></div>
                                             </div>
                                             <br />
@@ -182,6 +178,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="col-md-12">
+                                                <div class="facilityPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select a Facility to View this Chart</i></div>
                                                 <div id="prescriptionsPerInstitutionChart"></div>
                                             </div>
                                             <br />
@@ -195,6 +192,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="col-md-12">
+                                                <div class="facilityPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select a Facility to View this Chart</i></div>
                                                 <div id="prescriptionsPerProviderChart"></div>
                                             </div>
                                             <br />
@@ -836,12 +834,14 @@
         function refreshCharts() {
 
             if (selectedHospitalTypesJson !== undefined) {
+                $('.facilityPrompt').attr('hidden', true);
                 prescriptionsTrendChart();
                 prescriptionsPerPharmacyChart();
                 prescriptionsPerFacilityChart();
                 GetSummaryCounts();
             }
             else {
+                $('.facilityPrompt').attr('hidden', false);
                 toastr.warning('At least one hospital type must be selected');
             }
         }

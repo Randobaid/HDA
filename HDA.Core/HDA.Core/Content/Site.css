@@ -184,3 +184,7 @@ body #toast-container > div {
 .smallinput {
     font-size: 12px !important;
 }
+
+.card-footer {
+    font-size: 12px !important;
+}
