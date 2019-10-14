@@ -1661,8 +1661,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
-    <Compile Include="Controllers\DirectorateLookupsController.cs" />
-    <Compile Include="Controllers\DomainLookupsController.cs" />
+    <Compile Include="Controllers\DirectoratesController.cs" />
+    <Compile Include="Controllers\DomainsController.cs" />
     <Compile Include="Controllers\DiseaseManagementController.cs" />
     <Compile Include="Controllers\HealthFacilitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

@@ -105,14 +105,14 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="DomainLookupID" class="col-form-label">Domain:</label>
-                            <select class="form-control" name="DomainLookupID">
+                            <label for="DomainID" class="col-form-label">Domain:</label>
+                            <select class="form-control" name="DomainID">
                                 <option value=""> - </option>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="DirectorateLookupID" class="col-form-label">Directorate:</label>
-                            <select class="form-control" name="DirectorateLookupID">
+                            <label for="DirectorateID" class="col-form-label">Directorate:</label>
+                            <select class="form-control" name="DirectorateID">
                                 <option value=""> - </option>
                             </select>
                         </div>
@@ -174,14 +174,14 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="DomainLookupID" class="col-form-label">Domain:</label>
-                            <select class="form-control" name="DomainLookupID">
+                            <label for="DomainID" class="col-form-label">Domain:</label>
+                            <select class="form-control" name="DomainID">
                                 <option value=""> - </option>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="DirectorateLookupID" class="col-form-label">Directorate:</label>
-                            <select class="form-control" name="DirectorateLookupID">
+                            <label for="DirectorateID" class="col-form-label">Directorate:</label>
+                            <select class="form-control" name="DirectorateID">
                                 <option value=""> - </option>
                             </select>
                         </div>
@@ -290,8 +290,8 @@
         var targets = [];
         var healthFacilities = [];
         var providers = [];
-        var domainLookups = [];
-        var directorateLookups = [];
+        var domains = [];
+        var directorates = [];
         
         $(document).ready(function () {
 
@@ -299,8 +299,8 @@
             getAllTargets();
             getAllHealthFacilities();
             getAllProviders();
-            getAllDomainLookups();
-            getAllDirectorateLookups();
+            getAllDomains();
+            getAllDirectorates();
 
             $('input[name="EffectiveDate"]').daterangepicker({
                 singleDatePicker: true,
@@ -374,8 +374,8 @@
                 $(e.currentTarget).find('select[name="IndicatorID"]').val($(e.relatedTarget).data('indicator-id'));
                 $(e.currentTarget).find('select[name="HealthFacilityID"]').val($(e.relatedTarget).data('health-facility-id'));
                 $(e.currentTarget).find('select[name="ProviderID"]').val($(e.relatedTarget).data('provider-id'));
-                $(e.currentTarget).find('select[name="DomainLookupID"]').val($(e.relatedTarget).data('domain-lookup-id'));
-                $(e.currentTarget).find('select[name="DirectorateLookupID"]').val($(e.relatedTarget).data('directorate-lookup-id'));
+                $(e.currentTarget).find('select[name="DomainID"]').val($(e.relatedTarget).data('domain-id'));
+                $(e.currentTarget).find('select[name="DirectorateID"]').val($(e.relatedTarget).data('directorate-id'));
                 $(e.currentTarget).find('input[name="EffectiveDate"]').val($(e.relatedTarget).data('effective-date'));
                 $(e.currentTarget).find('input[name="Value"]').val($(e.relatedTarget).data('value'));
             });
@@ -454,27 +454,27 @@
             });
         }
 
-        function getAllDomainLookups() {
+        function getAllDomains() {
             $.ajax({
                 type: 'GET',
-                url: '../api/domain-lookups',
+                url: '../api/domains',
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
-                domainLookups = res;
-                populateDomainLookupsSelects();
+                domains = res;
+                populateDomainsSelects();
             }).fail( function(xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message , 'error');
             });
         }
 
-        function getAllDirectorateLookups() {
+        function getAllDirectorates() {
             $.ajax({
                 type: 'GET',
-                url: '../api/directorate-lookups',
+                url: '../api/directorates',
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
-                directorateLookups = res;
-                populateDirectorateLookupsSelects();
+                directorates = res;
+                populateDirectoratesSelects();
             }).fail( function(xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message , 'error');
             });
@@ -512,8 +512,8 @@
                     { data: 'Indicator.IndicatorNameEn' },
                     { data: 'HealthFacility.HealthFacilityName' },
                     { data: 'Provider.ProviderName' },
-                    { data: 'DomainLookup.DomainNameEn' },
-                    { data: 'DirectorateLookup.DirectorateNameEn' },
+                    { data: 'Domain.DomainNameEn' },
+                    { data: 'Directorate.DirectorateNameEn' },
                     {
                         render: function (data, type, full, meta) {
                             return full.EffectiveDate.substring(0,10);
@@ -526,8 +526,8 @@
                         render: function (data, type, full, meta) {
                             return '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editTargetModal"' + 
                                 ' data-id="' + full.TargetID + '" data-indicator-id="' + full.IndicatorID  + '" data-health-facility-id="' + full.HealthFacilityID  +
-                                '" data-provider-id="' + full.ProviderID  + '" data-domain-lookup-id="' + full.DomainLookupID +
-                                '" data-directorate-lookup-id="' + full.DirectorateLookupID + '" data-effective-date="' + full.EffectiveDate.substring(0,10) +
+                                '" data-provider-id="' + full.ProviderID  + '" data-domain-id="' + full.DomainID +
+                                '" data-directorate-id="' + full.DirectorateID + '" data-effective-date="' + full.EffectiveDate.substring(0,10) +
                                 '" data-value="' + full.Value + '">' +
                                 '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
                                 '<button type="button" class="btn btn-danger btn-sm" onclick="deleteTarget(\''+ full.TargetID +'\')">' +
@@ -578,28 +578,28 @@
             });
         }
 
-        function populateDomainLookupsSelects() {
-            $('select[name="DomainLookupID"]').each(function(){
+        function populateDomainsSelects() {
+            $('select[name="DomainID"]').each(function(){
                 var element = $(this);
                 element.empty();
                 element.append($("<option> -- </option>"));
-                domainLookups.forEach(function (domainLookup) {
+                domains.forEach(function (domain) {
                     element.append($("<option></option>")
-                        .attr("value", domainLookup.DomainLookupID)
-                        .text(domainLookup.DomainNameEn));
+                        .attr("value", domain.DomainID)
+                        .text(domain.DomainNameEn));
                 });
             });
         }
 
-        function populateDirectorateLookupsSelects() {
-            $('select[name="DirectorateLookupID"]').each(function(){
+        function populateDirectoratesSelects() {
+            $('select[name="DirectorateID"]').each(function(){
                 var element = $(this);
                 element.empty();
                 element.append($("<option> -- </option>"));
-                directorateLookups.forEach(function (directorateLookup) {
+                directorates.forEach(function (directorate) {
                     element.append($("<option></option>")
-                        .attr("value", directorateLookup.DirectorateLookupID)
-                        .text(directorateLookup.DirectorateNameEn));
+                        .attr("value", directorate.DirectorateID)
+                        .text(directorate.DirectorateNameEn));
                 });
             });
         }

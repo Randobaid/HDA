@@ -106,9 +106,46 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="RoleIds">Roles:</label>
-                            <select multiple class="form-control" name="RoleIds">
+                        <div class="form-group col-md-12">
+                            <h5>Roles:</h5>
+                            <hr>
+                            <select multiple name="RoleIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Indicators:</h5>
+                            <hr>
+                            <select multiple name="IndicatorIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Domains:</h5>
+                            <hr>
+                            <select multiple name="DomainIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Directorates:</h5>
+                            <hr>
+                            <select multiple name="DirectorateIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Health Facilities:</h5>
+                            <hr>
+                            <select multiple name="HealthFacilityIds">
                                 <option></option>
                             </select>
                         </div>
@@ -163,9 +200,46 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="RoleIds">Roles:</label>
-                            <select multiple class="form-control" name="RoleIds">
+                        <div class="form-group col-md-12">
+                            <h5>Roles:</h5>
+                            <hr>
+                            <select multiple name="RoleIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Indicators:</h5>
+                            <hr>
+                            <select multiple name="IndicatorIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Domains:</h5>
+                            <hr>
+                            <select multiple name="DomainIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Directorates:</h5>
+                            <hr>
+                            <select multiple name="DirectorateIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Health Facilities:</h5>
+                            <hr>
+                            <select multiple name="HealthFacilityIds">
                                 <option></option>
                             </select>
                         </div>
@@ -246,10 +320,18 @@
     <script type="text/javascript">
         var users = [];
         var roles = [];
+        var domains = [];
+        var directorates = [];
+        var healthFacilities = [];
+        var indicators = [];
         
         $(document).ready(function () {
             getAllUsers();
             getAllRoles();
+            getAllDomains();
+            getAllDirectorates();
+            getAllHealthFacilities();
+            getAllIndicators()
             
             $('#addUserModal form').submit(function() {
                 $('#addUserModal').modal('hide');
@@ -274,7 +356,16 @@
                 $(e.currentTarget).find('input[name="LastName"]').val($(e.relatedTarget).data('lastname'));
                 $(e.currentTarget).find('input[name="Email"]').val($(e.relatedTarget).data('email'));
                 $(e.currentTarget).find('input[name="PhoneNumber"]').val($(e.relatedTarget).data('phonenumber'));
-                $(e.currentTarget).find('select[name="RoleIds"]').val($(e.relatedTarget).data('roleids').split(","));
+                $(e.currentTarget).find('select[name="RoleIds"]').val($(e.relatedTarget).data('roleids').toString().split(","));
+                $(e.currentTarget).find('select[name="RoleIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="IndicatorIds"]').val($(e.relatedTarget).data('indicatorids').toString().split(","));
+                $(e.currentTarget).find('select[name="IndicatorIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="DomainIds"]').val($(e.relatedTarget).data('domainids').toString().split(","));
+                $(e.currentTarget).find('select[name="DomainIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="DirectorateIds"]').val($(e.relatedTarget).data('directorateids').toString().split(","));
+                $(e.currentTarget).find('select[name="DirectorateIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="HealthFacilityIds"]').val($(e.relatedTarget).data('healthfacilityids').toString().split(","));
+                $(e.currentTarget).find('select[name="HealthFacilityIds"]').trigger('change');
             });
 
             $('#editUserModal form').submit(function() {
@@ -336,14 +427,28 @@
                 });
                 return false;
             });
+            $('select[name="RoleIds"]').each(function(){
+                $(this).select2({ width: '100%' });
+            });
+            $('select[name="DomainIds"]').each(function(){
+                $(this).select2({ width: '100%' });
+            });
+            $('select[name="DirectorateIds"]').each(function(){
+                $(this).select2({ width: '100%' });
+            });
+            $('select[name="HealthFacilityIds"]').each(function(){
+                $(this).select2({ width: '100%' });
+            });
+            $('select[name="IndicatorIds"]').each(function(){
+                $(this).select2({ width: '100%' });
+            });
         });
 
         function getAllUsers() {
             $('#userDataTableSpinner').removeAttr('hidden');
-            var url = '../api/users';
             $.ajax({
                 type: 'GET',
-                url: url,
+                url: '../api/users',
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 users = res;
@@ -355,15 +460,66 @@
 
         function getAllRoles() {
             $('#roleDataTableSpinner').removeAttr('hidden');
-            var url = '../api/roles';
             $.ajax({
                 type: 'GET',
-                url: url,
+                url: '../api/roles',
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 roles = res;
                 populateRoleDataTables();
                 populateRoleIdsSelects();
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            });
+        }
+
+        function getAllDomains() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/domains',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                domains = res;
+                populateDomainIdsSelects();
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            });
+        }
+
+        function getAllDirectorates() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/directorates',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                directorates = res;
+                populateDirectorateIdsSelects();
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            });
+        }
+
+        function getAllHealthFacilities() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/HealthFacilities/GetHealthFacilities',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                healthFacilities = res;
+                populateHealthFacilityIdsSelects();
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            });
+        }
+
+        function getAllIndicators() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/indicators',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                indicators = res;
+                populateIndicatorIdsSelects();
             }).fail( function(xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message , 'error');
             });
@@ -394,7 +550,9 @@
                         render: function (data, type, full, meta) {
                             return '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editUserModal"' + 
                                 ' data-id="' + full.Id + '" data-firstname="' + full.FirstName  + '" data-lastname="' + full.LastName  +
-                                '" data-email="' + full.Email  + '" data-phonenumber="' + full.PhoneNumber + '" data-roleids="' + full.RoleIds + '">' +
+                                '" data-email="' + full.Email  + '" data-phonenumber="' + full.PhoneNumber + '" data-roleids="' + full.RoleIds  +
+                                '" data-indicatorids="' + full.IndicatorIds  + '" data-domainids="' + full.DomainIds  + '" data-directorateids="' +
+                                full.DirectorateIds + '" data-healthfacilityids="' + full.HealthFacilityIds + '">' +
                                 '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
                                 '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\''+ full.Id +'\')">' +
                                 '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
@@ -436,6 +594,54 @@
                     element.append($("<option></option>")
                         .attr("value", role.Id)
                         .text(role.Name));
+                });
+            });
+        }
+
+        function populateDomainIdsSelects() {
+            $('select[name="DomainIds"]').each(function(){
+                var element = $(this);
+                element.empty();
+                domains.forEach(function (domain) {
+                    element.append($("<option></option>")
+                        .attr("value", domain.DomainID)
+                        .text(domain.DomainCode));
+                });
+            });
+        }
+
+        function populateDirectorateIdsSelects() {
+            $('select[name="DirectorateIds"]').each(function(){
+                var element = $(this);
+                element.empty();
+                directorates.forEach(function (directorate) {
+                    element.append($("<option></option>")
+                        .attr("value", directorate.DirectorateID)
+                        .text(directorate.DirectorateNameEn));
+                });
+            });
+        }
+        
+        function populateHealthFacilityIdsSelects() {
+            $('select[name="HealthFacilityIds"]').each(function(){
+                var element = $(this);
+                element.empty();
+                healthFacilities.forEach(function (healthFacility) {
+                    element.append($("<option></option>")
+                        .attr("value", healthFacility.ID)
+                        .text(healthFacility.HealthFacilityName));
+                });
+            });
+        }
+
+        function populateIndicatorIdsSelects() {
+            $('select[name="IndicatorIds"]').each(function(){
+                var element = $(this);
+                element.empty();
+                indicators.forEach(function (indicator) {
+                    element.append($("<option></option>")
+                        .attr("value", indicator.IndicatorID)
+                        .text(indicator.IndicatorNameEn));
                 });
             });
         }
