@@ -16,5 +16,9 @@ namespace HDA.Core.ViewModels
         public string Password { get; set; }
         public List<string> RoleIds { get; set; }
         public List<RoleViewModel> Roles { get; set; }
+        public List<string> DomainIds { get; set; }
+        public List<string> DirectorateIds { get; set; }
+        public List<string> HealthFacilityIds { get; set; }
+        public List<string> IndicatorIds { get; set; }
     }
 }

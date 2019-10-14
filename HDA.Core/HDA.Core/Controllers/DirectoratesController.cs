@@ -14,7 +14,7 @@ namespace HDA.Core.Controllers
     {
         private HDAReportsContext db = new HDAReportsContext();
 
-        [Route("api/directorate-s")]
+        [Route("api/directorates")]
         [HttpGet]
         public IHttpActionResult Index([FromUri] DirectorateViewModel query)
         {
@@ -34,7 +34,7 @@ namespace HDA.Core.Controllers
             return Ok(directorates);
         }
 
-        [Route("api/directorate-s/{id}")]
+        [Route("api/directorates/{id}")]
         [HttpGet]
         public IHttpActionResult Details(int id)
         {
@@ -51,7 +51,7 @@ namespace HDA.Core.Controllers
             return Ok(directorateVM);
         }
 
-        [Route("api/directorate-s")]
+        [Route("api/directorates")]
         [HttpPost]
         public IHttpActionResult Create(Directorate directorate)
         {
@@ -71,7 +71,7 @@ namespace HDA.Core.Controllers
             }
         }
 
-        [Route("api/directorate-s/{id}")]
+        [Route("api/directorates/{id}")]
         [HttpPut]
         public IHttpActionResult Edit(int id, DirectorateViewModel directorateViewModel)
         {
@@ -97,7 +97,7 @@ namespace HDA.Core.Controllers
             }
         }
 
-        [Route("api/directorate-s/{id}")]
+        [Route("api/directorates/{id}")]
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {

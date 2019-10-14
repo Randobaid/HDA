@@ -14,7 +14,7 @@ namespace HDA.Core.Controllers
     {
         private HDAReportsContext db = new HDAReportsContext();
 
-        [Route("api/domain-s")]
+        [Route("api/domains")]
         [HttpGet]
         public IHttpActionResult Index([FromUri] DomainViewModel query)
         {
@@ -36,7 +36,7 @@ namespace HDA.Core.Controllers
             return Ok(domains);
         }
 
-        [Route("api/domain-s/{id}")]
+        [Route("api/domains/{id}")]
         [HttpGet]
         public IHttpActionResult Details(int id)
         {
@@ -54,7 +54,7 @@ namespace HDA.Core.Controllers
             return Ok(domainVM);
         }
 
-        [Route("api/domain-s")]
+        [Route("api/domains")]
         [HttpPost]
         public IHttpActionResult Create(Domain domain)
         {
@@ -74,7 +74,7 @@ namespace HDA.Core.Controllers
             }
         }
 
-        [Route("api/domain-s/{id}")]
+        [Route("api/domains/{id}")]
         [HttpPut]
         public IHttpActionResult Edit(int id, DomainViewModel domainViewModel)
         {
@@ -101,7 +101,7 @@ namespace HDA.Core.Controllers
             }
         }
 
-        [Route("api/domain-s/{id}")]
+        [Route("api/domains/{id}")]
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
