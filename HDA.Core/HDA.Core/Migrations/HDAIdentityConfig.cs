@@ -57,12 +57,6 @@ namespace HDA.Core.Migrations
             var roleManager = new ApplicationRoleManager(roleStore);
             var roles = new List<ApplicationRole> {
                 new ApplicationRole { Name = "Admin", Description = "Administrator" },
-                new ApplicationRole { Name = "MoH", Description = "Ministry of Health" },
-                new ApplicationRole { Name = "RMS", Description = "Royal Medical Services" },
-                new ApplicationRole { Name = "KHCC", Description = "King Hussein Cancer Center" },
-                new ApplicationRole { Name = "WHCC", Description = "Woman Health Comprehensive Center" },
-                new ApplicationRole { Name = "JUH", Description = "Jordan University Hospital" },
-                new ApplicationRole { Name = "KAUH", Description = "King Abdullah University Hospital" },
             };
             foreach(var role in roles)
             {
