@@ -177,25 +177,33 @@ namespace HDA.Core.Controllers
                             userManager.AddToRole(user.Id, role.Name);
                         }
                     }
-                    foreach (var indicatorId in userViewModel.IndicatorIds)
-                    {
-                        var claim = new Claim("HDA.Core.Models.HDAReports.Indicator", indicatorId);
-                        userManager.AddClaim(user.Id, claim);
+                    if (userViewModel.IndicatorIds != null) {
+                        foreach (var indicatorId in userViewModel.IndicatorIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.Indicator", indicatorId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
                     }
-                    foreach (var domainId in userViewModel.DomainIds)
-                    {
-                        var claim = new Claim("HDA.Core.Models.HDAReports.Domain", domainId);
-                        userManager.AddClaim(user.Id, claim);
+                    if (userViewModel.DomainIds != null) {
+                        foreach (var domainId in userViewModel.DomainIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.Domain", domainId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
                     }
-                    foreach (var directorateId in userViewModel.DirectorateIds)
-                    {
-                        var claim = new Claim("HDA.Core.Models.HDAReports.Directorate", directorateId);
-                        userManager.AddClaim(user.Id, claim);
+                    if (userViewModel.DirectorateIds != null) {
+                        foreach (var directorateId in userViewModel.DirectorateIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.Directorate", directorateId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
                     }
-                    foreach (var healthFacilityId in userViewModel.HealthFacilityIds)
-                    {
-                        var claim = new Claim("HDA.Core.Models.HDAReports.HealthFacility", healthFacilityId);
-                        userManager.AddClaim(user.Id, claim);
+                    if (userViewModel.HealthFacilityIds != null) {
+                        foreach (var healthFacilityId in userViewModel.HealthFacilityIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.HealthFacility", healthFacilityId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
                     }
                     return this.Details(user.Id);
                 }
@@ -257,25 +265,33 @@ namespace HDA.Core.Controllers
                     {
                         userManager.RemoveClaim(user.Id, claim);
                     }
-                    foreach (var indicatorId in userViewModel.IndicatorIds)
-                    {
-                        var claim = new Claim("HDA.Core.Models.HDAReports.Indicator", indicatorId);
-                        userManager.AddClaim(user.Id, claim);
+                    if (userViewModel.IndicatorIds != null) {
+                        foreach (var indicatorId in userViewModel.IndicatorIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.Indicator", indicatorId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
                     }
-                    foreach (var domainId in userViewModel.DomainIds)
-                    {
-                        var claim = new Claim("HDA.Core.Models.HDAReports.Domain", domainId);
-                        userManager.AddClaim(user.Id, claim);
+                    if (userViewModel.DomainIds != null) {
+                        foreach (var domainId in userViewModel.DomainIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.Domain", domainId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
                     }
-                    foreach (var directorateId in userViewModel.DirectorateIds)
-                    {
-                        var claim = new Claim("HDA.Core.Models.HDAReports.Directorate", directorateId);
-                        userManager.AddClaim(user.Id, claim);
+                    if (userViewModel.DirectorateIds != null) {
+                        foreach (var directorateId in userViewModel.DirectorateIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.Directorate", directorateId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
                     }
-                    foreach (var healthFacilityId in userViewModel.HealthFacilityIds)
-                    {
-                        var claim = new Claim("HDA.Core.Models.HDAReports.HealthFacility", healthFacilityId);
-                        userManager.AddClaim(user.Id, claim);
+                    if (userViewModel.HealthFacilityIds != null) {
+                        foreach (var healthFacilityId in userViewModel.HealthFacilityIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.HealthFacility", healthFacilityId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
                     }
                     return this.Details(user.Id);
                 }
