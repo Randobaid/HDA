@@ -37,6 +37,7 @@ namespace HDA.Core.Controllers
                     IndicatorIds = new List<string>(),
                     DomainIds = new List<string>(),
                     DirectorateIds = new List<string>(),
+                    GovernorateIds = new List<string>(),
                     HealthFacilityIds = new List<string>()
                 };
                 foreach(var roleName in userManager.GetRoles(user.Id))
@@ -63,6 +64,9 @@ namespace HDA.Core.Controllers
                             break;
                         case "HDA.Core.Models.HDAReports.Directorate":
                             userViewModel.DirectorateIds.Add(claim.Value);
+                            break;
+                        case "HDA.Core.Models.HDAReports.Governorate":
+                            userViewModel.GovernorateIds.Add(claim.Value);
                             break;
                         case "HDA.Core.Models.HDAReports.HealthFacility":
                             userViewModel.HealthFacilityIds.Add(claim.Value);
@@ -98,6 +102,7 @@ namespace HDA.Core.Controllers
                 IndicatorIds = new List<string>(),
                 DomainIds = new List<string>(),
                 DirectorateIds = new List<string>(),
+                GovernorateIds = new List<string>(),
                 HealthFacilityIds = new List<string>()
             };
             foreach(var roleName in userManager.GetRoles(user.Id))
@@ -123,6 +128,9 @@ namespace HDA.Core.Controllers
                         break;
                     case "HDA.Core.Models.HDAReports.Directorate":
                         userViewModel.DirectorateIds.Add(claim.Value);
+                        break;
+                     case "HDA.Core.Models.HDAReports.Governorate":
+                        userViewModel.GovernorateIds.Add(claim.Value);
                         break;
                     case "HDA.Core.Models.HDAReports.HealthFacility":
                         userViewModel.HealthFacilityIds.Add(claim.Value);
@@ -195,6 +203,13 @@ namespace HDA.Core.Controllers
                         foreach (var directorateId in userViewModel.DirectorateIds)
                         {
                             var claim = new Claim("HDA.Core.Models.HDAReports.Directorate", directorateId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
+                    }
+                    if (userViewModel.GovernorateIds != null) {
+                        foreach (var governorateId in userViewModel.GovernorateIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.Governorate", governorateId);
                             userManager.AddClaim(user.Id, claim);
                         }
                     }
@@ -283,6 +298,13 @@ namespace HDA.Core.Controllers
                         foreach (var directorateId in userViewModel.DirectorateIds)
                         {
                             var claim = new Claim("HDA.Core.Models.HDAReports.Directorate", directorateId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
+                    }
+                    if (userViewModel.GovernorateIds != null) {
+                        foreach (var governorateId in userViewModel.GovernorateIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.Governorate", governorateId);
                             userManager.AddClaim(user.Id, claim);
                         }
                     }
