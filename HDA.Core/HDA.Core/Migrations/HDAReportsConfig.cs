@@ -26,7 +26,36 @@ namespace HDA.Core.Migrations
             //SeedSectionLookups(context);
             SeedDirectorates(context);
             SeedDiagnosisCodingSystems(context);
+            SeedIndicators(context);
+            SeedTargets(context);
             base.Seed(context);
+        }
+
+        private void SeedTargets(HDAReportsContext context)
+        {
+            context.Targets.AddOrUpdate(t => new { t.EffectiveDate, t.Value },
+                new Target { EffectiveDate = new DateTime(2018,1,1),
+                    IndicatorID = context.Indicators.Where(a => a.IndicatorShortName.ToLower() == "Outpatient Encounters".ToLower()).First().IndicatorID,
+                    Value = "300"
+                },
+                new Target
+                {
+                    EffectiveDate = new DateTime(2018, 1, 1),
+                    IndicatorID = context.Indicators.Where(a => a.IndicatorShortName.ToLower() == "Inpatient Transfers".ToLower()).First().IndicatorID,
+                    Value = "0.7"
+                }
+            );
+            context.SaveChanges();
+        }
+
+        private void SeedIndicators(HDAReportsContext context)
+        {
+            context.Indicators.AddOrUpdate(i => i.IndicatorShortName,
+                new Indicator { IndicatorShortName = "Outpatient Encounters", IndicatorNameEn = "Outpatient Encounters" },
+                new Indicator { IndicatorShortName = "Inpatient Transfers", IndicatorNameEn = "Inpatient Transfers" },
+                new Indicator { IndicatorShortName = "Surgeries", IndicatorNameEn = "Surgeries" }
+                );
+            context.SaveChanges();
         }
 
         private void SeedDirectorates(HDAReportsContext context)
