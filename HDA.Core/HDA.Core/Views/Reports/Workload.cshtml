@@ -516,7 +516,9 @@
                     series47.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['LOS47Total']]);
                     series8Plus.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['LOS8Total']]);
                     seriesNotDischarged.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['LOSNDTotal']]);
-                    targets.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['Target']]);
+                    if (providerId == 0) {
+                        targets.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['Target']]);
+                    }
                 }
                 new Highcharts.chart('inPatientChart', {
                     chart: { type: 'column' },
