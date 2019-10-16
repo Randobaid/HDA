@@ -28,15 +28,15 @@ namespace HDA.Core.Controllers
             }
             return Ok(providers);
         }
-        public IHttpActionResult GetProviders(int id)
+        public IHttpActionResult GetProviders(int i)
         {
             List<ProviderVM> providers = new List<ProviderVM>();
 
-            var ps = core.OutPatientEncounterTotals.Where(p => p.HealthFacilityID == id).Select(o => o.ProviderID).Distinct();
+            var ps = core.Providers; //core.OutPatientEncounterTotals.Where(p => p.HealthFacilityID == id).Select(o => o.ProviderID).Distinct();
             HDAReportsContext providerDb = new HDAReportsContext();
-            foreach (int providerId in ps)
+            foreach (Provider provider in ps)
             {
-                var provider = providerDb.Providers.Where(p => p.ProviderID == providerId).First();
+                //var provider = providerDb.Providers.Where(p => p.ProviderID == providerId).First();
                 ProviderVM pVM = new ProviderVM
                 {
                     ProviderID = provider.ProviderID,
