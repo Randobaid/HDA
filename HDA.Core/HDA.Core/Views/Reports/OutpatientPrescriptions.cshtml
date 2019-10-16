@@ -369,7 +369,7 @@
             GetDrugClasses();
 
             drugTextBox = document.getElementById("TextDrug");
-            drugAws = new Awesomplete(drugTextBox, { minChars: 2 });
+            drugAws = new Awesomplete(drugTextBox, { minChars: 0 });
         });
 
         $("#allHospitals").change(function () {
@@ -428,7 +428,12 @@
             }
             else {
                 $('#TextDrug').removeAttr('disabled');
+                
             }
+        });
+    $('#TextDrug').focus(function () {
+        drugAws.evaluate();
+            drugAws.open();
         });
 
         function GetFacilityList(fInput, aws1, selectedFacilityTypes) {
@@ -559,6 +564,7 @@
             GetDrugs(drugClassId);
             //refreshCharts();
             $('#allDrugs').removeAttr('disabled');
+            
         }
 
         function GetDrugs(selectedDrugClassId) {
@@ -575,6 +581,7 @@
                         drugList.push({ label: serverData[i]['DrugName'], value: serverData[i]['ID'] + '~' + serverData[i]['DrugName'] });
                     }
                     drugAws.list = drugList;
+                    
                 },
                 error: function (data) {
                     console.log(data.d);
