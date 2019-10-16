@@ -28,7 +28,19 @@ namespace HDA.Core.Migrations
             SeedDiagnosisCodingSystems(context);
             SeedIndicators(context);
             SeedTargets(context);
+            SeedReports(context);
             base.Seed(context);
+        }
+
+        private void SeedReports(HDAReportsContext context)
+        {
+            context.Reports.AddOrUpdate(d => d.ReportCode,
+                new Report { ReportNameEn = "Provider Workload", ReportNameAr = "" },
+                new Report { ReportNameEn = "Disease Management", ReportNameAr = "" },
+                new Report { ReportNameEn = "Outpatient Prescriptions", ReportNameAr = "" }
+                );
+
+            context.SaveChanges();
         }
 
         private void SeedTargets(HDAReportsContext context)

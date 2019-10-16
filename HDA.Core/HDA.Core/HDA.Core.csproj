@@ -1767,6 +1767,10 @@
     <Compile Include="Migrations\HDAReports\201910091343456_RemoveFK_PrescriptionsTotal.Designer.cs">
       <DependentUpon>201910091343456_RemoveFK_PrescriptionsTotal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDAReports\201910161255541_AddReportsTable.cs" />
+    <Compile Include="Migrations\HDAReports\201910161255541_AddReportsTable.Designer.cs">
+      <DependentUpon>201910161255541_AddReportsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisCode.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisCodingSystem.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisLookup.cs" />
@@ -1836,6 +1840,7 @@
     <Compile Include="Models\HDAReports\PrescriptionTotal.cs" />
     <Compile Include="Models\HDAReports\Provider.cs" />
     <Compile Include="Models\HDAReports\Region.cs" />
+    <Compile Include="Models\HDAReports\Report.cs" />
     <Compile Include="Models\HDAReports\SurgeryTotal.cs" />
     <Compile Include="Models\HDAReports\Target.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1846,6 +1851,7 @@
     <Compile Include="ViewModels\Directorate.cs" />
     <Compile Include="ViewModels\Domain.cs" />
     <Compile Include="ViewModels\Governorate.cs" />
+    <Compile Include="ViewModels\Report.cs" />
     <Compile Include="ViewModels\Role.cs" />
     <Compile Include="ViewModels\User.cs" />
     <Compile Include="ViewModels\OutpatientPrescriptions.cs" />
@@ -1963,6 +1969,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAReports\201910091343456_RemoveFK_PrescriptionsTotal.resx">
       <DependentUpon>201910091343456_RemoveFK_PrescriptionsTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAReports\201910161255541_AddReportsTable.resx">
+      <DependentUpon>201910161255541_AddReportsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
