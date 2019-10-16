@@ -1662,8 +1662,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\DirectoratesController.cs" />
-    <Compile Include="Controllers\DomainsController.cs" />
     <Compile Include="Controllers\DiseaseManagementController.cs" />
+    <Compile Include="Controllers\DomainsController.cs" />
+    <Compile Include="Controllers\GovernoratesController.cs" />
     <Compile Include="Controllers\HealthFacilitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndicatorsController.cs" />
@@ -1798,8 +1799,7 @@
     <Compile Include="Models\HDACore\HealthFacility\SectionLookup.cs" />
     <Compile Include="Models\HDACore\HealthFacility\SpecialityLookup.cs" />
     <Compile Include="Models\HDACore\HealthFacility\WardLocation.cs" />
-    <Compile Include="Models\HDAReports\Indicator\Indicator.cs" />
-    <Compile Include="Models\HDAReports\Indicator\Target.cs" />
+    <Compile Include="Models\HDAReports\Indicator.cs" />
     <Compile Include="Models\HDACore\Patient\GenderLookup.cs" />
     <Compile Include="Models\HDACore\Patient\MaritalStatusLookup.cs" />
     <Compile Include="Models\HDACore\Patient\Patient.cs" />
@@ -1837,6 +1837,7 @@
     <Compile Include="Models\HDAReports\Provider.cs" />
     <Compile Include="Models\HDAReports\Region.cs" />
     <Compile Include="Models\HDAReports\SurgeryTotal.cs" />
+    <Compile Include="Models\HDAReports\Target.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1844,6 +1845,7 @@
     <Compile Include="ViewModels\Diagnosis.cs" />
     <Compile Include="ViewModels\Directorate.cs" />
     <Compile Include="ViewModels\Domain.cs" />
+    <Compile Include="ViewModels\Governorate.cs" />
     <Compile Include="ViewModels\Role.cs" />
     <Compile Include="ViewModels\User.cs" />
     <Compile Include="ViewModels\OutpatientPrescriptions.cs" />
