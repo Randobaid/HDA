@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using System.Web.Http;
 using System.Web.Mvc;
+using HDA.Core.App_Code;
+using HDA.Core.Models.HDAReports;
+using HDA.Core.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
-    [Authorize]
+    [System.Web.Mvc.Authorize]
     public class ReportsController : Controller
     {
         // GET: Reports
@@ -17,15 +19,50 @@ namespace HDA.Core.Controllers
 
         public ActionResult Workload()
         {
-            return View();
+            if (new PermissionCheck().IsAllowedOnReport("Provider Workload", User.Identity.GetUserId()) == true) {
+                return View();
+            } else {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
+            }
         }
         public ActionResult OutpatientPrescriptions()
         {
-            return View();
+            if (new PermissionCheck().IsAllowedOnReport("Outpatient Prescriptions", User.Identity.GetUserId()) == true) {
+                return View();
+            } else {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
+            }
         }
         public ActionResult DiseaseManagement()
         {
-            return View();
+            if (new PermissionCheck().IsAllowedOnReport("Disease Management", User.Identity.GetUserId()) == true) {
+                return View();
+            } else {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
+            }
+        }
+    }
+
+    [System.Web.Http.Authorize]
+    public class ApiReportsController : ApiController
+    {
+        [System.Web.Http.Route("api/reports")]
+        [System.Web.Http.HttpGet]
+        public IHttpActionResult Index()
+        {
+            HDAReportsContext db = new HDAReportsContext();
+            List<ReportViewModel> reports = new List<ReportViewModel>();
+            foreach (var report in db.Reports)
+            {
+                ReportViewModel i = new ReportViewModel {
+                    ReportID = report.ReportID,
+                    ReportCode = report.ReportCode,
+                    ReportNameEn = report.ReportNameEn,
+                    ReportNameAr = report.ReportNameAr,
+                };
+                reports.Add(i);
+            }
+            return Ok(reports);
         }
     }
 }

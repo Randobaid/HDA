@@ -116,15 +116,6 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <h5>Indicators:</h5>
-                            <hr>
-                            <select multiple name="IndicatorIds">
-                                <option></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
                             <h5>Domains:</h5>
                             <hr>
                             <select multiple name="DomainIds">
@@ -155,6 +146,24 @@
                             <h5>Health Facilities:</h5>
                             <hr>
                             <select multiple name="HealthFacilityIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Reports:</h5>
+                            <hr>
+                            <select multiple name="ReportIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Indicators:</h5>
+                            <hr>
+                            <select multiple name="IndicatorIds">
                                 <option></option>
                             </select>
                         </div>
@@ -219,15 +228,6 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <h5>Indicators:</h5>
-                            <hr>
-                            <select multiple name="IndicatorIds">
-                                <option></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
                             <h5>Domains:</h5>
                             <hr>
                             <select multiple name="DomainIds">
@@ -258,6 +258,24 @@
                             <h5>Health Facilities:</h5>
                             <hr>
                             <select multiple name="HealthFacilityIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Reports:</h5>
+                            <hr>
+                            <select multiple name="ReportIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Indicators:</h5>
+                            <hr>
+                            <select multiple name="IndicatorIds">
                                 <option></option>
                             </select>
                         </div>
@@ -342,6 +360,7 @@
         var directorates = [];
         var governorates = [];
         var healthFacilities = [];
+        var reports = [];
         var indicators = [];
         
         $(document).ready(function () {
@@ -351,7 +370,8 @@
             getAllDirectorates();
             getAllGovernorates();
             getAllHealthFacilities();
-            getAllIndicators()
+            getAllReports();
+            getAllIndicators();
             
             $('#addUserModal form').submit(function() {
                 $('#addUserModal').modal('hide');
@@ -378,8 +398,6 @@
                 $(e.currentTarget).find('input[name="PhoneNumber"]').val($(e.relatedTarget).data('phonenumber'));
                 $(e.currentTarget).find('select[name="RoleIds"]').val($(e.relatedTarget).data('roleids').toString().split(","));
                 $(e.currentTarget).find('select[name="RoleIds"]').trigger('change');
-                $(e.currentTarget).find('select[name="IndicatorIds"]').val($(e.relatedTarget).data('indicatorids').toString().split(","));
-                $(e.currentTarget).find('select[name="IndicatorIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="DomainIds"]').val($(e.relatedTarget).data('domainids').toString().split(","));
                 $(e.currentTarget).find('select[name="DomainIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="DirectorateIds"]').val($(e.relatedTarget).data('directorateids').toString().split(","));
@@ -388,6 +406,10 @@
                 $(e.currentTarget).find('select[name="GovernorateIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').val($(e.relatedTarget).data('healthfacilityids').toString().split(","));
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="ReportIds"]').val($(e.relatedTarget).data('reportids').toString().split(","));
+                $(e.currentTarget).find('select[name="ReportIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="IndicatorIds"]').val($(e.relatedTarget).data('indicatorids').toString().split(","));
+                $(e.currentTarget).find('select[name="IndicatorIds"]').trigger('change');
             });
 
             $('#editUserModal form').submit(function() {
@@ -462,6 +484,9 @@
                 $(this).select2({ width: '100%' });
             });
             $('select[name="HealthFacilityIds"]').each(function(){
+                $(this).select2({ width: '100%' });
+            });
+            $('select[name="ReportIds"]').each(function(){
                 $(this).select2({ width: '100%' });
             });
             $('select[name="IndicatorIds"]').each(function(){
@@ -550,6 +575,19 @@
             });
         }
 
+        function getAllReports() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/reports',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                reports = res;
+                populateReportIdsSelects();
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            });
+        }
+
         function getAllIndicators() {
             $.ajax({
                 type: 'GET',
@@ -589,9 +627,9 @@
                             return '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editUserModal"' + 
                                 ' data-id="' + full.Id + '" data-firstname="' + full.FirstName  + '" data-lastname="' + full.LastName  +
                                 '" data-email="' + full.Email  + '" data-phonenumber="' + full.PhoneNumber + '" data-roleids="' + full.RoleIds  +
-                                '" data-indicatorids="' + full.IndicatorIds  + '" data-domainids="' + full.DomainIds  + '" data-directorateids="' +
-                                full.DirectorateIds + '" data-governorateids="' + full.GovernorateIds + '" data-healthfacilityids="' +
-                                full.HealthFacilityIds + '">' +
+                                '" data-domainids="' + full.DomainIds  + '" data-directorateids="' + full.DirectorateIds +
+                                '" data-governorateids="' + full.GovernorateIds + '" data-reportids="' + full.ReportIds  +
+                                '" data-indicatorids="' + full.IndicatorIds  + '" data-healthfacilityids="' + full.HealthFacilityIds + '">' +
                                 '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
                                 '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\''+ full.Id +'\')">' +
                                 '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
@@ -681,6 +719,18 @@
                     element.append($("<option></option>")
                         .attr("value", healthFacility.ID)
                         .text(healthFacility.HealthFacilityName));
+                });
+            });
+        }
+
+        function populateReportIdsSelects() {
+            $('select[name="ReportIds"]').each(function(){
+                var element = $(this);
+                element.empty();
+                reports.forEach(function (report) {
+                    element.append($("<option></option>")
+                        .attr("value", report.ReportID)
+                        .text(report.ReportNameEn));
                 });
             });
         }
