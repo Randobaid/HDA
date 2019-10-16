@@ -15,7 +15,7 @@ namespace HDA.Core.Models.HDAReports
         public int? ProviderID { get; set; }
         public virtual Provider Provider { get; set; }
         public int? DomainID { get; set; }
-        public virtual Domain Domain { get; set;}
+        public virtual Domain Domain { get; set; }
         public int? DirectorateID { get; set; }
         public virtual Directorate Directorate { get; set; }
         public DateTime EffectiveDate { get; set; }

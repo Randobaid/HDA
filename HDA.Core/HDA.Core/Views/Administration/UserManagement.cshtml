@@ -143,6 +143,15 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
+                            <h5>Governorates:</h5>
+                            <hr>
+                            <select multiple name="GovernorateIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
                             <h5>Health Facilities:</h5>
                             <hr>
                             <select multiple name="HealthFacilityIds">
@@ -237,6 +246,15 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
+                            <h5>Governorates:</h5>
+                            <hr>
+                            <select multiple name="GovernorateIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
                             <h5>Health Facilities:</h5>
                             <hr>
                             <select multiple name="HealthFacilityIds">
@@ -322,6 +340,7 @@
         var roles = [];
         var domains = [];
         var directorates = [];
+        var governorates = [];
         var healthFacilities = [];
         var indicators = [];
         
@@ -330,6 +349,7 @@
             getAllRoles();
             getAllDomains();
             getAllDirectorates();
+            getAllGovernorates();
             getAllHealthFacilities();
             getAllIndicators()
             
@@ -364,6 +384,8 @@
                 $(e.currentTarget).find('select[name="DomainIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="DirectorateIds"]').val($(e.relatedTarget).data('directorateids').toString().split(","));
                 $(e.currentTarget).find('select[name="DirectorateIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="GovernorateIds"]').val($(e.relatedTarget).data('governorateids').toString().split(","));
+                $(e.currentTarget).find('select[name="GovernorateIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').val($(e.relatedTarget).data('healthfacilityids').toString().split(","));
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').trigger('change');
             });
@@ -436,6 +458,9 @@
             $('select[name="DirectorateIds"]').each(function(){
                 $(this).select2({ width: '100%' });
             });
+            $('select[name="GovernorateIds"]').each(function(){
+                $(this).select2({ width: '100%' });
+            });
             $('select[name="HealthFacilityIds"]').each(function(){
                 $(this).select2({ width: '100%' });
             });
@@ -499,6 +524,19 @@
             });
         }
 
+        function getAllGovernorates() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/governorates',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                governorates = res;
+                populateGovernorateIdsSelects();
+            }).fail( function(xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            });
+        }
+
         function getAllHealthFacilities() {
             $.ajax({
                 type: 'GET',
@@ -552,7 +590,8 @@
                                 ' data-id="' + full.Id + '" data-firstname="' + full.FirstName  + '" data-lastname="' + full.LastName  +
                                 '" data-email="' + full.Email  + '" data-phonenumber="' + full.PhoneNumber + '" data-roleids="' + full.RoleIds  +
                                 '" data-indicatorids="' + full.IndicatorIds  + '" data-domainids="' + full.DomainIds  + '" data-directorateids="' +
-                                full.DirectorateIds + '" data-healthfacilityids="' + full.HealthFacilityIds + '">' +
+                                full.DirectorateIds + '" data-governorateids="' + full.GovernorateIds + '" data-healthfacilityids="' +
+                                full.HealthFacilityIds + '">' +
                                 '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
                                 '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\''+ full.Id +'\')">' +
                                 '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
@@ -618,6 +657,18 @@
                     element.append($("<option></option>")
                         .attr("value", directorate.DirectorateID)
                         .text(directorate.DirectorateNameEn));
+                });
+            });
+        }
+
+        function populateGovernorateIdsSelects() {
+            $('select[name="GovernorateIds"]').each(function(){
+                var element = $(this);
+                element.empty();
+                governorates.forEach(function (governorate) {
+                    element.append($("<option></option>")
+                        .attr("value", governorate.GovernorateID)
+                        .text(governorate.GovernorateNameEn));
                 });
             });
         }

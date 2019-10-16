@@ -38,6 +38,15 @@ namespace HDA.Core.App_Code
             ).Select(c => Convert.ToInt32(c.Value)).ToList();
             return allowedDirectorateIDs;
         }
+        
+        public List<int> GetAllowedGovernorateIds(string userId)
+        {
+            var userManager = new ApplicationUserManager(new ApplicationUserStore(new HDAIdentityContext()));
+            var allowedGovernorateIDs = userManager.GetClaims(userId).Where(
+                c => c.Type == "HDA.Core.Models.HDAReports.Governorate"
+            ).Select(c => Convert.ToInt32(c.Value)).ToList();
+            return allowedGovernorateIDs;
+        }
 
         public List<int> GetAllowedFacilityIds(string userId)
         {
@@ -47,9 +56,11 @@ namespace HDA.Core.App_Code
             ).Select(c => Convert.ToInt32(c.Value)).ToList();
             var allowedDomainIDs = this.GetAllowedDomainIds(userId);
             var allowedDirectorateIDs = this.GetAllowedDirectorateIds(userId);
+            var allowedGovernorateIDs = this.GetAllowedGovernorateIds(userId);
             var allHealthFacilityIDs = db.HealthFacilities.Where(h => 
                 allowedDomainIDs.Contains((int) h.DomainID) ||
                 allowedDirectorateIDs.Contains((int) h.DirectorateID) ||
+                allowedGovernorateIDs.Contains((int) h.GovernorateID) ||
                 allowedHealthFacilityIDs.Contains((int) h.HealthFacilityID)
             ).Select(h => h.HealthFacilityID).ToList();
             return allHealthFacilityIDs;
