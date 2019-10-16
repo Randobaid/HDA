@@ -186,11 +186,13 @@ namespace HDA.Core.Controllers
                         userManager.Create(user);
                     }
                     userManager.SetLockoutEnabled(user.Id, false);
-                    foreach (var roleId in userViewModel.RoleIds)
-                    {
-                        ApplicationRole role = roleManager.FindById(roleId);
-                        if(role != null) {
-                            userManager.AddToRole(user.Id, role.Name);
+                    if (userViewModel.RoleIds != null) {
+                        foreach (var roleId in userViewModel.RoleIds)
+                        {
+                            ApplicationRole role = roleManager.FindById(roleId);
+                            if(role != null) {
+                                userManager.AddToRole(user.Id, role.Name);
+                            }
                         }
                     }
                     if (userViewModel.DomainIds != null)
