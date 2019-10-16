@@ -30,7 +30,7 @@ namespace HDA.Core
                       "~/Content/bootstrap-multiselect.css",
                       "~/Content/toastr.min.css",
                       "~/Content/datatables.css",
-                      "~/Content/css/select2.min.css"
+                      "~/Content/select2/select2.min.css"
                       )
                       );
 
