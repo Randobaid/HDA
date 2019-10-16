@@ -87,10 +87,10 @@ namespace HDA.Core.Controllers
                         {
                             x.Key.Year,
                             MonthId = x.Key.Month,
-                            Total13 = x.Where(w => w.LOSGroup == "1-3").Sum(t => t.Total),
-                            Total47 = x.Where(w => w.LOSGroup == "4-7").Sum(t => t.Total),
-                            Total8Plus = x.Where(w => w.LOSGroup == "8+").Sum(t => t.Total),
-                            TotalNotDischarged = x.Where(w => w.LOSGroup == "ND").Sum(t => t.Total)
+                            Total13 = x.Where(w => w.LOSGroup == "1-3").Sum(t => (int?)t.Total) ?? 0,
+                            Total47 = x.Where(w => w.LOSGroup == "4-7").Sum(t => (int?)t.Total) ?? 0,
+                            Total8Plus = x.Where(w => w.LOSGroup == "8+").Sum(t => (int?)t.Total ?? 0),
+                            TotalNotDischarged = x.Where(w => w.LOSGroup == "ND").Sum(t => (int?)t.Total ?? 0)
                         };
                 foreach (var total in g.OrderBy(d => new { d.Year, d.MonthId }))
                 {
