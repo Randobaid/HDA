@@ -34,7 +34,7 @@ namespace HDA.Core.Models.HDAReports
         public DbSet<DiagnosisTotal> DiagnosisTotals { get; set; }
         public DbSet<Indicator> Indicators { get; set; }
         public DbSet<Target> Targets { get; set; }
-
+        public DbSet<Report> Reports { get; set; }
 
     }
     

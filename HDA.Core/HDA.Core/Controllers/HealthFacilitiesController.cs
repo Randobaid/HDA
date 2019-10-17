@@ -10,6 +10,7 @@ using LinqKit;
 
 namespace HDA.Core.Controllers
 {
+    [Authorize]
     public class HealthFacilitiesController : ApiController
     {
         private HDAReportsContext db = new HDAReportsContext();

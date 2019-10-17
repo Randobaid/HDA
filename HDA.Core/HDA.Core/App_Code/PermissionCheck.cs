@@ -12,15 +12,6 @@ namespace HDA.Core.App_Code
     {
         private HDAReportsContext db = new HDAReportsContext();
 
-        public List<int> GetAllowedIndicatorIds(string userId)
-        {
-            var userManager = new ApplicationUserManager(new ApplicationUserStore(new HDAIdentityContext()));
-            var allowedIndicatorIDs = userManager.GetClaims(userId).Where(
-                c => c.Type == "HDA.Core.Models.HDAReports.Indicator"
-            ).Select(c => Convert.ToInt32(c.Value)).ToList();
-            return allowedIndicatorIDs;
-        }
-
         public List<int> GetAllowedDomainIds(string userId)
         {
             var userManager = new ApplicationUserManager(new ApplicationUserStore(new HDAIdentityContext()));
@@ -64,6 +55,42 @@ namespace HDA.Core.App_Code
                 allowedHealthFacilityIDs.Contains((int) h.HealthFacilityID)
             ).Select(h => h.HealthFacilityID).ToList();
             return allHealthFacilityIDs;
+        }
+
+        public List<int> GetAllowedReportIds(string userId)
+        {
+            var userManager = new ApplicationUserManager(new ApplicationUserStore(new HDAIdentityContext()));
+            var allowedReportIDs = userManager.GetClaims(userId).Where(
+                c => c.Type == "HDA.Core.Models.HDAReports.Report"
+            ).Select(c => Convert.ToInt32(c.Value)).ToList();
+            return allowedReportIDs;
+        }
+
+        public List<int> GetAllowedIndicatorIds(string userId)
+        {
+            var userManager = new ApplicationUserManager(new ApplicationUserStore(new HDAIdentityContext()));
+            var allowedIndicatorIDs = userManager.GetClaims(userId).Where(
+                c => c.Type == "HDA.Core.Models.HDAReports.Indicator"
+            ).Select(c => Convert.ToInt32(c.Value)).ToList();
+            return allowedIndicatorIDs;
+        }
+
+        public Boolean IsAllowedOnReport(string reportName, string userId)
+        {
+            var allowedReportIDs = this.GetAllowedReportIds(userId);
+            var reportNo = db.Reports.Where(r =>
+                allowedReportIDs.Contains(r.ReportID) &&
+                (
+                    r.ReportCode == reportName ||
+                    r.ReportNameAr == reportName ||
+                    r.ReportNameEn == reportName
+                )
+            ).Count();
+            if (reportNo >= 1) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace HDA.Core.Controllers
 {
+    [Authorize]
     public class ProvidersController : ApiController
     {
         //private HDAReportsContext db = new HDAReportsContext();

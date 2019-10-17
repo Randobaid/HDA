@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
+    [Authorize]
     public class OutPatientEncountersController : ApiController
     {
         private HDAReportsContext db = new HDAReportsContext();

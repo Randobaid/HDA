@@ -20,6 +20,7 @@ namespace HDA.Core.ViewModels
         public List<string> DirectorateIds { get; set; }
         public List<string> GovernorateIds { get; set; }
         public List<string> HealthFacilityIds { get; set; }
+        public List<string> ReportIds { get; set; }
         public List<string> IndicatorIds { get; set; }
     }
 }
