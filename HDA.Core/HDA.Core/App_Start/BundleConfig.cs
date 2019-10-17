@@ -47,7 +47,10 @@ namespace HDA.Core
                 "~/Scripts/highstock/highstock.js",
                 "~/Scripts/toastr.min.js",
                 "~/Scripts/datatables.js",
-                "~/Scripts/select2.min.js"
+                "~/Scripts/select2.min.js",
+                "~/Scripts/highstock/modules/exporting.js",
+                "~/Scripts/highstock/modules/offline-exporting.js",
+                "~/Scripts/highstock/modules/export-data.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/daterangepicker").Include(

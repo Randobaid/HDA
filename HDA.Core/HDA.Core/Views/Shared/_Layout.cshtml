@@ -79,12 +79,3 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
-@section Scripts {
-    <script type="text/javascript">
-        $(document).ajaxError(function () {
-            $('#ajaxProgress').attr('hidden', true);
-            toastr.warning('An error occured during the request. Please contact support.');
-        });
-    </script>
-}
