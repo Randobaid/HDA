@@ -174,26 +174,5 @@ namespace HDA.Core.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [Route("api/targets/{id}")]
-        [HttpDelete]
-        public IHttpActionResult Delete(int id)
-        {
-            Target target = db.Targets.Where(i => i.TargetID == id).FirstOrDefault();
-            if(target == null)
-            {
-                return NotFound();
-            }
-            try
-            {
-                db.Targets.Remove(target);
-                db.SaveChanges();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }
