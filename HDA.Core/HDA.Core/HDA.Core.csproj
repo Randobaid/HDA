@@ -933,6 +933,7 @@
     <Content Include="Scripts\highstock\themes\sand-signika.js.map" />
     <Content Include="Scripts\highstock\themes\skies.js.map" />
     <Content Include="Scripts\highstock\themes\sunset.js.map" />
+    <None Include="Properties\PublishProfiles\prod.pubxml" />
     <None Include="Properties\PublishProfiles\triage.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\highcharts\7.1.2\themes\sunset.src.js" />
