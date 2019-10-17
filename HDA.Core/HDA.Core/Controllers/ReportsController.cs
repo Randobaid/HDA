@@ -19,7 +19,7 @@ namespace HDA.Core.Controllers
 
         public ActionResult Workload()
         {
-            if (new PermissionCheck().IsAllowedOnReport("Provider Workload", User.Identity.GetUserId()) == true) {
+            if (new PermissionCheck().IsAllowedOnReport("Provider Workload", User.Identity.GetUserId()) == true || User.IsInRole("Admin")) {
                 return View();
             } else {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
@@ -27,7 +27,7 @@ namespace HDA.Core.Controllers
         }
         public ActionResult OutpatientPrescriptions()
         {
-            if (new PermissionCheck().IsAllowedOnReport("Outpatient Prescriptions", User.Identity.GetUserId()) == true) {
+            if (new PermissionCheck().IsAllowedOnReport("Outpatient Prescriptions", User.Identity.GetUserId()) == true || User.IsInRole("Admin")) {
                 return View();
             } else {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
@@ -35,7 +35,7 @@ namespace HDA.Core.Controllers
         }
         public ActionResult DiseaseManagement()
         {
-            if (new PermissionCheck().IsAllowedOnReport("Disease Management", User.Identity.GetUserId()) == true) {
+            if (new PermissionCheck().IsAllowedOnReport("Disease Management", User.Identity.GetUserId()) == true || User.IsInRole("Admin")) {
                 return View();
             } else {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);

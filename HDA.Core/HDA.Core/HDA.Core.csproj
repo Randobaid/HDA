@@ -1816,6 +1816,7 @@
     <Content Include="Views\Administration\DataManagement.cshtml" />
     <Content Include="Views\Reports\DiseaseManagement.cshtml" />
     <Content Include="Views\Administration\UserManagement.cshtml" />
+    <Content Include="Views\Shared\_ReportsPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
