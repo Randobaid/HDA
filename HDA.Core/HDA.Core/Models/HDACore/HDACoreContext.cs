@@ -1,4 +1,4 @@
-﻿using MySql.Data.Entity;
+﻿/*using MySql.Data.Entity;
 using System.Data.Entity;
 
 namespace HDA.Core.Models.HDACore
@@ -7,14 +7,14 @@ namespace HDA.Core.Models.HDACore
     public class HDACoreContext : DbContext
     {
         public HDACoreContext() : base("hdacore") { }
-        /*public DbSet<Country> Countries { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Governorate> Governorates { get; set; }
         public DbSet<DomainLookup> DomainLookups { get; set; }
         public DbSet<DirectorateLookup> DirectorateLookups { get; set; }
         public DbSet<HealthFacilityType> HealthFacilityTypes { get; set; }
         public DbSet<HealthFacility> HealthFacilities { get; set; }
-        public DbSet<Provider> Providers { get; set; }*/
+        public DbSet<Provider> Providers { get; set; }
         public DbSet<GenderLookup> GenderLookups { get; set; }
         public DbSet<MaritalStatusLookup> MaritalStatusLookups { get; set; }
         public DbSet<Patient> Patients { get; set; }
@@ -43,9 +43,9 @@ namespace HDA.Core.Models.HDACore
         
         public DbSet<PrescriptionRefill> PrescriptionRefills { get; set; }
         
-        
         public DbSet<PatientDiagnosis> PatientDiagnoses { get; set; }
         
     }
     
 }
+*/

@@ -1682,78 +1682,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\HDACoreConfig.cs" />
-    <Compile Include="Migrations\HDACore\201909161444254_InitialCreate.cs" />
-    <Compile Include="Migrations\HDACore\201909161444254_InitialCreate.Designer.cs">
-      <DependentUpon>201909161444254_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909161515551_AddDrugParentClassID.cs" />
-    <Compile Include="Migrations\HDACore\201909161515551_AddDrugParentClassID.Designer.cs">
-      <DependentUpon>201909161515551_AddDrugParentClassID.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909161522336_EditDrugTable.cs" />
-    <Compile Include="Migrations\HDACore\201909161522336_EditDrugTable.Designer.cs">
-      <DependentUpon>201909161522336_EditDrugTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909161526116_EditDrugTableAddDrugEstimatedPrice.cs" />
-    <Compile Include="Migrations\HDACore\201909161526116_EditDrugTableAddDrugEstimatedPrice.Designer.cs">
-      <DependentUpon>201909161526116_EditDrugTableAddDrugEstimatedPrice.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.cs" />
-    <Compile Include="Migrations\HDACore\201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.Designer.cs">
-      <DependentUpon>201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.cs" />
-    <Compile Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.Designer.cs">
-      <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.cs" />
-    <Compile Include="Migrations\HDACore\201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.Designer.cs">
-      <DependentUpon>201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909230712293_Refills.cs" />
-    <Compile Include="Migrations\HDACore\201909230712293_Refills.Designer.cs">
-      <DependentUpon>201909230712293_Refills.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909240651338_AddDiagnosisCodingSystems.cs" />
-    <Compile Include="Migrations\HDACore\201909240651338_AddDiagnosisCodingSystems.Designer.cs">
-      <DependentUpon>201909240651338_AddDiagnosisCodingSystems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909240704376_AddDiagnosisCodes.cs" />
-    <Compile Include="Migrations\HDACore\201909240704376_AddDiagnosisCodes.Designer.cs">
-      <DependentUpon>201909240704376_AddDiagnosisCodes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909240738084_PatientDiagnoses.cs" />
-    <Compile Include="Migrations\HDACore\201909240738084_PatientDiagnoses.Designer.cs">
-      <DependentUpon>201909240738084_PatientDiagnoses.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909240831256_DiagnosisTotals.cs" />
-    <Compile Include="Migrations\HDACore\201909240831256_DiagnosisTotals.Designer.cs">
-      <DependentUpon>201909240831256_DiagnosisTotals.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909241123222_DiagnosisTotals_AddHealthFacilityType.cs" />
-    <Compile Include="Migrations\HDACore\201909241123222_DiagnosisTotals_AddHealthFacilityType.Designer.cs">
-      <DependentUpon>201909241123222_DiagnosisTotals_AddHealthFacilityType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.cs" />
-    <Compile Include="Migrations\HDACore\201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.Designer.cs">
-      <DependentUpon>201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909301334254_add_fk_healthfacilititytotals.cs" />
-    <Compile Include="Migrations\HDACore\201909301334254_add_fk_healthfacilititytotals.Designer.cs">
-      <DependentUpon>201909301334254_add_fk_healthfacilititytotals.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201910010654410_edit_InPatientEncounterTotal.cs" />
-    <Compile Include="Migrations\HDACore\201910010654410_edit_InPatientEncounterTotal.Designer.cs">
-      <DependentUpon>201910010654410_edit_InPatientEncounterTotal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.cs" />
-    <Compile Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.Designer.cs">
-      <DependentUpon>201910010741056_edit_SurgeryTotal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201910030857524_editPrescriptionTotal.cs" />
-    <Compile Include="Migrations\HDACore\201910030857524_editPrescriptionTotal.Designer.cs">
-      <DependentUpon>201910030857524_editPrescriptionTotal.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
@@ -1892,6 +1820,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="DatabaseScripts\hdareports_totals\" />
+    <Folder Include="Migrations\HDACore\" />
     <Folder Include="Views\Indicators\" />
     <Folder Include="Views\Targets\" />
   </ItemGroup>
@@ -1902,60 +1831,6 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\HDACore\201909161444254_InitialCreate.resx">
-      <DependentUpon>201909161444254_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909161515551_AddDrugParentClassID.resx">
-      <DependentUpon>201909161515551_AddDrugParentClassID.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909161522336_EditDrugTable.resx">
-      <DependentUpon>201909161522336_EditDrugTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909161526116_EditDrugTableAddDrugEstimatedPrice.resx">
-      <DependentUpon>201909161526116_EditDrugTableAddDrugEstimatedPrice.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.resx">
-      <DependentUpon>201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.resx">
-      <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.resx">
-      <DependentUpon>201909191038357_EditPrescriptionTotal_Add_DomainID_DirectorateID_HealthFacilityTypeID.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909230712293_Refills.resx">
-      <DependentUpon>201909230712293_Refills.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909240651338_AddDiagnosisCodingSystems.resx">
-      <DependentUpon>201909240651338_AddDiagnosisCodingSystems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909240704376_AddDiagnosisCodes.resx">
-      <DependentUpon>201909240704376_AddDiagnosisCodes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909240738084_PatientDiagnoses.resx">
-      <DependentUpon>201909240738084_PatientDiagnoses.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909240831256_DiagnosisTotals.resx">
-      <DependentUpon>201909240831256_DiagnosisTotals.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909241123222_DiagnosisTotals_AddHealthFacilityType.resx">
-      <DependentUpon>201909241123222_DiagnosisTotals_AddHealthFacilityType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.resx">
-      <DependentUpon>201909301314103_editoutpatientencountertotals_add_domainid_healthfacilitytype.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909301334254_add_fk_healthfacilititytotals.resx">
-      <DependentUpon>201909301334254_add_fk_healthfacilititytotals.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201910010654410_edit_InPatientEncounterTotal.resx">
-      <DependentUpon>201910010654410_edit_InPatientEncounterTotal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201910010741056_edit_SurgeryTotal.resx">
-      <DependentUpon>201910010741056_edit_SurgeryTotal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201910030857524_editPrescriptionTotal.resx">
-      <DependentUpon>201910030857524_editPrescriptionTotal.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>

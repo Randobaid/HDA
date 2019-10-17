@@ -1,4 +1,4 @@
-﻿using HDA.Core.Models;
+﻿/*using HDA.Core.Models;
 using HDA.Core.Models.HDACore;
 using System;
 using System.Data.Entity.Migrations;
@@ -18,7 +18,7 @@ namespace HDA.Core.Migrations
 
         protected override void Seed(HDACoreContext context)
         {
-            /*SeedCountries(context);
+            SeedCountries(context);
             SeedRegions(context);
             SeedGovernorates(context);
             SeedDomains(context);
@@ -32,10 +32,10 @@ namespace HDA.Core.Migrations
             SeedDepartments(context);
             SeedMovementLookups(context);
             SeedDiagnosisCodingSystems(context);
-            // TODO SeedDiagnosisCodes(context);*/
+            
             base.Seed(context);
         }
-        /*private void SeedDiagnosisCodingSystems(HDACoreContext context)
+        private void SeedDiagnosisCodingSystems(HDACoreContext context)
         {
             context.DiagnosisCodingSystems.AddOrUpdate(d => d.CodingSystemName,
                 new DiagnosisCodingSystem
@@ -100,8 +100,7 @@ namespace HDA.Core.Migrations
         {
             context.SurgerySeverityLookups.AddOrUpdate(s => s.SeverityEn,
                 new SurgerySeverityLookup { SeverityEn = "Major" },
-                new SurgerySeverityLookup { SeverityEn = "Minor" }//,
-                //new SurgerySeverityLookup { SeverityEn = "Undefined" }
+                new SurgerySeverityLookup { SeverityEn = "Minor" }
                 );
         }
 
@@ -220,9 +219,9 @@ namespace HDA.Core.Migrations
 
                 );
             context.SaveChanges();
-        }*/
+        }
 
-        /*private void SeedServices(HDACoreContext context)
+        private void SeedServices(HDACoreContext context)
         {
             context.Services.AddOrUpdate(s => s.ServiceNameEn,
                 new Service { ServiceNameEn = "LABORATORY" },
@@ -313,9 +312,9 @@ namespace HDA.Core.Migrations
                 new Service { ServiceNameEn = "ELECTROCHOCARDIOGRAPHY (ECG)" }
                 );
             context.SaveChanges();
-        }*/
+        }
 
-        /*private void SeedLocations(HDACoreContext context)
+        private void SeedLocations(HDACoreContext context)
         {
             context.Locations.AddOrUpdate(l => l.LocationCode,
                 new Location
@@ -325,9 +324,9 @@ namespace HDA.Core.Migrations
                     LocationNameEn = "Location 1"
                 });
             context.SaveChanges();
-        }*/
+        }
 
-        /*private void SeedHealthFacilityLocations(HDACoreContext context)
+        private void SeedHealthFacilityLocations(HDACoreContext context)
         {
             context.HealthFacilityLocations.AddOrUpdate(h => new {h.HealthFacilityID, h.LocationID},
                 new HealthFacilityLocation
@@ -350,8 +349,7 @@ namespace HDA.Core.Migrations
                 );
 
             context.SaveChanges();
-        }*/
-        /*
+        }
         private void SeedDepartments(HDACoreContext context)
         {
             context.DepartmentLookups.AddOrUpdate(d => d.DepartmentCode,
@@ -395,6 +393,6 @@ namespace HDA.Core.Migrations
                 );
             context.SaveChanges();
         }
-        */
     }
 }
+*/
