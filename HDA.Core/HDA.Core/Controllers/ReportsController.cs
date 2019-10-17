@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Mvc;
-using HDA.Core.App_Code;
+using HDA.Core.Utilities;
 using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using Microsoft.AspNet.Identity;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using HDA.Core.App_Code;
+using HDA.Core.Utilities;
 using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
 using LinqKit;
