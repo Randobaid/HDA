@@ -35,9 +35,9 @@ namespace HDA.Core.Migrations
         private void SeedReports(HDAReportsContext context)
         {
             context.Reports.AddOrUpdate(d => d.ReportCode,
-                new Report { ReportNameEn = "Provider Workload", ReportNameAr = "" },
-                new Report { ReportNameEn = "Disease Management", ReportNameAr = "" },
-                new Report { ReportNameEn = "Outpatient Prescriptions", ReportNameAr = "" }
+                new Report { ReportCode = "ProviderWorkload", ReportNameEn = "Provider Workload", ReportNameAr = "" },
+                new Report { ReportCode = "DiseaseManagement", ReportNameEn = "Disease Management", ReportNameAr = "" },
+                new Report { ReportCode = "OutpatientPrescriptions", ReportNameEn = "Outpatient Prescriptions", ReportNameAr = "" }
                 );
 
             context.SaveChanges();
