@@ -6,7 +6,7 @@ using HDA.Core.Models.HDAReports;
 using HDA.Core.Models.HDAIdentity;
 using Microsoft.AspNet.Identity;
 
-namespace HDA.Core.App_Code
+namespace HDA.Core.Utilities
 {
     public class PermissionCheck
     {
