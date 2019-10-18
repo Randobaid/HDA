@@ -193,18 +193,6 @@
         var diagnosisEndCode;
         var selectedHospitals = [];
 
-        $(function () {
-            Highcharts.setOptions({
-                chart: {
-                    backgroundColor: '#f8f9fa',
-                    plotBackgroundColor: '#ffffff',
-                    //spacingBottom: 5,
-                    //spacingTop: 5,
-                    //spacingLeft: 5,
-                    //spacingRight: 5,
-                }
-            });
-        });
 
         $(document).ajaxStart(function () {
             $('#ajaxProgress').removeAttr('hidden');
