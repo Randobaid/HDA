@@ -301,13 +301,13 @@ namespace HDA.Core.Controllers
                     }
                     // instead of checking every assigned claim against what the user has,
                     // we just remove all of them and then reassign
-                    if (userViewModel.DirectorateIds != null)
+                    //if (userViewModel.DirectorateIds != null)
+                    //{
+                    foreach (var claim in userManager.GetClaims(user.Id))
                     {
-                        foreach (var claim in userManager.GetClaims(user.Id))
-                        {
-                            userManager.RemoveClaim(user.Id, claim);
-                        }
+                        userManager.RemoveClaim(user.Id, claim);
                     }
+                    //}
                     if (userViewModel.DomainIds != null)
                     {
                         foreach (var domainId in userViewModel.DomainIds)
