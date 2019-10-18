@@ -21,25 +21,26 @@ namespace HDA.Core.Controllers
             if (ModelState.IsValid)
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<PrescriptionTotal>();
+                foreach(int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
 
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
                 
                 var searchPredicate = PredicateBuilder.New<PrescriptionTotal>();
-                searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
-
                 foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
                     searchPredicate = searchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
 
                 var basePrescriptionsTotalSP = PredicateBuilder.New<PrescriptionTotal>();
-                basePrescriptionsTotalSP = basePrescriptionsTotalSP.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
                 basePrescriptionsTotalSP = basePrescriptionsTotalSP.And(a => a.PrescriptionTotalID > 0);
 
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<PrescriptionTotal>();
-                selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
                 
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
@@ -57,6 +58,7 @@ namespace HDA.Core.Controllers
                     var g = from t in db.PrescriptionTotals.
                             Where(searchPredicate).
                             Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : basePrescriptionsTotalSP).
+                            Where(allowedHealthFacilityIDsSP).
                             Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
@@ -89,6 +91,7 @@ namespace HDA.Core.Controllers
                     var g = from t in db.PrescriptionTotals.
                             Where(searchPredicate).
                             Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : basePrescriptionsTotalSP).
+                            Where(allowedHealthFacilityIDsSP).
                             Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
@@ -101,7 +104,6 @@ namespace HDA.Core.Controllers
                             group t by new {t.HealthFacilityID, t.Year, t.Month } into x
                             select new
                             {
-                                //HealthFacilityName = hfDb.HealthFacilities.Where(a=> a.HealthFacilityID == x.Key.HealthFacilityID).First().HealthFacilityNameEn,
                                 x.Key.HealthFacilityID,
                                 x.Key.Year,
                                 MonthId = x.Key.Month,
@@ -128,7 +130,6 @@ namespace HDA.Core.Controllers
                 return BadRequest(ModelState);
             }
         }
-
         [HttpPost]
         public IHttpActionResult GetPrescriptionsPerPharmacy([FromUri] OPRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
@@ -136,22 +137,24 @@ namespace HDA.Core.Controllers
             if (ModelState.IsValid)
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<PrescriptionTotal>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
 
                 var searchPredicate = PredicateBuilder.New<PrescriptionTotal>();
-                searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
-
                 foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
                     searchPredicate = searchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
 
                 var basePrescriptionsTotalSP = PredicateBuilder.New<PrescriptionTotal>();
-                basePrescriptionsTotalSP = basePrescriptionsTotalSP.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
                 basePrescriptionsTotalSP = basePrescriptionsTotalSP.And(a => a.PrescriptionTotalID > 0);
 
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<PrescriptionTotal>();
-                selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
                     foreach (int id in selectedFacilitiesPayload.HealthFacilities)
@@ -167,6 +170,7 @@ namespace HDA.Core.Controllers
                 var g = from t in db.PrescriptionTotals.
                         Where(searchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : basePrescriptionsTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                             h.Month >= fromDate.Month
                             && h.Month <= toDate.Month
@@ -204,30 +208,30 @@ namespace HDA.Core.Controllers
                 return BadRequest(ModelState);
             }
         }
-
         [HttpPost]
         public IHttpActionResult GetPrescriptionsPerFacility([FromUri] OPRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
-            //HDAReportsContext providerQuery = new HDAReportsContext();
             if (ModelState.IsValid)
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<PrescriptionTotal>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
 
                 var searchPredicate = PredicateBuilder.New<PrescriptionTotal>();
-                searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
-
                 foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
                     searchPredicate = searchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
 
                 var basePrescriptionsTotalSP = PredicateBuilder.New<PrescriptionTotal>();
-                basePrescriptionsTotalSP = basePrescriptionsTotalSP.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
                 basePrescriptionsTotalSP = basePrescriptionsTotalSP.And(a => a.PrescriptionTotalID > 0);
 
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<PrescriptionTotal>();
-                selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
                     foreach (int id in selectedFacilitiesPayload.HealthFacilities)
@@ -242,6 +246,7 @@ namespace HDA.Core.Controllers
                 var g = from t in db.PrescriptionTotals.
                         Where(searchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : basePrescriptionsTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                             h.Month >= fromDate.Month
                             && h.Month <= toDate.Month
@@ -255,7 +260,6 @@ namespace HDA.Core.Controllers
                         select new
                         {
                             x.Key.HealthFacilityID,
-                            //HealthFacilityName = hfDb.HealthFacilities.Where(a=> a.HealthFacilityID == x.Key.HealthFacilityID).First().HealthFacilityNameEn,
                             Total = x.Sum(t => t.TotalPrescriptions),
                         };
                 var result = g.OrderByDescending(d => new { d.Total });
@@ -286,25 +290,27 @@ namespace HDA.Core.Controllers
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 try
                 {
+                    var allowedHealthFacilityIDsSP = PredicateBuilder.New<PrescriptionTotal>();
+                    foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                    {
+                        allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                    }
+
                     var selectedFacilitiesPayload = selectedFacilityPayload.First();
 
                     DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                     DateTime toDate = Convert.ToDateTime(payload.ToDate);
 
                     var searchPredicate = PredicateBuilder.New<PrescriptionTotal>();
-                    searchPredicate = searchPredicate.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
-
                     foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                     {
                         searchPredicate = searchPredicate.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                     }
 
                     var basePrescriptionsTotalSP = PredicateBuilder.New<PrescriptionTotal>();
-                    basePrescriptionsTotalSP = basePrescriptionsTotalSP.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
                     basePrescriptionsTotalSP = basePrescriptionsTotalSP.And(a => a.PrescriptionTotalID > 0);
 
                     var selectedHealthFacilitiesSP = PredicateBuilder.New<PrescriptionTotal>();
-                    selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.And(f => allowedHealthFacilityIDs.Contains(f.HealthFacilityID));
                     if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                     {
                         foreach (int id in selectedFacilitiesPayload.HealthFacilities)
@@ -322,6 +328,7 @@ namespace HDA.Core.Controllers
                     List<PrescriptionTotal> totals = db.PrescriptionTotals.
                         Where(searchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : basePrescriptionsTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                             h.Month >= fromDate.Month
                             && h.Month <= toDate.Month

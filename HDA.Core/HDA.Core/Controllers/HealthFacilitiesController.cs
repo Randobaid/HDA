@@ -7,6 +7,8 @@ using System.Web.Http;
 using HDA.Core.ViewModels;
 using HDA.Core.Models.HDAReports;
 using LinqKit;
+using HDA.Core.Utilities;
+using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
@@ -52,9 +54,14 @@ namespace HDA.Core.Controllers
             
             List<HealthFacilityVM> healthFacilities = new List<HealthFacilityVM>();
 
+            var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+            var allowedHealthFacilityIDsSP = PredicateBuilder.New<HealthFacility>();
+            foreach (int healthFacilityId in allowedHealthFacilityIDs)
+            {
+                allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+            }
 
             var searchPredicate = PredicateBuilder.New<HealthFacility>();
-
             foreach (SelectedFacilityType str in payload)
             {
                 searchPredicate =
@@ -62,12 +69,9 @@ namespace HDA.Core.Controllers
             }
 
            
-            var hfs = db.HealthFacilities.Where(searchPredicate);
-
-            /*foreach (SelectedFacilityType facilityType in payload)
-            {
-                hfs.Where(t => t.HealthFacilityTypeID == facilityType.HealthFacilityTypeId);
-            }*/
+            var hfs = db.HealthFacilities.
+                Where(searchPredicate).
+                Where(allowedHealthFacilityIDsSP);
             foreach (var hf in hfs)
             {
                 HealthFacilityVM h = new HealthFacilityVM();
