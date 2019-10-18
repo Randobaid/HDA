@@ -16,20 +16,13 @@
                 <div class="card-header bg-primary text-white">
                     Indicators
                     <i class="fa fa-spinner fa-pulse fa-lg" id="indicatorDataTableSpinner" hidden="hidden"></i>
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addIndicatorModal">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add Indicator
-                        </button>
-                    </div>
                 </div>
                 <div class="card-body">
                     <table id="indicatorDataTable" class="display table table-sm table-hover" style="width:100%">
                         <thead>
                             <tr>
                                 <th>ShortName</th>
-                                <th>Name (En)</th>
-                                <th>Name (Ar)</th>
-                                <th>Actions</th>
+                                <th>Name</th>
                             </tr>
                         </thead>
                     </table>
@@ -207,83 +200,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="addIndicatorModal" tabindex="-1" role="dialog" aria-labelledby="addIndicatorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addIndicatorModalLabel">Add New Indicator</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST">
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="IndicatorShortName" class="col-form-label">Short Name:</label>
-                            <input class="form-control" name="IndicatorShortName" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="IndicatorNameEn" class="col-form-label">Name (En):</label>
-                            <input type="text" class="form-control" name="IndicatorNameEn">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="IndicatorNameAr" class="col-form-label">Name (Ar):</label>
-                            <input type="text" class="form-control" name="IndicatorNameAr">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <span class="p-2"></span>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="editIndicatorModal" tabindex="-1" role="dialog" aria-labelledby="editIndicatorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editIndicatorModalLabel">Edit Indicator</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="Id">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="IndicatorShortName" class="col-form-label">Short Name:</label>
-                            <input class="form-control" name="IndicatorShortName" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="IndicatorNameEn" class="col-form-label">Name (En):</label>
-                            <input type="text" class="form-control" name="IndicatorNameEn">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="IndicatorNameAr" class="col-form-label">Name (Ar):</label>
-                            <input type="text" class="form-control" name="IndicatorNameAr">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <span class="p-2"></span>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     <script type="text/javascript">
         var indicators = [];
@@ -308,48 +224,6 @@
                 opens: "center",
                 drops: "up",
                 locale: { format: "YYYY-MM-DD" }
-            });
-            
-            $('#addIndicatorModal form').submit(function() {
-                $('#addIndicatorModal').modal('hide');
-                Swal.showLoading();
-                $.ajax({
-                    type: 'POST',
-                    url: '../api/indicators',
-                    data: $('#addIndicatorModal form').serialize()
-                }).done(function (res) {
-                    $('#addIndicatorModal form').trigger("reset");
-                    getAllIndicators();
-                    Swal.fire('Success', 'Indicator added successfully' , 'success');
-                }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
-                });
-                return false;
-            });
-
-            $('#editIndicatorModal').on('show.bs.modal', function(e) {
-                $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
-                $(e.currentTarget).find('input[name="IndicatorShortName"]').val($(e.relatedTarget).data('short-name'));
-                $(e.currentTarget).find('input[name="IndicatorNameEn"]').val($(e.relatedTarget).data('name-en'));
-                $(e.currentTarget).find('input[name="IndicatorNameAr"]').val($(e.relatedTarget).data('name-ar'));
-            });
-
-            $('#editIndicatorModal form').submit(function() {
-                $('#editIndicatorModal').modal('hide');
-                var id = $('#editIndicatorModal form').find('input[name="Id"]').val();
-                Swal.showLoading();
-                $.ajax({
-                    type: 'PUT',
-                    url: '../api/indicators/' + id,
-                    data: $('#editIndicatorModal form').serialize()
-                }).done(function (res) {
-                    $('#editIndicatorModal form').trigger("reset");
-                    getAllIndicators();
-                    Swal.fire('Success', 'Indicator updated successfully' , 'success');
-                }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
-                });
-                return false;
             });
 
             $('#addTargetModal form').submit(function() {
@@ -486,19 +360,7 @@
                 data: indicators,
                 columns: [
                     { data: 'IndicatorShortName' },
-                    { data: 'IndicatorNameEn' },
-                    { data: 'IndicatorNameAr' },
-                    {
-                        searchable: false,
-                        sortable: false,
-                        render: function (data, type, full, meta) {
-                            return '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editIndicatorModal"' + 
-                                ' data-id="' + full.IndicatorID + '" data-short-name="' + full.IndicatorShortName + '" data-name-en="' + full.IndicatorNameEn + '" data-name-ar="' + full.IndicatorNameAr + '">' +
-                                '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
-                                '<button type="button" class="btn btn-danger btn-sm" onclick="deleteIndicator(\''+ full.IndicatorID +'\')">' +
-                                '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
-                        }
-                    }
+                    { data: 'IndicatorNameEn' }
                 ]
             });
             $('#indicatorDataTableSpinner').attr('hidden', true);
@@ -529,9 +391,7 @@
                                 '" data-provider-id="' + full.ProviderID  + '" data-domain-id="' + full.DomainID +
                                 '" data-directorate-id="' + full.DirectorateID + '" data-effective-date="' + full.EffectiveDate.substring(0,10) +
                                 '" data-value="' + full.Value + '">' +
-                                '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
-                                '<button type="button" class="btn btn-danger btn-sm" onclick="deleteTarget(\''+ full.TargetID +'\')">' +
-                                '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
+                                '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>';
                         }
                     }
                 ]
@@ -603,59 +463,6 @@
                 });
             });
         }
-
-        function deleteIndicator(id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to undo this action",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
-                    Swal.showLoading();
-                    var url = '../api/indicators/'+ id;
-                    $.ajax({
-                        type: 'DELETE',
-                        url: url,
-                        contentType: "application/json; charset=utf-8"
-                    }).done(function (res) {
-                        getAllIndicators();
-                        Swal.fire('Success', 'Indicator deleted successfully' , 'success');
-                    }).fail( function(xhr, textStatus, errorThrown) {
-                        Swal.fire('Error', xhr.responseJSON.Message , 'error');
-                    });
-                }
-            });
-        }
-
-        function deleteTarget(id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to undo this action",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
-                    Swal.showLoading();
-                    var url = '../api/targets/'+ id;
-                    $.ajax({
-                        type: 'DELETE',
-                        url: url,
-                        contentType: "application/json; charset=utf-8"
-                    }).done(function (res) {
-                        getAllTargets();
-                        Swal.fire('Success', 'Target deleted successfully' , 'success');
-                    }).fail( function(xhr, textStatus, errorThrown) {
-                        Swal.fire('Error', xhr.responseJSON.Message , 'error');
-                    });
-                }
-            });
-        }
-
     </script>
 }
 

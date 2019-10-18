@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace HDA.Core.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         // GET: Administration

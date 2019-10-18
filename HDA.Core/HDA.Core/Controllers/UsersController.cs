@@ -264,7 +264,11 @@ namespace HDA.Core.Controllers
             }
             try
             {
-                if (ModelState.IsValid)
+                if (
+                    userViewModel.FirstName != null &&
+                    userViewModel.LastName != null &&
+                    userViewModel.Email != null
+                )
                 {
                     user.FirstName = userViewModel.FirstName;
                     user.LastName = userViewModel.LastName;

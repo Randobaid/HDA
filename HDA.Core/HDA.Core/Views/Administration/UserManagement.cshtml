@@ -60,32 +60,6 @@
             </div>
         </div>
     </div>
-    <div class="row mt-4" id="roleDataTableDiv">
-        <div class="col-md-12">
-            <div class="card border border-primary " style="min-height:250px;">
-                <div class="card-header bg-primary text-white">
-                    Roles
-                    <i class="fa fa-spinner fa-pulse fa-lg" id="roleDataTableSpinner" hidden="hidden"></i>
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addRoleModal">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add Role
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table id="roleDataTable" class="display table table-sm table-hover" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
@@ -167,17 +141,6 @@
                     <hr />
                     <div class="form-row">
                         <div class="col-md-2">
-                            <label>Governorates:</label>
-                        </div>
-                        <div class="col-md-10">
-                            <select multiple name="GovernorateIds">
-                                <option></option>
-                            </select>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="form-row">
-                        <div class="col-md-2">
                             <label>Health Facilities:</label>
                         </div>
                         <div class="col-md-10">
@@ -198,16 +161,6 @@
                         </div>
                     </div>
                     <hr />
-                    <div class="form-row">
-                        <div class="col-md-2">
-                            <label>Indicators:</label>
-                            </div>
-                        <div class="col-md-10">
-                            <select multiple name="IndicatorIds">
-                                <option></option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -256,6 +209,10 @@
                             <label for="Password" class="col-form-label">Password:</label>
                             <input type="password" class="form-control" name="Password">
                         </div>
+                        <div class="form-group col-md-6">
+                            <label for="ConfirmPassword" class="col-form-label">Confirm Password:</label>
+                            <input type="password" class="form-control" name="ConfirmPassword">
+                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
@@ -286,15 +243,6 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <h5>Governorates:</h5>
-                            <hr>
-                            <select multiple name="GovernorateIds">
-                                <option></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
                             <h5>Health Facilities:</h5>
                             <hr>
                             <select multiple name="HealthFacilityIds">
@@ -310,76 +258,6 @@
                                 <option></option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <h5>Indicators:</h5>
-                            <hr>
-                            <select multiple name="IndicatorIds">
-                                <option></option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <span class="p-2"></span>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addRoleModalLabel">Add New Role</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="Name" class="col-form-label">Name:</label>
-                        <input type="text" class="form-control" name="Name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="Description" class="col-form-label">Description:</label>
-                        <textarea class="form-control" name="Description"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <span class="p-2"></span>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editRoleModalLabel">Edit Role</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="Id">
-                    <div class="form-group">
-                        <label for="Name" class="col-form-label">Name:</label>
-                        <input type="text" class="form-control" name="Name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="Description" class="col-form-label">Description:</label>
-                        <textarea class="form-control" name="Description"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
@@ -408,12 +286,24 @@
             getAllRoles();
             getAllDomains();
             getAllDirectorates();
-            getAllGovernorates();
             getAllHealthFacilities();
             getAllReports();
-            getAllIndicators();
             
             $('#addUserModal form').submit(function() {
+                var password = $(this).find('input[name="Password"]').val();
+                var confirmPassword = $(this).find('input[name="ConfirmPassword"]').val();
+                if (password && password != confirmPassword) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password and Password Confirmation do not match. Please try again', 'error');
+                    return false;
+                }
+                if (password && password.length < 6) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password is too short. It should be 6 or more characters. Please try again', 'error');
+                    return false;
+                }
                 $('#addUserModal').modal('hide');
                 Swal.showLoading();
                 $.ajax({
@@ -442,17 +332,27 @@
                 $(e.currentTarget).find('select[name="DomainIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="DirectorateIds"]').val($(e.relatedTarget).data('directorateids').toString().split(","));
                 $(e.currentTarget).find('select[name="DirectorateIds"]').trigger('change');
-                $(e.currentTarget).find('select[name="GovernorateIds"]').val($(e.relatedTarget).data('governorateids').toString().split(","));
-                $(e.currentTarget).find('select[name="GovernorateIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').val($(e.relatedTarget).data('healthfacilityids').toString().split(","));
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="ReportIds"]').val($(e.relatedTarget).data('reportids').toString().split(","));
                 $(e.currentTarget).find('select[name="ReportIds"]').trigger('change');
-                $(e.currentTarget).find('select[name="IndicatorIds"]').val($(e.relatedTarget).data('indicatorids').toString().split(","));
-                $(e.currentTarget).find('select[name="IndicatorIds"]').trigger('change');
             });
 
             $('#editUserModal form').submit(function() {
+                var password = $(this).find('input[name="Password"]').val();
+                var confirmPassword = $(this).find('input[name="ConfirmPassword"]').val();
+                if (password && password != confirmPassword) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password and Password Confirmation do not match. Please try again', 'error');
+                    return false;
+                }
+                if (password && password.length < 6) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password is too short. It should be 6 or more characters. Please try again', 'error');
+                    return false;
+                }
                 $('#editUserModal').modal('hide');
                 var id = $('#editUserModal form').find('input[name="Id"]').val();
                 Swal.showLoading();
@@ -465,48 +365,6 @@
                     getAllUsers();
                     showUserDetails(res);
                     Swal.fire('Success', 'User updated successfully' , 'success');
-                }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
-                });
-                return false;
-            });
-
-            $('#addRoleModal form').submit(function() {
-                $('#addRoleModal').modal('hide');
-                Swal.showLoading();
-                $.ajax({
-                    type: 'POST',
-                    url: '../api/roles',
-                    data: $('#addRoleModal form').serialize()
-                }).done(function (res) {
-                    $('#addRoleModal form').trigger("reset");
-                    getAllRoles();
-                    Swal.fire('Success', 'Role added successfully' , 'success');
-                }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
-                });
-                return false;
-            });
-
-            $('#editRoleModal').on('show.bs.modal', function(e) {
-                $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
-                $(e.currentTarget).find('input[name="Name"]').val($(e.relatedTarget).data('name'));
-                $(e.currentTarget).find('textarea[name="Description"]').val($(e.relatedTarget).data('description'));
-            });
-
-            $('#editRoleModal form').submit(function() {
-                $('#editRoleModal').modal('hide');
-                var id = $('#editRoleModal form').find('input[name="Id"]').val();
-                Swal.showLoading();
-                $.ajax({
-                    type: 'PUT',
-                    url: '../api/roles/' + id,
-                    data: $('#editRoleModal form').serialize()
-                }).done(function (res) {
-                    $('#editRoleModal form').trigger("reset");
-                    getAllRoles();
-                    getAllUsers();
-                    Swal.fire('Success', 'Role updated successfully' , 'success');
                 }).fail( function(xhr, textStatus, errorThrown) {
                     Swal.fire('Error', xhr.responseJSON.Message , 'error');
                 });
@@ -531,10 +389,6 @@
                 $(this).select2({ width: '100%' });
             });
 
-            $('select[name="GovernorateIds"]').each(function(){
-                $(this).select2({ width: '100%' });
-            });
-
             $('select[name="HealthFacilityIds"]').each(function(){
                 $(this).select2({ width: '100%' });
             });
@@ -542,11 +396,6 @@
             $('select[name="ReportIds"]').each(function(){
                 $(this).select2({ width: '100%' });
             });
-
-            $('select[name="IndicatorIds"]').each(function(){
-                $(this).select2({ width: '100%' });
-            });
-
         });
 
         function showUserDetails(data) {
@@ -555,8 +404,7 @@
                 ' data-id="' + data.Id + '" data-firstname="' + data.FirstName  + '" data-lastname="' + data.LastName  +
                 '" data-email="' + data.Email  + '" data-phonenumber="' + data.PhoneNumber + '" data-roleids="' + data.RoleIds  +
                 '" data-domainids="' + data.DomainIds  + '" data-directorateids="' + data.DirectorateIds +
-                '" data-governorateids="' + data.GovernorateIds + '" data-reportids="' + data.ReportIds  +
-                '" data-indicatorids="' + data.IndicatorIds  + '" data-healthfacilityids="' + data.HealthFacilityIds + '">' +
+                '" data-reportids="' + data.ReportIds  + '" data-healthfacilityids="' + data.HealthFacilityIds + '">' +
                 '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
                 '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\''+ data.Id +'\')">' +
                 '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>'
@@ -588,13 +436,6 @@
                 }
             });
             body = body + '</ul></td></tr>';
-            body = body + '<tr><td>Governorates</td><td><ul>';
-            governorates.forEach(function (governorate) {
-                if(data.GovernorateIds.indexOf(governorate.GovernorateID.toString()) != -1) {
-                    body = body + '<li>' + governorate.GovernorateNameEn + '</li>';
-                }
-            });
-            body = body + '</ul></td></tr>';
             body = body + '<tr><td>Health Facilities</td><td><ul>';
             healthFacilities.forEach(function (healthFacility) {
                 if(data.HealthFacilityIds.indexOf(healthFacility.ID.toString()) != -1) {
@@ -609,18 +450,10 @@
                 }
             });
             body = body + '</ul></td></tr>';
-            body = body + '<tr><td>Indicators</td><td><ul>';
-            indicators.forEach(function (indicator) {
-                if(data.IndicatorIds.indexOf(indicator.IndicatorID.toString()) != -1) {
-                    body = body + '<li>' + indicator.IndicatorNameEn + '</li>';
-                }
-            });
-            body = body + '</ul></td></tr>';
             body = body + '</table>';
             $('#userDetailsBody').html(body);
             $('#userDetailsDiv').attr('style', 'display:flex');
             $('#userDataTableDiv').attr('style', 'display:none');
-            $('#roleDataTableDiv').attr('style', 'display:none');
         }
 
         function getAllUsers() {
@@ -645,7 +478,6 @@
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 roles = res;
-                populateRoleDataTables();
                 populateRoleIdsSelects();
             }).fail( function(xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message , 'error');
@@ -678,19 +510,6 @@
             });
         }
 
-        function getAllGovernorates() {
-            $.ajax({
-                type: 'GET',
-                url: '../api/governorates',
-                contentType: "application/json; charset=utf-8"
-            }).done(function (res) {
-                governorates = res;
-                populateGovernorateIdsSelects();
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message , 'error');
-            });
-        }
-
         function getAllHealthFacilities() {
             $.ajax({
                 type: 'GET',
@@ -712,19 +531,6 @@
             }).done(function (res) {
                 reports = res;
                 populateReportIdsSelects();
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message , 'error');
-            });
-        }
-
-        function getAllIndicators() {
-            $.ajax({
-                type: 'GET',
-                url: '../api/indicators',
-                contentType: "application/json; charset=utf-8"
-            }).done(function (res) {
-                indicators = res;
-                populateIndicatorIdsSelects();
             }).fail( function(xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message , 'error');
             });
@@ -762,28 +568,6 @@
             $('#userDataTableSpinner').attr('hidden', true);
         }
 
-        function populateRoleDataTables() {
-            $('#roleDataTable').DataTable({
-                destroy: true,
-                data: roles,
-                columns: [
-                    { data: 'Name' },
-                    { data: 'Description' },
-                    {
-                        searchable: false,
-                        sortable: false,
-                        render: function (data, type, full, meta) {
-                            return '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editRoleModal"' + 
-                                ' data-id="' + full.Id + '" data-name="' + full.Name + '" data-description="' + full.Description + '">' +
-                                '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
-                                '<button type="button" class="btn btn-danger btn-sm" onclick="deleteRole(\''+ full.Id +'\')">' +
-                                '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>';
-                        }
-                    }
-                ]
-            });
-            $('#roleDataTableSpinner').attr('hidden', true);
-        }
 
         function populateRoleIdsSelects() {
             $('select[name="RoleIds"]').each(function(){
@@ -820,18 +604,6 @@
                 });
             });
         }
-
-        function populateGovernorateIdsSelects() {
-            $('select[name="GovernorateIds"]').each(function(){
-                var element = $(this);
-                element.empty();
-                governorates.forEach(function (governorate) {
-                    element.append($("<option></option>")
-                        .attr("value", governorate.GovernorateID)
-                        .text(governorate.GovernorateNameEn));
-                });
-            });
-        }
         
         function populateHealthFacilityIdsSelects() {
             $('select[name="HealthFacilityIds"]').each(function(){
@@ -853,18 +625,6 @@
                     element.append($("<option></option>")
                         .attr("value", report.ReportID)
                         .text(report.ReportNameEn));
-                });
-            });
-        }
-
-        function populateIndicatorIdsSelects() {
-            $('select[name="IndicatorIds"]').each(function(){
-                var element = $(this);
-                element.empty();
-                indicators.forEach(function (indicator) {
-                    element.append($("<option></option>")
-                        .attr("value", indicator.IndicatorID)
-                        .text(indicator.IndicatorNameEn));
                 });
             });
         }
@@ -891,33 +651,6 @@
                         $('#roleDataTableDiv').attr('style', 'display:flex');
                         getAllUsers();
                         Swal.fire('Success', 'User deleted successfully' , 'success');
-                    }).fail( function(xhr, textStatus, errorThrown) {
-                        Swal.fire('Error', xhr.responseJSON.Message , 'error');
-                    });
-                }
-            });
-        }
-
-        function deleteRole(id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to undo this action",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
-                    Swal.showLoading();
-                    var url = '../api/roles/'+ id;
-                    $.ajax({
-                        type: 'DELETE',
-                        url: url,
-                        contentType: "application/json; charset=utf-8"
-                    }).done(function (res) {
-                        getAllUsers();
-                        getAllRoles();
-                        Swal.fire('Success', 'Role deleted successfully' , 'success');
                     }).fail( function(xhr, textStatus, errorThrown) {
                         Swal.fire('Error', xhr.responseJSON.Message , 'error');
                     });
