@@ -1,0 +1,246 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    var user = ViewBag.userViewModel;
+    ViewBag.Title = "Profile Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>@ViewBag.Title</h5>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border border-primary">
+                    <div class="card-header bg-primary text-white">
+                        User Details
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" id="userDetails">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="FirstName" class="col-form-label">First Name:</label>
+                                    <input class="form-control" name="FirstName" value="@user.FirstName" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="LastName" class="col-form-label">Last Name:</label>
+                                    <input type="text" class="form-control" name="LastName" value="@user.LastName" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="UserName" class="col-form-label">UserName:</label>
+                                    <input type="text" class="form-control" name="UserName" value="@user.UserName" disabled>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Email" class="col-form-label">Email:</label>
+                                    <input type="email" class="form-control" name="Email" value="@user.Email" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                                    <input type="text" class="form-control" name="PhoneNumber" value="@user.PhoneNumber">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <button type="submit" class="btn btn-primary">Update User Details</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card border border-primary">
+                    <div class="card-header bg-primary text-white">
+                        Change Password
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" id="changePassword">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="CurrentPassword" class="col-form-label">Current Password:</label>
+                                    <input type="password" class="form-control" name="CurrentPassword" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Password" class="col-form-label">New Password:</label>
+                                    <input type="password" class="form-control" name="Password" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="ConfirmPassword" class="col-form-label">Confirm New Password:</label>
+                                    <input type="password" class="form-control" name="ConfirmPassword" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <button type="submit" class="btn btn-primary">Change Password</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (
+            user.DomainIds.Count > 0 ||
+            user.DirectorateIds.Count > 0 ||
+            user.GovernorateIds.Count > 0 ||
+            user.HealthFacilityIds.Count > 0 ||
+            user.ReportIds.Count > 0 ||
+            user.IndicatorIds.Count > 0
+        )
+        {
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card border border-primary">
+                        <div class="card-header bg-primary text-white">
+                            Access
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                @if (user.DomainIds.Count > 0)
+                                {
+                                    <tr>
+                                        <td>Domains</td>
+                                        <td>
+                                            <ul>
+                                                @foreach(var domain in user.DomainIds) {
+                                                    <li>@domain</li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (user.DirectorateIds.Count > 0)
+                                {
+                                    <tr>
+                                        <td>Directorates</td>
+                                        <td>
+                                            <ul>
+                                                @foreach(var directorate in user.DirectorateIds) {
+                                                    <li>@directorate</li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (user.GovernorateIds.Count > 0)
+                                {
+                                    <tr>
+                                        <td>Governorates</td>
+                                        <td>
+                                            <ul>
+                                                @foreach(var governorate in user.GovernorateIds) {
+                                                    <li>@governorate</li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (user.HealthFacilityIds.Count > 0)
+                                {
+                                    <tr>
+                                        <td>Health Facilities</td>
+                                        <td>
+                                            <ul>
+                                                @foreach(var healthFacility in user.HealthFacilityIds) {
+                                                    <li>@healthFacility</li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (user.ReportIds.Count > 0)
+                                {
+                                    <tr>
+                                        <td>Reports</td>
+                                        <td>
+                                            <ul>
+                                                @foreach(var report in user.ReportIds) {
+                                                    <li>@report</li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (user.IndicatorIds.Count > 0)
+                                {
+                                    <tr>
+                                        <td>Indicators</td>
+                                        <td>
+                                            <ul>
+                                                @foreach(var indicator in user.IndicatorIds) {
+                                                    <li>@indicator</li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#userDetails').submit(function() {
+                Swal.showLoading();
+                $.ajax({
+                    type: 'PUT',
+                    url: '../api/profile',
+                    data: $(this).serialize()
+                }).done(function (res) {
+                    Swal.fire('Success', 'Profile updated successfully' , 'success');
+                }).fail( function(xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                });
+                return false;
+            });
+            $('#changePassword').submit(function() {
+                var currentPassword = $(this).find('input[name="CurrentPassword"]').val();
+                var password = $(this).find('input[name="Password"]').val();
+                var confirmPassword = $(this).find('input[name="ConfirmPassword"]').val();
+                if (password != confirmPassword) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password and Password Confirmation do not match. Please try again', 'error');
+                    return false;
+                }
+                if (password.length < 6) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password is too short. It should be 6 or more characters. Please try again', 'error');
+                    return false;
+                }
+                Swal.showLoading();
+                $.ajax({
+                    type: 'PUT',
+                    url: '../api/profile/change-password',
+                    data: $(this).serialize()
+                }).done(function (res) {
+                    $('#changePassword').trigger('reset');
+                    Swal.fire('Success', 'Password changed successfully' , 'success');
+                }).fail( function(xhr, textStatus, errorThrown) {
+                    $('#changePassword').trigger('reset');
+                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                });
+                return false;
+            });
+        });
+    </script>
+}
