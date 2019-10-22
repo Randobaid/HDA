@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web.Http;
 using HDA.Core.ViewModels;
 using LinqKit;
+using HDA.Core.Utilities;
+using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
@@ -41,6 +43,14 @@ namespace HDA.Core.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
@@ -71,6 +81,7 @@ namespace HDA.Core.Controllers
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
@@ -112,6 +123,13 @@ namespace HDA.Core.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
@@ -139,6 +157,7 @@ namespace HDA.Core.Controllers
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
@@ -177,6 +196,13 @@ namespace HDA.Core.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
@@ -202,6 +228,7 @@ namespace HDA.Core.Controllers
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
@@ -245,6 +272,13 @@ namespace HDA.Core.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
@@ -271,6 +305,7 @@ namespace HDA.Core.Controllers
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month
@@ -311,6 +346,13 @@ namespace HDA.Core.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
@@ -336,6 +378,7 @@ namespace HDA.Core.Controllers
                 int NumberOfMonths = db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                     h.Month >= fromDate.Month
                     && h.Month <= toDate.Month
@@ -347,6 +390,7 @@ namespace HDA.Core.Controllers
                 var n = from t in db.DiagnosisTotals.
                         Where(facilityTypeSearchPredicate).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseDiagnosisTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                                 h.Month >= fromDate.Month
                                 && h.Month <= toDate.Month

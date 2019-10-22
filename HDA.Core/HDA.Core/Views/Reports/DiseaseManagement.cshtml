@@ -246,7 +246,7 @@
             });
 
             fInput = document.getElementById("TextHospital");
-            facilityAws = new Awesomplete(fInput, { minChars: 2 });
+            facilityAws = new Awesomplete(fInput, { minChars: 0 });
             GetStartCodes();
         });
 
@@ -263,7 +263,11 @@
                 $('#TextHospital').removeAttr('disabled');
             }
         });
-
+    $('#TextHospital').focus(function () {
+        if (facilityAws._list.length < 10) {
+            facilityAws.evaluate();
+        }
+    });
         function GetFacilityList(fInput, aws1, selectedFacilityTypes) {
             fInput.addEventListener('awesomplete-selectcomplete', SelectFacility);
             $.ajax({

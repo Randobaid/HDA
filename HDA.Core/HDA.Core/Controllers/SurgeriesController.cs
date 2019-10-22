@@ -24,6 +24,13 @@ namespace HDA.Core.Controllers
             {
                 try
                 {
+                    var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                    var allowedHealthFacilityIDsSP = PredicateBuilder.New<SurgeryTotal>();
+                    foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                    {
+                        allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                    }
+
                     DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                     DateTime toDate = Convert.ToDateTime(payload.ToDate);
                     List<SurgeryBySeverityTotal> result = new List<SurgeryBySeverityTotal>();
@@ -44,10 +51,7 @@ namespace HDA.Core.Controllers
 
 
                     var SurgeriesTotalSP = PredicateBuilder.New<SurgeryTotal>();
-                    var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
-
-
-
+                    
                     foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                     {
                         SurgeriesTotalSP = SurgeriesTotalSP.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
@@ -71,6 +75,7 @@ namespace HDA.Core.Controllers
                     var g = from b in db.SurgeryTotals.
                             Where(SurgeriesTotalSP).
                             Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseSurgeriesTotalSP).
+                            Where(allowedHealthFacilityIDsSP).
                             Where(h =>
                             h.Month >= fromDate.Month
                             && h.Month <= toDate.Month

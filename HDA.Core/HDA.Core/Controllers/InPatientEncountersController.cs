@@ -22,6 +22,12 @@ namespace HDA.Core.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<InPatientEncounterTotal>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
 
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
@@ -44,9 +50,6 @@ namespace HDA.Core.Controllers
 
 
                 var outpatientEncounterTotalSP = PredicateBuilder.New<InPatientEncounterTotal>();
-                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
-
-
 
                 foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
@@ -76,6 +79,7 @@ namespace HDA.Core.Controllers
                 var g = from t in db.InPatientEncounterTotals.
                         Where(outpatientEncounterTotalSP).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseOutPatientEncounterTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                             h.Month >= fromDate.Month
                             && h.Month <= toDate.Month

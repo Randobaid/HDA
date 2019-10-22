@@ -236,7 +236,7 @@
         }
             fInput = document.getElementById("TextHospital");
             facilityAws = new Awesomplete(fInput, {
-                minChars: 2,
+                minChars: 0,
             });
             providerAws = new Awesomplete(pInput, { minChars: 2, autoFirst: true });
 
@@ -340,7 +340,12 @@
             this.value = r[1];
             providerId = r[0];
 
+    }
+    $('#TextHospital').focus(function () {
+        if (facilityAws._list.length < 10) {
+            facilityAws.evaluate();
         }
+    });
 
         function GetProviders() {
             providerAws.destroy();

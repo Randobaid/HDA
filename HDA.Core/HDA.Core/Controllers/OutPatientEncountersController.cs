@@ -19,6 +19,15 @@ namespace HDA.Core.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<OutPatientEncounterTotal>();
+                var allowedHealthFacilityIDsSP_HealthFacility = PredicateBuilder.New<HealthFacility>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                    allowedHealthFacilityIDsSP_HealthFacility = allowedHealthFacilityIDsSP_HealthFacility.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
                 var selectedFacilitiesPayload = selectedFacilityPayload.First();
 
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
@@ -41,9 +50,6 @@ namespace HDA.Core.Controllers
 
 
                 var outpatientEncounterTotalSP = PredicateBuilder.New<OutPatientEncounterTotal>();
-                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
-                
-                
                 
                 foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
@@ -65,12 +71,14 @@ namespace HDA.Core.Controllers
 
                 List<HealthFacility> healthFacilities = db.HealthFacilities.
                     Where(healthFacilitySP_healthFacilityType).
+                    Where(allowedHealthFacilityIDsSP_HealthFacility).
                     Where((healthFacilitySP_healthFacility.IsStarted) ? healthFacilitySP_healthFacility : baseHealthFacilitySP).ToList();
                 int NumberOfClinics = healthFacilities.Select(t => t.EstimatedClinics).Sum();
 
 
                 var g = from t in db.OutPatientEncounterTotals.
                         Where(outpatientEncounterTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
                         Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP: baseOutPatientEncounterTotalSP).
                         Where(h =>
                         h.Month >= fromDate.Month
@@ -104,6 +112,7 @@ namespace HDA.Core.Controllers
                     {
                         var y = from t in newConnection.OutPatientEncounterTotals.
                                 Where(outpatientEncounterTotalSP).
+                                Where(allowedHealthFacilityIDsSP).
                                 Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseOutPatientEncounterTotalSP).
                                 Where(h =>
                                          h.Month == total.MonthId
