@@ -1655,6 +1655,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Utilities\PermissionCheck.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -1818,6 +1819,7 @@
     <Content Include="Views\Reports\DiseaseManagement.cshtml" />
     <Content Include="Views\Administration\UserManagement.cshtml" />
     <Content Include="Views\Shared\_ReportsPartial.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1830,8 +1832,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="DatabaseScripts\hdareports_totals\" />
     <Folder Include="Migrations\HDACore\" />
-    <Folder Include="Views\Indicators\" />
-    <Folder Include="Views\Targets\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
