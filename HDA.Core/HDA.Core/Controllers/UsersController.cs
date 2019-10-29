@@ -31,7 +31,7 @@ namespace HDA.Core.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
+                    //PhoneNumber = user.PhoneNumber,
                     Roles = new List<RoleViewModel>(),
                     RoleIds = new List<string>(),
                     DomainIds = new List<string>(),
@@ -100,7 +100,7 @@ namespace HDA.Core.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
+                //PhoneNumber = user.PhoneNumber,
                 Roles = new List<RoleViewModel>(),
                 RoleIds = new List<string>(),
                 DomainIds = new List<string>(),
@@ -178,7 +178,7 @@ namespace HDA.Core.Controllers
                         FirstName = userViewModel.FirstName,
                         LastName = userViewModel.LastName,
                         Email = userViewModel.Email,
-                        PhoneNumber = userViewModel.PhoneNumber
+                        //PhoneNumber = userViewModel.PhoneNumber
                     };
                     if (userViewModel.Password != null) {
                         userManager.Create(user, userViewModel.Password);
@@ -273,7 +273,7 @@ namespace HDA.Core.Controllers
                     user.FirstName = userViewModel.FirstName;
                     user.LastName = userViewModel.LastName;
                     user.Email = userViewModel.Email;
-                    user.PhoneNumber = userViewModel.PhoneNumber;
+                    //user.PhoneNumber = userViewModel.PhoneNumber;
                     userManager.Update(user);
                     if (userViewModel.Password != null && userViewModel.Password != "") {
                         userManager.RemovePassword(user.Id);

@@ -31,6 +31,8 @@ namespace HDA.Core.Models.HDAIdentity
         public class UserInfoViewModel
         {
             public string Email { get; set; }
+            
+            //add username
 
             public bool HasRegistered { get; set; }
 
@@ -42,7 +44,7 @@ namespace HDA.Core.Models.HDAIdentity
 
             public string LastName { get; set; }
 
-            public string PhoneNumber { get; set; }
+            //public string PhoneNumber { get; set; }
 
             public bool ChangePasswordNextLogin { get; set; }
 
@@ -67,9 +69,9 @@ namespace HDA.Core.Models.HDAIdentity
         public class LoginViewModel
         {
             [Required]
-            [Display(Name = "Email")]
+            [Display(Name = "User Name")]
             [EmailAddress]
-            public string Email { get; set; }
+            public string Username { get; set; }
 
             [Required]
             [DataType(DataType.Password)]

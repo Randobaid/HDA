@@ -85,24 +85,30 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="Email" class="col-form-label">Email:</label>
-                            <input type="email" class="form-control" name="Email" required>
+                            <label for="Username" class="col-form-label">Username:</label>
+                            <input type="text" class="form-control" name="Username">
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
-                            <input type="text" class="form-control" name="PhoneNumber">
-                        </div>
-                    </div>
-                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="Password" class="col-form-label">Password:</label>
                             <input type="password" class="form-control" name="Password">
+                        </div>
+
+                        @*<div class="form-group col-md-6">
+                                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                                <input type="text" class="form-control" name="PhoneNumber">
+                            </div>*@
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Email" class="col-form-label">Email:</label>
+                            <input type="email" class="form-control" name="Email">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ConfirmPassword" class="col-form-label">Confirm Password:</label>
                             <input type="password" class="form-control" name="ConfirmPassword">
                         </div>
                     </div>
+
                     <hr />
                     <h5 class="text-primary">Permissions</h5>
                     <br />
@@ -196,18 +202,22 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="Email" class="col-form-label">Email:</label>
-                            <input type="email" class="form-control" name="Email" required>
+                            <label for="Username" class="col-form-label">Username:</label>
+                            <input type="text" class="form-control" name="Username" required>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
-                            <input type="text" class="form-control" name="PhoneNumber">
-                        </div>
-                    </div>
-                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="Password" class="col-form-label">Password:</label>
                             <input type="password" class="form-control" name="Password">
+                        </div>
+                        @*<div class="form-group col-md-6">
+                                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                                <input type="text" class="form-control" name="PhoneNumber">
+                            </div>*@
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Username" class="col-form-label">Email:</label>
+                            <input type="email" class="form-control" name="Email">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ConfirmPassword" class="col-form-label">Confirm Password:</label>
@@ -280,7 +290,7 @@
         var healthFacilities = [];
         var reports = [];
         var indicators = [];
-        
+
         $(document).ready(function () {
             getAllUsers();
             getAllRoles();
@@ -288,8 +298,8 @@
             getAllDirectorates();
             getAllHealthFacilities();
             getAllReports();
-            
-            $('#addUserModal form').submit(function() {
+
+            $('#addUserModal form').submit(function () {
                 var password = $(this).find('input[name="Password"]').val();
                 var confirmPassword = $(this).find('input[name="ConfirmPassword"]').val();
                 if (password && password != confirmPassword) {
@@ -313,19 +323,19 @@
                 }).done(function (res) {
                     $('#addUserModal form').trigger("reset");
                     getAllUsers();
-                    Swal.fire('Success', 'User added successfully' , 'success');
-                }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                    Swal.fire('Success', 'User added successfully', 'success');
+                }).fail(function (xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseJSON.Message, 'error');
                 });
                 return false;
             });
 
-            $('#editUserModal').on('show.bs.modal', function(e) {
+            $('#editUserModal').on('show.bs.modal', function (e) {
                 $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
                 $(e.currentTarget).find('input[name="FirstName"]').val($(e.relatedTarget).data('firstname'));
                 $(e.currentTarget).find('input[name="LastName"]').val($(e.relatedTarget).data('lastname'));
                 $(e.currentTarget).find('input[name="Email"]').val($(e.relatedTarget).data('email'));
-                $(e.currentTarget).find('input[name="PhoneNumber"]').val($(e.relatedTarget).data('phonenumber'));
+                //$(e.currentTarget).find('input[name="PhoneNumber"]').val($(e.relatedTarget).data('phonenumber'));
                 $(e.currentTarget).find('select[name="RoleIds"]').val($(e.relatedTarget).data('roleids').toString().split(","));
                 $(e.currentTarget).find('select[name="RoleIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="DomainIds"]').val($(e.relatedTarget).data('domainids').toString().split(","));
@@ -338,7 +348,7 @@
                 $(e.currentTarget).find('select[name="ReportIds"]').trigger('change');
             });
 
-            $('#editUserModal form').submit(function() {
+            $('#editUserModal form').submit(function () {
                 var password = $(this).find('input[name="Password"]').val();
                 var confirmPassword = $(this).find('input[name="ConfirmPassword"]').val();
                 if (password && password != confirmPassword) {
@@ -364,88 +374,88 @@
                     $('#editUserModal form').trigger("reset");
                     getAllUsers();
                     showUserDetails(res);
-                    Swal.fire('Success', 'User updated successfully' , 'success');
-                }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                    Swal.fire('Success', 'User updated successfully', 'success');
+                }).fail(function (xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseJSON.Message, 'error');
                 });
                 return false;
             });
 
-            $('#userDetailsCloseButton').click(function() {
+            $('#userDetailsCloseButton').click(function () {
                 $('#userDetailsDiv').attr('style', 'display:none');
                 $('#userDataTableDiv').attr('style', 'display:flex');
                 $('#roleDataTableDiv').attr('style', 'display:flex');
             });
 
-            $('select[name="RoleIds"]').each(function(){
+            $('select[name="RoleIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
 
-            $('select[name="DomainIds"]').each(function(){
+            $('select[name="DomainIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
 
-            $('select[name="DirectorateIds"]').each(function(){
+            $('select[name="DirectorateIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
 
-            $('select[name="HealthFacilityIds"]').each(function(){
+            $('select[name="HealthFacilityIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
 
-            $('select[name="ReportIds"]').each(function(){
+            $('select[name="ReportIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
         });
 
         function showUserDetails(data) {
             $('#userDetailsRightButtons').html(
-                '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editUserModal"' + 
-                ' data-id="' + data.Id + '" data-firstname="' + data.FirstName  + '" data-lastname="' + data.LastName  +
-                '" data-email="' + data.Email  + '" data-phonenumber="' + data.PhoneNumber + '" data-roleids="' + data.RoleIds  +
-                '" data-domainids="' + data.DomainIds  + '" data-directorateids="' + data.DirectorateIds +
-                '" data-reportids="' + data.ReportIds  + '" data-healthfacilityids="' + data.HealthFacilityIds + '">' +
+                '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editUserModal"' +
+                ' data-id="' + data.Id + '" data-firstname="' + data.FirstName + '" data-lastname="' + data.LastName +
+                '" data-email="' + data.Email + /*'" data-phonenumber="' + data.PhoneNumber +*/ '" data-roleids="' + data.RoleIds +
+                '" data-domainids="' + data.DomainIds + '" data-directorateids="' + data.DirectorateIds +
+                '" data-reportids="' + data.ReportIds + '" data-healthfacilityids="' + data.HealthFacilityIds + '">' +
                 '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
-                '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\''+ data.Id +'\')">' +
+                '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\'' + data.Id + '\')">' +
                 '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>'
             );
             var body = '' +
-                    '<table class="table table-bordered">' +
-                        '<tr><td>Name</td><td>' + (data.FirstName || '') + ' ' + (data.LastName || '') + '</td></tr>' +
-                        '<tr><td>Username</td><td>' + (data.UserName || '') + '</td></tr>' +
-                        '<tr><td>Email</td><td>' + (data.Email || '') + '</td></tr>' +
-                        '<tr><td>Phone Number</td><td>' + (data.PhoneNumber || '') + '</td></tr>';
+                '<table class="table table-bordered">' +
+                '<tr><td>Name</td><td>' + (data.FirstName || '') + ' ' + (data.LastName || '') + '</td></tr>' +
+                '<tr><td>Username</td><td>' + (data.UserName || '') + '</td></tr>' +
+                '<tr><td>Email</td><td>' + (data.Email || '') + '</td></tr>';
+            //'<tr><td>Phone Number</td><td>' + (data.PhoneNumber || '') + '</td></tr>';
             body = body + '<tr><td>Roles</td><td><ul>';
             roles.forEach(function (role) {
-                if(data.RoleIds.indexOf(role.Id) != -1) {
+                if (data.RoleIds.indexOf(role.Id) != -1) {
                     body = body + '<li>' + role.Name + '</li>';
                 }
             });
             body = body + '</ul></td></tr>';
             body = body + '<tr><td>Domains</td><td><ul>';
             domains.forEach(function (domain) {
-                if(data.DomainIds.indexOf(domain.DomainID.toString()) != -1) {
+                if (data.DomainIds.indexOf(domain.DomainID.toString()) != -1) {
                     body = body + '<li>' + domain.DomainNameEn + '</li>';
                 }
             });
             body = body + '</ul></td></tr>';
             body = body + '<tr><td>Directorates</td><td><ul>';
             directorates.forEach(function (directorate) {
-                if(data.DirectorateIds.indexOf(directorate.DirectorateID.toString()) != -1) {
+                if (data.DirectorateIds.indexOf(directorate.DirectorateID.toString()) != -1) {
                     body = body + '<li>' + directorate.DirectorateNameEn + '</li>';
                 }
             });
             body = body + '</ul></td></tr>';
             body = body + '<tr><td>Health Facilities</td><td><ul>';
             healthFacilities.forEach(function (healthFacility) {
-                if(data.HealthFacilityIds.indexOf(healthFacility.ID.toString()) != -1) {
+                if (data.HealthFacilityIds.indexOf(healthFacility.ID.toString()) != -1) {
                     body = body + '<li>' + healthFacility.HealthFacilityName + '</li>';
                 }
             });
             body = body + '</ul></td></tr>';
             body = body + '<tr><td>Reports</td><td><ul>';
             reports.forEach(function (report) {
-                if(data.ReportIds.indexOf(report.ReportID.toString()) != -1) {
+                if (data.ReportIds.indexOf(report.ReportID.toString()) != -1) {
                     body = body + '<li>' + report.ReportNameEn + '</li>';
                 }
             });
@@ -465,8 +475,8 @@
             }).done(function (res) {
                 users = res;
                 populateUserDataTables();
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
         }
 
@@ -479,8 +489,8 @@
             }).done(function (res) {
                 roles = res;
                 populateRoleIdsSelects();
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
         }
 
@@ -492,8 +502,8 @@
             }).done(function (res) {
                 domains = res;
                 populateDomainIdsSelects();
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
         }
 
@@ -505,8 +515,8 @@
             }).done(function (res) {
                 directorates = res;
                 populateDirectorateIdsSelects();
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
         }
 
@@ -518,8 +528,8 @@
             }).done(function (res) {
                 healthFacilities = res;
                 populateHealthFacilityIdsSelects();
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
         }
 
@@ -531,8 +541,8 @@
             }).done(function (res) {
                 reports = res;
                 populateReportIdsSelects();
-            }).fail( function(xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message , 'error');
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
         }
 
@@ -553,7 +563,7 @@
                     { data: 'FirstName' },
                     { data: 'LastName' },
                     { data: 'Email' },
-                    { data: 'PhoneNumber' },
+                    //{ data: 'PhoneNumber' },
                     { data: 'Roles' },
                     {
                         searchable: false,
@@ -570,7 +580,7 @@
 
 
         function populateRoleIdsSelects() {
-            $('select[name="RoleIds"]').each(function(){
+            $('select[name="RoleIds"]').each(function () {
                 var element = $(this);
                 element.empty();
                 roles.forEach(function (role) {
@@ -582,7 +592,7 @@
         }
 
         function populateDomainIdsSelects() {
-            $('select[name="DomainIds"]').each(function(){
+            $('select[name="DomainIds"]').each(function () {
                 var element = $(this);
                 element.empty();
                 domains.forEach(function (domain) {
@@ -594,7 +604,7 @@
         }
 
         function populateDirectorateIdsSelects() {
-            $('select[name="DirectorateIds"]').each(function(){
+            $('select[name="DirectorateIds"]').each(function () {
                 var element = $(this);
                 element.empty();
                 directorates.forEach(function (directorate) {
@@ -604,9 +614,9 @@
                 });
             });
         }
-        
+
         function populateHealthFacilityIdsSelects() {
-            $('select[name="HealthFacilityIds"]').each(function(){
+            $('select[name="HealthFacilityIds"]').each(function () {
                 var element = $(this);
                 element.empty();
                 healthFacilities.forEach(function (healthFacility) {
@@ -618,7 +628,7 @@
         }
 
         function populateReportIdsSelects() {
-            $('select[name="ReportIds"]').each(function(){
+            $('select[name="ReportIds"]').each(function () {
                 var element = $(this);
                 element.empty();
                 reports.forEach(function (report) {
@@ -640,7 +650,7 @@
             }).then((result) => {
                 if (result.value) {
                     Swal.showLoading();
-                    var url = '../api/users/'+ id;
+                    var url = '../api/users/' + id;
                     $.ajax({
                         type: 'DELETE',
                         url: url,
@@ -650,9 +660,9 @@
                         $('#userDataTableDiv').attr('style', 'display:flex');
                         $('#roleDataTableDiv').attr('style', 'display:flex');
                         getAllUsers();
-                        Swal.fire('Success', 'User deleted successfully' , 'success');
-                    }).fail( function(xhr, textStatus, errorThrown) {
-                        Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                        Swal.fire('Success', 'User deleted successfully', 'success');
+                    }).fail(function (xhr, textStatus, errorThrown) {
+                        Swal.fire('Error', xhr.responseJSON.Message, 'error');
                     });
                 }
             });
