@@ -32,7 +32,7 @@ namespace HDA.Core.Models.HDAIdentity
         {
             public string Email { get; set; }
             
-            //add username
+            public string UserName { get; set; }
 
             public bool HasRegistered { get; set; }
 
@@ -70,8 +70,7 @@ namespace HDA.Core.Models.HDAIdentity
         {
             [Required]
             [Display(Name = "User Name")]
-            [EmailAddress]
-            public string Username { get; set; }
+            public string UserName { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
