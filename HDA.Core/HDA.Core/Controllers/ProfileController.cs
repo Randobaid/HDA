@@ -30,6 +30,7 @@ namespace HDA.Core.Controllers
                 DomainIds = new List<string>(),
                 DirectorateIds = new List<string>(),
                 GovernorateIds = new List<string>(),
+                HealthFacilityTypeIds = new List<string>(),
                 HealthFacilityIds = new List<string>(),
                 ReportIds = new List<string>(),
                 IndicatorIds = new List<string>()
@@ -42,6 +43,7 @@ namespace HDA.Core.Controllers
             var domains = new HDAReportsContext().Domains;
             var directorates = new HDAReportsContext().Directorates;
             var governorates = new HDAReportsContext().Governorates;
+            var HealthFacilityTypes = new HDAReportsContext().HealthFacilityTypes;
             var healthFacilities = new HDAReportsContext().HealthFacilities;
             var reports = new HDAReportsContext().Reports;
             var indicators = new HDAReportsContext().Indicators;
@@ -70,6 +72,15 @@ namespace HDA.Core.Controllers
                         {
                             if (governorate.GovernorateID.ToString() == claim.Value) {
                                 userViewModel.GovernorateIds.Add(governorate.GovernorateNameEn);
+                            }
+                        }
+                        break;
+                    case "HDA.Core.Models.HDAReports.HealthFacilityTypes":
+                        foreach (var healthFacilityType in HealthFacilityTypes)
+                        {
+                            if (healthFacilityType.HealthFacilityTypeID.ToString() == claim.Value)
+                            {
+                                userViewModel.HealthFacilityTypeIds.Add(healthFacilityType.HealthFacilityTypeNameEn);
                             }
                         }
                         break;
