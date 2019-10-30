@@ -25,7 +25,7 @@ namespace HDA.Core.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
+                //PhoneNumber = user.PhoneNumber,
                 RoleIds = new List<string>(),
                 DomainIds = new List<string>(),
                 DirectorateIds = new List<string>(),
@@ -127,7 +127,7 @@ namespace HDA.Core.Controllers
                 {
                     user.FirstName = userViewModel.FirstName;
                     user.LastName = userViewModel.LastName;
-                    user.PhoneNumber = userViewModel.PhoneNumber;
+                    //user.PhoneNumber = userViewModel.PhoneNumber;
                     userManager.Update(user);
                     return Ok(user);
                 }
