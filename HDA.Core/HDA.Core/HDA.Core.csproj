@@ -1628,6 +1628,14 @@
     <Compile Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.Designer.cs">
       <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDACore\201909271109443_RefreshProcedures.cs" />
+    <Compile Include="Migrations\HDACore\201909271109443_RefreshProcedures.Designer.cs">
+      <DependentUpon>201909271109443_RefreshProcedures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDACore\201910301229336_RenamDataRefreshTable.cs" />
+    <Compile Include="Migrations\HDACore\201910301229336_RenamDataRefreshTable.Designer.cs">
+      <DependentUpon>201910301229336_RenamDataRefreshTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
@@ -1676,7 +1684,7 @@
     <Compile Include="Models\HDACore\Prescriptions\DrugClass.cs" />
     <Compile Include="Models\HDACore\Prescriptions\Prescription.cs" />
     <Compile Include="Models\HDACore\Provider\Provider.cs" />
-    <Compile Include="Models\HDACore\RefreshData\DataRefreshProcedure.cs" />
+    <Compile Include="Models\HDACore\RefreshData\DataRefreshProcedureStatus.cs" />
     <Compile Include="Models\HDAIdentity\AccountViewModel.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationRole.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationRoleManager.cs" />
@@ -1765,6 +1773,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.resx">
       <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201909271109443_RefreshProcedures.resx">
+      <DependentUpon>201909271109443_RefreshProcedures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDACore\201910301229336_RenamDataRefreshTable.resx">
+      <DependentUpon>201910301229336_RenamDataRefreshTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>

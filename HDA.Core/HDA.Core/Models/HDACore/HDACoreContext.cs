@@ -52,7 +52,7 @@ namespace HDA.Core.Models.HDACore
         public DbSet<InPatientEncounterTotal> InPatientEncounterTotals { get; set; }
         public DbSet<SurgeryTotal> SurgeryTotals { get; set; }
         public DbSet<PrescriptionTotal> PrescriptionTotals { get; set; }
-        public DbSet<DataRefreshProcedure> DataRefreshProcedures { get; set; }
+        public DbSet<DataRefreshProcedureStatus> DataRefreshProcedures { get; set; }
     }
     
 }

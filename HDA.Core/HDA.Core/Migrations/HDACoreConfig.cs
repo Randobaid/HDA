@@ -34,6 +34,7 @@ namespace HDA.Core.Migrations
             SeedDepartments(context);
             SeedMovementLookups(context);
             SeedStoredProcedures(context);
+            SeedProceduresToCall(context);
             //SeedPharmacies(context);
             base.Seed(context);
         }
@@ -54,8 +55,8 @@ namespace HDA.Core.Migrations
         private void SeedStoredProcedures(HDACoreContext context)
         {
             context.DataRefreshProcedures.AddOrUpdate(m => m.ProcedureName,
-                 new DataRefreshProcedure { ProcedureName = "sp_prescriptiontotals" },
-                 new DataRefreshProcedure { ProcedureName = "sp_inpatientencountertotals" }
+                 new DataRefreshProcedureStatus { ProcedureName = "sp_prescriptiontotals" },
+                 new DataRefreshProcedureStatus { ProcedureName = "sp_inpatientencountertotals" }
 
                 );
             context.SaveChanges();
@@ -389,6 +390,14 @@ namespace HDA.Core.Migrations
                 new DirectorateLookup { DirectorateNameEn = "Health Directorate of Tafila", DirectorateNameAr = "" },
                 new DirectorateLookup { DirectorateNameEn = "Health Directorate of Maan", DirectorateNameAr = "" }
 
+                );
+            context.SaveChanges();
+        }
+
+        private void SeedProceduresToCall(HDACoreContext context)
+        {
+            context.DataRefreshProcedures.AddOrUpdate(d => d.ProcedureName,
+                new DataRefreshProcedureStatus { ProcedureName = "Test",ProcedureDetail = "SELECT * FROM drugs",ProcedureStartime = DateTime.Now,ProcedureEndDate =DateTime.Now,ProcedureStatus = "Completed"}
                 );
             context.SaveChanges();
         }
