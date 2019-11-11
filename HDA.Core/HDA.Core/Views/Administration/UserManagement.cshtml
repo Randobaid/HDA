@@ -50,7 +50,7 @@
                                 <th class="col-md-1">First Name</th>
                                 <th class="col-md-2">Last Name</th>
                                 <th class="col-md-3">Email</th>
-                                <th class="col-md-1">Phone Number</th>
+                                @*<th class="col-md-1">Phone Number</th>*@
                                 <th class="col-md-1">Roles</th>
                                 <th class="col-md-1">Actions</th>
                             </tr>
@@ -75,22 +75,23 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="FirstName" class="col-form-label">First Name:</label>
+                            <label for="FirstName" class="col-form-label"><span class="required">*</span> First Name:</label>
                             <input class="form-control" name="FirstName" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="LastName" class="col-form-label">Last Name:</label>
+                            <label for="LastName" class="col-form-label"><span class="required">*</span> Last Name:</label>
                             <input type="text" class="form-control" name="LastName" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="Username" class="col-form-label">Username:</label>
-                            <input type="text" class="form-control" name="Username">
+                            <label for="Username" class="col-form-label"><span class="required">*</span> Username:</label>
+                            <input type="text" class="form-control" name="Username" autocomplete="off" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="Password" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" name="Password">
+                            <label for="Password" class="col-form-label"><span class="required">*</span> Password:</label>
+                            <input type="password" class="form-control" name="Password" autocomplete="off">
+                            <div class="form-hint">Use 6 or more characters.</div>
                         </div>
 
                         @*<div class="form-group col-md-6">
@@ -104,7 +105,7 @@
                             <input type="email" class="form-control" name="Email">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="ConfirmPassword" class="col-form-label">Confirm Password:</label>
+                            <label for="ConfirmPassword" class="col-form-label"><span class="required">*</span> Confirm Password:</label>
                             <input type="password" class="form-control" name="ConfirmPassword">
                         </div>
                     </div>
@@ -203,21 +204,21 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="FirstName" class="col-form-label">First Name:</label>
+                            <label for="FirstName" class="col-form-label"><span class="required">*</span> First Name:</label>
                             <input class="form-control" name="FirstName" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="LastName" class="col-form-label">Last Name:</label>
+                            <label for="LastName" class="col-form-label"><span class="required">*</span> Last Name:</label>
                             <input type="text" class="form-control" name="LastName" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="Username" class="col-form-label">Username:</label>
+                            <label for="Username" class="col-form-label"><span class="required">*</span> Username:</label>
                             <input type="text" class="form-control" name="Username" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="Password" class="col-form-label">Password:</label>
+                            <label for="Password" class="col-form-label"><span class="required">*</span> Password:</label>
                             <input type="password" class="form-control" name="Password">
                         </div>
                         @*<div class="form-group col-md-6">
@@ -231,7 +232,7 @@
                             <input type="email" class="form-control" name="Email">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="ConfirmPassword" class="col-form-label">Confirm Password:</label>
+                            <label for="ConfirmPassword" class="col-form-label"><span class="required">*</span> Confirm Password:</label>
                             <input type="password" class="form-control" name="ConfirmPassword">
                         </div>
                     </div>
@@ -476,7 +477,7 @@
             body = body + '</ul></td></tr>';
             body = body + '<tr><td>Health Facility Types</td><td><ul>';
             healthFacilityTypes.forEach(function (healthFacilityType) {
-                if (data.HealthFacilityTypeIds.indexOf(healthFacilityType.ID.toString()) != -1) {
+                if (data.HealthFacilityTypeIds.indexOf(healthFacilityType.HealthFacilityTypeID.toString()) != -1) {
                     body = body + '<li>' + healthFacilityType.HealthFacilityTypeNameEn + '</li>';
                 }
             });

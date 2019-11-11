@@ -217,3 +217,12 @@ body #toast-container > div {
     font-size: 1.1em;
     font-weight: bold;
 }
+
+.col-form-label .required {
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.form-group .form-hint {
+    font-size: 0.8em;
+}

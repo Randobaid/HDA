@@ -70,7 +70,7 @@ namespace HDA.Core.Models.HDAIdentity
         {
             [Required]
             [Display(Name = "User Name")]
-            [EmailAddress]
+            //[EmailAddress]
             public string Username { get; set; }
 
             [Required]
