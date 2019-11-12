@@ -75,28 +75,29 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="FirstName" class="col-form-label">First Name:</label>
+                            <label for="FirstName" class="col-form-label"><span class="required">*</span> First Name:</label>
                             <input class="form-control" name="FirstName" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="LastName" class="col-form-label">Last Name:</label>
+                            <label for="LastName" class="col-form-label"><span class="required">*</span> Last Name:</label>
                             <input type="text" class="form-control" name="LastName" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="UserName" class="col-form-label">Username:</label>
-                            <input type="text" class="form-control" name="UserName">
+                            <label for="Username" class="col-form-label"><span class="required">*</span> Username:</label>
+                            <input type="text" class="form-control" name="Username" autocomplete="off" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="Password" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" name="Password">
+                            <label for="Password" class="col-form-label"><span class="required">*</span> Password:</label>
+                            <input type="password" class="form-control" name="Password" autocomplete="off">
+                            <div class="form-hint">Use 6 or more characters.</div>
                         </div>
 
                         @*<div class="form-group col-md-6">
-                                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
-                                <input type="text" class="form-control" name="PhoneNumber">
-                            </div>*@
+                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                <input type="text" class="form-control" name="PhoneNumber">
+            </div>*@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -104,7 +105,7 @@
                             <input type="email" class="form-control" name="Email">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="ConfirmPassword" class="col-form-label">Confirm Password:</label>
+                            <label for="ConfirmPassword" class="col-form-label"><span class="required">*</span> Confirm Password:</label>
                             <input type="password" class="form-control" name="ConfirmPassword">
                         </div>
                     </div>
@@ -140,6 +141,17 @@
                         </div>
                         <div class="col-md-10">
                             <select multiple name="DirectorateIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="col-md-2">
+                            <label>Health Facility Type:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select multiple name="HealthFacilityTypeIds">
                                 <option></option>
                             </select>
                         </div>
@@ -192,27 +204,27 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="FirstName" class="col-form-label">First Name:</label>
+                            <label for="FirstName" class="col-form-label"><span class="required">*</span> First Name:</label>
                             <input class="form-control" name="FirstName" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="LastName" class="col-form-label">Last Name:</label>
+                            <label for="LastName" class="col-form-label"><span class="required">*</span> Last Name:</label>
                             <input type="text" class="form-control" name="LastName" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="UserName" class="col-form-label">Username:</label>
-                            <input type="text" class="form-control" name="UserName" required>
+                            <label for="Username" class="col-form-label"><span class="required">*</span> Username:</label>
+                            <input type="text" class="form-control" name="Username" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="Password" class="col-form-label">Password:</label>
+                            <label for="Password" class="col-form-label"><span class="required">*</span> Password:</label>
                             <input type="password" class="form-control" name="Password">
                         </div>
                         @*<div class="form-group col-md-6">
-                                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
-                                <input type="text" class="form-control" name="PhoneNumber">
-                            </div>*@
+                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                <input type="text" class="form-control" name="PhoneNumber">
+            </div>*@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -220,7 +232,7 @@
                             <input type="email" class="form-control" name="Email">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="ConfirmPassword" class="col-form-label">Confirm Password:</label>
+                            <label for="ConfirmPassword" class="col-form-label"><span class="required">*</span> Confirm Password:</label>
                             <input type="password" class="form-control" name="ConfirmPassword">
                         </div>
                     </div>
@@ -247,6 +259,15 @@
                             <h5>Directorates:</h5>
                             <hr>
                             <select multiple name="DirectorateIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Health Facility Type:</h5>
+                            <hr>
+                            <select multiple name="HealthFacilityTypeIds">
                                 <option></option>
                             </select>
                         </div>
@@ -287,6 +308,7 @@
         var domains = [];
         var directorates = [];
         var governorates = [];
+        var healthFacilityTypes = [];
         var healthFacilities = [];
         var reports = [];
         var indicators = [];
@@ -296,6 +318,7 @@
             getAllRoles();
             getAllDomains();
             getAllDirectorates();
+            getAllHealthFacilityTypes();
             getAllHealthFacilities();
             getAllReports();
 
@@ -343,6 +366,8 @@
                 $(e.currentTarget).find('select[name="DomainIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="DirectorateIds"]').val($(e.relatedTarget).data('directorateids').toString().split(","));
                 $(e.currentTarget).find('select[name="DirectorateIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="HealthFacilityTypeIds"]').val($(e.relatedTarget).data('healthfacilitytypeids').toString().split(","));
+                $(e.currentTarget).find('select[name="HealthFacilityTypeIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').val($(e.relatedTarget).data('healthfacilityids').toString().split(","));
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="ReportIds"]').val($(e.relatedTarget).data('reportids').toString().split(","));
@@ -400,6 +425,10 @@
                 $(this).select2({ width: '100%' });
             });
 
+            $('select[name="HealthFacilityTypeIds"]').each(function () {
+                $(this).select2({ width: '100%' });
+            });
+
             $('select[name="HealthFacilityIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
@@ -415,7 +444,7 @@
                 ' data-id="' + data.Id + '" data-firstname="' + data.FirstName + '" data-lastname="' + data.LastName +
                 '" data-username="' + data.UserName + '" data-email="' + data.Email + /*'" data-phonenumber="' + data.PhoneNumber +*/ '" data-roleids="' + data.RoleIds +
                 '" data-domainids="' + data.DomainIds + '" data-directorateids="' + data.DirectorateIds +
-                '" data-reportids="' + data.ReportIds + '" data-healthfacilityids="' + data.HealthFacilityIds + '">' +
+                '" data-reportids="' + data.ReportIds + '" data-healthfacilitytypeids="' + data.HealthFacilityTypeIds + '" data-healthfacilityids="' + data.HealthFacilityIds + '">' +
                 '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
                 '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\'' + data.Id + '\')">' +
                 '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>'
@@ -444,6 +473,13 @@
             directorates.forEach(function (directorate) {
                 if (data.DirectorateIds.indexOf(directorate.DirectorateID.toString()) != -1) {
                     body = body + '<li>' + directorate.DirectorateNameEn + '</li>';
+                }
+            });
+            body = body + '</ul></td></tr>';
+            body = body + '<tr><td>Health Facility Types</td><td><ul>';
+            healthFacilityTypes.forEach(function (healthFacilityType) {
+                if (data.HealthFacilityTypeIds.indexOf(healthFacilityType.HealthFacilityTypeID.toString()) != -1) {
+                    body = body + '<li>' + healthFacilityType.HealthFacilityTypeNameEn + '</li>';
                 }
             });
             body = body + '</ul></td></tr>';
@@ -516,6 +552,20 @@
             }).done(function (res) {
                 directorates = res;
                 populateDirectorateIdsSelects();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function getAllHealthFacilityTypes() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/HealthFacilityTypes',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                console.log(res);
+                healthFacilityTypes = res;
+                populateHealthFacilityTypeIdsSelects();
             }).fail(function (xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
@@ -612,6 +662,18 @@
                     element.append($("<option></option>")
                         .attr("value", directorate.DirectorateID)
                         .text(directorate.DirectorateNameEn));
+                });
+            });
+        }
+
+        function populateHealthFacilityTypeIdsSelects() {
+            $('select[name="HealthFacilityTypeIds"]').each(function () {
+                var element = $(this);
+                element.empty();
+                healthFacilityTypes.forEach(function (healthFacilityType) {
+                    element.append($("<option></option>")
+                        .attr("value", healthFacilityType.ID)
+                        .text(healthFacilityType.HealthFacilityTypeNameEn));
                 });
             });
         }

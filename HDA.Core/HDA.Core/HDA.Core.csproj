@@ -1655,6 +1655,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\HealthFacilityTypeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Utilities\PermissionCheck.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -1779,6 +1780,7 @@
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Diagnosis.cs" />
+    <Compile Include="ViewModels\HealthFacilityType.cs" />
     <Compile Include="ViewModels\Directorate.cs" />
     <Compile Include="ViewModels\Domain.cs" />
     <Compile Include="ViewModels\Governorate.cs" />

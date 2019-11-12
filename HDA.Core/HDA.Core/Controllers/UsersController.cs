@@ -37,9 +37,10 @@ namespace HDA.Core.Controllers
                     DomainIds = new List<string>(),
                     DirectorateIds = new List<string>(),
                     GovernorateIds = new List<string>(),
+                    HealthFacilityTypeIds = new List<string>(),
                     HealthFacilityIds = new List<string>(),
                     IndicatorIds = new List<string>(),
-                    ReportIds = new List<string>()
+                    ReportIds = new List<string>(),
                 };
                 foreach(var roleName in userManager.GetRoles(user.Id))
                 {
@@ -65,6 +66,9 @@ namespace HDA.Core.Controllers
                             break;
                         case "HDA.Core.Models.HDAReports.Governorate":
                             userViewModel.GovernorateIds.Add(claim.Value);
+                            break;
+                        case "HDA.Core.Models.HDAReports.HealthFacilityType":
+                            userViewModel.HealthFacilityTypeIds.Add(claim.Value);
                             break;
                         case "HDA.Core.Models.HDAReports.HealthFacility":
                             userViewModel.HealthFacilityIds.Add(claim.Value);
@@ -106,6 +110,7 @@ namespace HDA.Core.Controllers
                 DomainIds = new List<string>(),
                 DirectorateIds = new List<string>(),
                 GovernorateIds = new List<string>(),
+                HealthFacilityTypeIds = new List<string>(),
                 HealthFacilityIds = new List<string>(),
                 ReportIds = new List<string>(),
                 IndicatorIds = new List<string>()
@@ -133,6 +138,9 @@ namespace HDA.Core.Controllers
                         break;
                      case "HDA.Core.Models.HDAReports.Governorate":
                         userViewModel.GovernorateIds.Add(claim.Value);
+                        break;
+                    case "HDA.Core.Models.HDAReports.HealthFacilityType":
+                        userViewModel.HealthFacilityTypeIds.Add(claim.Value);
                         break;
                     case "HDA.Core.Models.HDAReports.HealthFacility":
                         userViewModel.HealthFacilityIds.Add(claim.Value);
@@ -221,6 +229,14 @@ namespace HDA.Core.Controllers
                         foreach (var governorateId in userViewModel.GovernorateIds)
                         {
                             var claim = new Claim("HDA.Core.Models.HDAReports.Governorate", governorateId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
+                    }
+                    if (userViewModel.HealthFacilityTypeIds != null)
+                    {
+                        foreach (var healthFacilityTypeId in userViewModel.HealthFacilityTypeIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.HealthFacilityType", healthFacilityTypeId);
                             userManager.AddClaim(user.Id, claim);
                         }
                     }
@@ -332,6 +348,14 @@ namespace HDA.Core.Controllers
                         foreach (var governorateId in userViewModel.GovernorateIds)
                         {
                             var claim = new Claim("HDA.Core.Models.HDAReports.Governorate", governorateId);
+                            userManager.AddClaim(user.Id, claim);
+                        }
+                    }
+                    if (userViewModel.HealthFacilityTypeIds != null)
+                    {
+                        foreach (var healthFacilityTypeId in userViewModel.HealthFacilityTypeIds)
+                        {
+                            var claim = new Claim("HDA.Core.Models.HDAReports.HealthFacilityType", healthFacilityTypeId);
                             userManager.AddClaim(user.Id, claim);
                         }
                     }

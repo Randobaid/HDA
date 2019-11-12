@@ -69,8 +69,9 @@ namespace HDA.Core.Models.HDAIdentity
         public class LoginViewModel
         {
             [Required]
-            [Display(Name = "Username")]
-            public string UserName { get; set; }
+            [Display(Name = "User Name")]
+            //[EmailAddress]
+            public string Username { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
