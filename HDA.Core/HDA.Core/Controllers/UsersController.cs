@@ -168,9 +168,15 @@ namespace HDA.Core.Controllers
                 {
                     ApplicationUserManager userManager = new ApplicationUserManager(new ApplicationUserStore(db));
                     ApplicationRoleManager roleManager = new ApplicationRoleManager(new ApplicationRoleStore(db));
-                    var user = userManager.FindByEmail(userViewModel.Email);
-                    if(user != null) {
-                        return BadRequest("Already exists");
+                    ApplicationUser user = new ApplicationUser();
+                    if (userViewModel.Email == null && userViewModel.UserName == null) {
+                        return BadRequest("Username or Email is required");
+                    }
+                    if (userViewModel.Email != null) {
+                        user = userManager.FindByEmail(userViewModel.Email);
+                        if(user != null) {
+                            return BadRequest("Already exists");
+                        }
                     }
                     if (userViewModel.UserName != null) {
                         user = userManager.FindByName(userViewModel.UserName);
@@ -283,12 +289,13 @@ namespace HDA.Core.Controllers
                 if (
                     userViewModel.FirstName != null &&
                     userViewModel.LastName != null &&
-                    userViewModel.Email != null
+                    (userViewModel.Email != null || userViewModel.UserName != null)
                 )
                 {
                     user.FirstName = userViewModel.FirstName;
                     user.LastName = userViewModel.LastName;
                     user.Email = userViewModel.Email;
+                    user.UserName = userViewModel.UserName;
                     //user.PhoneNumber = userViewModel.PhoneNumber;
                     userManager.Update(user);
                     if (userViewModel.Password != null && userViewModel.Password != "") {
@@ -317,13 +324,10 @@ namespace HDA.Core.Controllers
                     }
                     // instead of checking every assigned claim against what the user has,
                     // we just remove all of them and then reassign
-                    //if (userViewModel.DirectorateIds != null)
-                    //{
                     foreach (var claim in userManager.GetClaims(user.Id))
                     {
                         userManager.RemoveClaim(user.Id, claim);
                     }
-                    //}
                     if (userViewModel.DomainIds != null)
                     {
                         foreach (var domainId in userViewModel.DomainIds)
