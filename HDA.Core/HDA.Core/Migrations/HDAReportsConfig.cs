@@ -29,6 +29,8 @@ namespace HDA.Core.Migrations
             SeedIndicators(context);
             SeedTargets(context);
             SeedReports(context);
+            SeedStoredProcedures(context);
+            SeedProceduresToCall(context);
             base.Seed(context);
         }
 
@@ -182,6 +184,24 @@ namespace HDA.Core.Migrations
                     CodingSystemVersion = "20190301",
                     CodingSystemEffectiveDate = new DateTime(2019, 5, 27)
                 }
+                );
+            context.SaveChanges();
+        }
+
+        private void SeedStoredProcedures(HDAReportsContext context)
+        {
+            context.DataRefreshProcedures.AddOrUpdate(m => m.ProcedureName,
+                 new DataRefreshProcedureStatus { ProcedureName = "sp_prescriptiontotals" },
+                 new DataRefreshProcedureStatus { ProcedureName = "sp_inpatientencountertotals" }
+
+                );
+            context.SaveChanges();
+        }
+
+        private void SeedProceduresToCall(HDAReportsContext context)
+        {
+            context.DataRefreshProcedures.AddOrUpdate(d => d.ProcedureName,
+                new DataRefreshProcedureStatus { ProcedureName = "Test",ProcedureDetail = "SELECT * FROM drugs",ProcedureStartime = DateTime.Now,ProcedureEndDate =DateTime.Now,ProcedureStatus = "Completed"}
                 );
             context.SaveChanges();
         }

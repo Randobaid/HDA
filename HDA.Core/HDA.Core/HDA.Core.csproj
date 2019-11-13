@@ -1657,6 +1657,12 @@
   <ItemGroup>
     <Compile Include="Controllers\HealthFacilityTypeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\RefreshDataController.cs" />
+    <Compile Include="Migrations\HDAReports\201911131205398_DataRefreshProcedureStatus.cs" />
+    <Compile Include="Migrations\HDAReports\201911131205398_DataRefreshProcedureStatus.Designer.cs">
+      <DependentUpon>201911131205398_DataRefreshProcedureStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HDAReports\DataRefreshProcedureStatus.cs" />
     <Compile Include="Utilities\PermissionCheck.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -1834,6 +1840,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="DatabaseScripts\hdareports_totals\" />
     <Folder Include="Migrations\HDACore\" />
+    <Folder Include="Views\RefreshData\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -1853,6 +1860,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAReports\201910161255541_AddReportsTable.resx">
       <DependentUpon>201910161255541_AddReportsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAReports\201911131205398_DataRefreshProcedureStatus.resx">
+      <DependentUpon>201911131205398_DataRefreshProcedureStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
