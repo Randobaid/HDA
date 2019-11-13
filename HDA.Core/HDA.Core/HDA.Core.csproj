@@ -70,6 +70,9 @@
     <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="LinqKit, Version=1.1.16.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.1.1.16\lib\net45\LinqKit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -200,12 +203,18 @@
     <Content Include="Content\bootstrap-rtl\js\bootstrap.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\select2\select2.css" />
+    <Content Include="Content\select2\select2.min.css" />
     <Content Include="Content\datatables.css" />
     <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\pivot.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
+    <Content Include="DatabaseScripts\hdacore_hdareports\000 healthfacilities.sql" />
+    <Content Include="DatabaseScripts\ReadMe.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -249,6 +258,8 @@
     <Content Include="Content\bootstrap-rtl\js\bootstrap.bundle.min.js.map" />
     <Content Include="Content\bootstrap-rtl\js\bootstrap.js.map" />
     <Content Include="Content\bootstrap-rtl\js\bootstrap.min.js.map" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\IIS.pubxml" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -922,6 +933,8 @@
     <Content Include="Scripts\highstock\themes\sand-signika.js.map" />
     <Content Include="Scripts\highstock\themes\skies.js.map" />
     <Content Include="Scripts\highstock\themes\sunset.js.map" />
+    <None Include="Properties\PublishProfiles\prod.pubxml" />
+    <None Include="Properties\PublishProfiles\triage.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\highcharts\7.1.2\themes\sunset.src.js" />
     <Content Include="Scripts\highstock\css\annotations\popup.css" />
@@ -1551,6 +1564,65 @@
     <Content Include="Scripts\highstock\themes\skies.src.js" />
     <Content Include="Scripts\highstock\themes\sunset.js" />
     <Content Include="Scripts\highstock\themes\sunset.src.js" />
+    <Content Include="Scripts\i18n\af.js" />
+    <Content Include="Scripts\i18n\ar.js" />
+    <Content Include="Scripts\i18n\az.js" />
+    <Content Include="Scripts\i18n\bg.js" />
+    <Content Include="Scripts\i18n\bn.js" />
+    <Content Include="Scripts\i18n\bs.js" />
+    <Content Include="Scripts\i18n\ca.js" />
+    <Content Include="Scripts\i18n\cs.js" />
+    <Content Include="Scripts\i18n\da.js" />
+    <Content Include="Scripts\i18n\de.js" />
+    <Content Include="Scripts\i18n\dsb.js" />
+    <Content Include="Scripts\i18n\el.js" />
+    <Content Include="Scripts\i18n\en.js" />
+    <Content Include="Scripts\i18n\es.js" />
+    <Content Include="Scripts\i18n\et.js" />
+    <Content Include="Scripts\i18n\eu.js" />
+    <Content Include="Scripts\i18n\fa.js" />
+    <Content Include="Scripts\i18n\fi.js" />
+    <Content Include="Scripts\i18n\fr.js" />
+    <Content Include="Scripts\i18n\gl.js" />
+    <Content Include="Scripts\i18n\he.js" />
+    <Content Include="Scripts\i18n\hi.js" />
+    <Content Include="Scripts\i18n\hr.js" />
+    <Content Include="Scripts\i18n\hsb.js" />
+    <Content Include="Scripts\i18n\hu.js" />
+    <Content Include="Scripts\i18n\hy.js" />
+    <Content Include="Scripts\i18n\id.js" />
+    <Content Include="Scripts\i18n\is.js" />
+    <Content Include="Scripts\i18n\it.js" />
+    <Content Include="Scripts\i18n\ja.js" />
+    <Content Include="Scripts\i18n\ka.js" />
+    <Content Include="Scripts\i18n\km.js" />
+    <Content Include="Scripts\i18n\ko.js" />
+    <Content Include="Scripts\i18n\lt.js" />
+    <Content Include="Scripts\i18n\lv.js" />
+    <Content Include="Scripts\i18n\mk.js" />
+    <Content Include="Scripts\i18n\ms.js" />
+    <Content Include="Scripts\i18n\nb.js" />
+    <Content Include="Scripts\i18n\ne.js" />
+    <Content Include="Scripts\i18n\nl.js" />
+    <Content Include="Scripts\i18n\pl.js" />
+    <Content Include="Scripts\i18n\ps.js" />
+    <Content Include="Scripts\i18n\pt-BR.js" />
+    <Content Include="Scripts\i18n\pt.js" />
+    <Content Include="Scripts\i18n\ro.js" />
+    <Content Include="Scripts\i18n\ru.js" />
+    <Content Include="Scripts\i18n\sk.js" />
+    <Content Include="Scripts\i18n\sl.js" />
+    <Content Include="Scripts\i18n\sq.js" />
+    <Content Include="Scripts\i18n\sr-Cyrl.js" />
+    <Content Include="Scripts\i18n\sr.js" />
+    <Content Include="Scripts\i18n\sv.js" />
+    <Content Include="Scripts\i18n\th.js" />
+    <Content Include="Scripts\i18n\tk.js" />
+    <Content Include="Scripts\i18n\tr.js" />
+    <Content Include="Scripts\i18n\uk.js" />
+    <Content Include="Scripts\i18n\vi.js" />
+    <Content Include="Scripts\i18n\zh-CN.js" />
+    <Content Include="Scripts\i18n\zh-TW.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
     <Content Include="Scripts\jquery-3.0.0.slim.js" />
@@ -1569,7 +1641,11 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\sweetalert2.all.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -1579,6 +1655,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\HealthFacilityTypeController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\RefreshDataController.cs" />
+    <Compile Include="Migrations\HDAReports\201911131205398_DataRefreshProcedureStatus.cs" />
+    <Compile Include="Migrations\HDAReports\201911131205398_DataRefreshProcedureStatus.Designer.cs">
+      <DependentUpon>201911131205398_DataRefreshProcedureStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HDAReports\DataRefreshProcedureStatus.cs" />
+    <Compile Include="Utilities\PermissionCheck.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -1586,6 +1671,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\DirectoratesController.cs" />
+    <Compile Include="Controllers\DiseaseManagementController.cs" />
+    <Compile Include="Controllers\DomainsController.cs" />
+    <Compile Include="Controllers\GovernoratesController.cs" />
     <Compile Include="Controllers\HealthFacilitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndicatorsController.cs" />
@@ -1593,7 +1682,6 @@
     <Compile Include="Controllers\OutPatientEncountersController.cs" />
     <Compile Include="Controllers\OutPatientPrescriptionsController.cs" />
     <Compile Include="Controllers\ProvidersController.cs" />
-    <Compile Include="Controllers\RefreshDataController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SurgeriesController.cs" />
@@ -1602,49 +1690,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\HDACoreConfig.cs" />
-    <Compile Include="Migrations\HDACore\201909161444254_InitialCreate.cs" />
-    <Compile Include="Migrations\HDACore\201909161444254_InitialCreate.Designer.cs">
-      <DependentUpon>201909161444254_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909161515551_AddDrugParentClassID.cs" />
-    <Compile Include="Migrations\HDACore\201909161515551_AddDrugParentClassID.Designer.cs">
-      <DependentUpon>201909161515551_AddDrugParentClassID.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909161522336_EditDrugTable.cs" />
-    <Compile Include="Migrations\HDACore\201909161522336_EditDrugTable.Designer.cs">
-      <DependentUpon>201909161522336_EditDrugTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909161526116_EditDrugTableAddDrugEstimatedPrice.cs" />
-    <Compile Include="Migrations\HDACore\201909161526116_EditDrugTableAddDrugEstimatedPrice.Designer.cs">
-      <DependentUpon>201909161526116_EditDrugTableAddDrugEstimatedPrice.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.cs" />
-    <Compile Include="Migrations\HDACore\201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.Designer.cs">
-      <DependentUpon>201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.cs" />
-    <Compile Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.Designer.cs">
-      <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201909271109443_RefreshProcedures.cs" />
-    <Compile Include="Migrations\HDACore\201909271109443_RefreshProcedures.Designer.cs">
-      <DependentUpon>201909271109443_RefreshProcedures.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDACore\201910301229336_RenamDataRefreshTable.cs" />
-    <Compile Include="Migrations\HDACore\201910301229336_RenamDataRefreshTable.Designer.cs">
-      <DependentUpon>201910301229336_RenamDataRefreshTable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\HDAIdentityConfig.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.cs" />
     <Compile Include="Migrations\HDAIdentity\201909161445398_InitialCreate.Designer.cs">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\HDAReportsConfig.cs" />
+    <Compile Include="Migrations\HDAReports\201910091050021_InitialCreate.cs" />
+    <Compile Include="Migrations\HDAReports\201910091050021_InitialCreate.Designer.cs">
+      <DependentUpon>201910091050021_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDAReports\201910091343456_RemoveFK_PrescriptionsTotal.cs" />
+    <Compile Include="Migrations\HDAReports\201910091343456_RemoveFK_PrescriptionsTotal.Designer.cs">
+      <DependentUpon>201910091343456_RemoveFK_PrescriptionsTotal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\HDAReports\201910161255541_AddReportsTable.cs" />
+    <Compile Include="Migrations\HDAReports\201910161255541_AddReportsTable.Designer.cs">
+      <DependentUpon>201910161255541_AddReportsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HDACore\Diagnosis\DiagnosisCode.cs" />
+    <Compile Include="Models\HDACore\Diagnosis\DiagnosisCodingSystem.cs" />
     <Compile Include="Models\HDACore\Diagnosis\DiagnosisLookup.cs" />
+    <Compile Include="Models\HDACore\Diagnosis\PatientDiagnosis.cs" />
     <Compile Include="Models\HDACore\Diagnosis\ProcedureLookup.cs" />
     <Compile Include="Models\HDACore\Diagnosis\SurgerySeverityLookup.cs" />
-    <Compile Include="Models\HDACore\Diagnosis\TestBranck.cs" />
     <Compile Include="Models\HDACore\Encounter\AppointmentStatusLookup.cs" />
     <Compile Include="Models\HDACore\Encounter\AppointmentTypeLookup.cs" />
     <Compile Include="Models\HDACore\Encounter\InPatientAdmission.cs" />
@@ -1664,27 +1734,22 @@
     <Compile Include="Models\HDACore\Geography\Governorate.cs" />
     <Compile Include="Models\HDACore\HDACoreContext.cs" />
     <Compile Include="Models\HDACore\HealthFacility\HealthFacility.cs" />
-    <Compile Include="Models\HDACore\HealthFacility\HealthFacilityLocation.cs" />
-    <Compile Include="Models\HDACore\HealthFacility\HealthFacilityLocationService.cs" />
     <Compile Include="Models\HDACore\HealthFacility\HealthFacilityType.cs" />
-    <Compile Include="Models\HDACore\HealthFacility\Location.cs" />
     <Compile Include="Models\HDACore\Geography\Region.cs" />
     <Compile Include="Models\HDACore\HealthFacility\OutpatientLocation.cs" />
     <Compile Include="Models\HDACore\HealthFacility\Pharmacy.cs" />
     <Compile Include="Models\HDACore\HealthFacility\SectionLookup.cs" />
-    <Compile Include="Models\HDACore\HealthFacility\Service.cs" />
     <Compile Include="Models\HDACore\HealthFacility\SpecialityLookup.cs" />
     <Compile Include="Models\HDACore\HealthFacility\WardLocation.cs" />
-    <Compile Include="Models\HDACore\Indicator\Indicator.cs" />
-    <Compile Include="Models\HDACore\Indicator\Target.cs" />
+    <Compile Include="Models\HDAReports\Indicator.cs" />
     <Compile Include="Models\HDACore\Patient\GenderLookup.cs" />
     <Compile Include="Models\HDACore\Patient\MaritalStatusLookup.cs" />
     <Compile Include="Models\HDACore\Patient\Patient.cs" />
     <Compile Include="Models\HDACore\Prescriptions\Drug.cs" />
     <Compile Include="Models\HDACore\Prescriptions\DrugClass.cs" />
     <Compile Include="Models\HDACore\Prescriptions\Prescription.cs" />
+    <Compile Include="Models\HDACore\Prescriptions\PrescriptionRefill.cs" />
     <Compile Include="Models\HDACore\Provider\Provider.cs" />
-    <Compile Include="Models\HDACore\RefreshData\DataRefreshProcedureStatus.cs" />
     <Compile Include="Models\HDAIdentity\AccountViewModel.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationRole.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationRoleManager.cs" />
@@ -1694,15 +1759,38 @@
     <Compile Include="Models\HDAIdentity\ApplicationUserManager.cs" />
     <Compile Include="Models\HDAIdentity\ApplicationUserStore.cs" />
     <Compile Include="Models\HDAIdentity\HDAIdentityContext.cs" />
+    <Compile Include="Models\HDAReports\Country.cs" />
+    <Compile Include="Models\HDAReports\DiagnosisCode.cs" />
+    <Compile Include="Models\HDAReports\DiagnosisCodingSystem.cs" />
+    <Compile Include="Models\HDAReports\DiagnosisTotal.cs" />
+    <Compile Include="Models\HDAReports\Directorate.cs" />
+    <Compile Include="Models\HDAReports\Domain.cs" />
+    <Compile Include="Models\HDAReports\Drug.cs" />
+    <Compile Include="Models\HDAReports\DrugClass.cs" />
+    <Compile Include="Models\HDAReports\Gender.cs" />
+    <Compile Include="Models\HDAReports\Governorate.cs" />
     <Compile Include="Models\HDAReports\HDAReportsContext.cs" />
+    <Compile Include="Models\HDAReports\HealthFacility.cs" />
+    <Compile Include="Models\HDAReports\HealthFacilityType.cs" />
     <Compile Include="Models\HDAReports\InPatientEncounterTotal.cs" />
     <Compile Include="Models\HDAReports\OutPatientEncounterTotal.cs" />
+    <Compile Include="Models\HDAReports\Pharmacy.cs" />
     <Compile Include="Models\HDAReports\PrescriptionTotal.cs" />
+    <Compile Include="Models\HDAReports\Provider.cs" />
+    <Compile Include="Models\HDAReports\Region.cs" />
+    <Compile Include="Models\HDAReports\Report.cs" />
     <Compile Include="Models\HDAReports\SurgeryTotal.cs" />
+    <Compile Include="Models\HDAReports\Target.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Diagnosis.cs" />
+    <Compile Include="ViewModels\HealthFacilityType.cs" />
+    <Compile Include="ViewModels\Directorate.cs" />
+    <Compile Include="ViewModels\Domain.cs" />
+    <Compile Include="ViewModels\Governorate.cs" />
+    <Compile Include="ViewModels\Report.cs" />
     <Compile Include="ViewModels\Role.cs" />
     <Compile Include="ViewModels\User.cs" />
     <Compile Include="ViewModels\OutpatientPrescriptions.cs" />
@@ -1736,7 +1824,10 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Reports\OutpatientPrescriptions.cshtml" />
     <Content Include="Views\Administration\DataManagement.cshtml" />
-    <Content Include="Views\RefreshData\Index.cshtml" />
+    <Content Include="Views\Reports\DiseaseManagement.cshtml" />
+    <Content Include="Views\Administration\UserManagement.cshtml" />
+    <Content Include="Views\Shared\_ReportsPartial.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1745,9 +1836,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Indicators\" />
-    <Folder Include="Views\Targets\" />
+    <Folder Include="DatabaseScripts\hdareports_totals\" />
+    <Folder Include="Migrations\HDACore\" />
+    <Folder Include="Views\RefreshData\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -1756,32 +1849,20 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\HDACore\201909161444254_InitialCreate.resx">
-      <DependentUpon>201909161444254_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909161515551_AddDrugParentClassID.resx">
-      <DependentUpon>201909161515551_AddDrugParentClassID.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909161522336_EditDrugTable.resx">
-      <DependentUpon>201909161522336_EditDrugTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909161526116_EditDrugTableAddDrugEstimatedPrice.resx">
-      <DependentUpon>201909161526116_EditDrugTableAddDrugEstimatedPrice.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.resx">
-      <DependentUpon>201909170602136_RenamePrescriptionDateToIssueDate_AddFillDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909171329252_PrescriptionTotal_AddQuantityTotal.resx">
-      <DependentUpon>201909171329252_PrescriptionTotal_AddQuantityTotal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201909271109443_RefreshProcedures.resx">
-      <DependentUpon>201909271109443_RefreshProcedures.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDACore\201910301229336_RenamDataRefreshTable.resx">
-      <DependentUpon>201910301229336_RenamDataRefreshTable.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAIdentity\201909161445398_InitialCreate.resx">
       <DependentUpon>201909161445398_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAReports\201910091050021_InitialCreate.resx">
+      <DependentUpon>201910091050021_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAReports\201910091343456_RemoveFK_PrescriptionsTotal.resx">
+      <DependentUpon>201910091343456_RemoveFK_PrescriptionsTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAReports\201910161255541_AddReportsTable.resx">
+      <DependentUpon>201910161255541_AddReportsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\HDAReports\201911131205398_DataRefreshProcedureStatus.resx">
+      <DependentUpon>201911131205398_DataRefreshProcedureStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

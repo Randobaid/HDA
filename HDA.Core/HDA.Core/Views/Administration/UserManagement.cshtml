@@ -10,7 +10,27 @@
             <hr>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-4" id="userDetailsDiv" style="display:none;">
+        <div class="col-md-12">
+            <div class="card border border-primary " style="min-height:250px;">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-danger btn-sm" id="userDetailsCloseButton">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                            </button>
+                        </div>
+                        <div><h5>User Details</h5></div>
+                        <div id="userDetailsRightButtons"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="userDetailsBody"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="userDataTableDiv">
         <div class="col-md-12">
             <div class="card border border-primary " style="min-height:250px;">
                 <div class="card-header bg-primary text-white">
@@ -26,12 +46,13 @@
                     <table id="userDataTable" class="display table table-sm table-hover" style="width:100%">
                         <thead>
                             <tr>
-                                <th>UserName</th>
-                                <th>FirstName</th>
-                                <th>LastName</th>
-                                <th>Email</th>
-                                <th>PhoneNumber</th>
-                                <th>Roles</th>
+                                <th class="col-md-2">Username</th>
+                                <th class="col-md-2">First Name</th>
+                                <th class="col-md-2">Last Name</th>
+                                <th class="col-md-3">Email</th>
+                                @*<th class="col-md-1">Phone Number</th>*@
+                                <th class="col-md-1">Roles</th>
+                                <th class="col-md-2">Actions</th>
                             </tr>
                         </thead>
                     </table>
@@ -39,38 +60,13 @@
             </div>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card border border-primary " style="min-height:250px;">
-                <div class="card-header bg-primary text-white">
-                    Roles
-                    <i class="fa fa-spinner fa-pulse fa-lg" id="roleDataTableSpinner" hidden="hidden"></i>
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addRoleModal">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add Role
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table id="roleDataTable" class="display table table-sm table-hover" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-<div>
+</div>
 
 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="addUserModalLabel">New User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -79,38 +75,110 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="FirstName" class="col-form-label">First Name:</label>
+                            <label for="FirstName" class="col-form-label"><span class="required">*</span> First Name:</label>
                             <input class="form-control" name="FirstName" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="LastName" class="col-form-label">Last Name:</label>
+                            <label for="LastName" class="col-form-label"><span class="required">*</span> Last Name:</label>
                             <input type="text" class="form-control" name="LastName" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
+                            <label for="UserName" class="col-form-label"><span class="required">*</span> Username:</label>
+                            <input type="text" class="form-control" name="UserName" autocomplete="off" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Password" class="col-form-label"><span class="required">*</span> Password:</label>
+                            <input type="password" class="form-control" name="Password" autocomplete="off">
+                            <div class="form-hint">Use 6 or more characters.</div>
+                        </div>
+
+                        @*<div class="form-group col-md-6">
+                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                <input type="text" class="form-control" name="PhoneNumber">
+            </div>*@
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
                             <label for="Email" class="col-form-label">Email:</label>
-                            <input type="email" class="form-control" name="Email" required>
+                            <input type="email" class="form-control" name="Email">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
-                            <input type="text" class="form-control" name="PhoneNumber">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="Password" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" name="Password" required>
+                            <label for="ConfirmPassword" class="col-form-label"><span class="required">*</span> Confirm Password:</label>
+                            <input type="password" class="form-control" name="ConfirmPassword">
                         </div>
                     </div>
+
+                    <hr />
+                    <h5 class="text-primary">Permissions</h5>
+                    <br />
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="RoleIds">Roles:</label>
-                            <select multiple class="form-control" name="RoleIds">
+                        <div class="col-md-2">
+                            <label>Roles:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select multiple name="RoleIds">
                                 <option></option>
                             </select>
                         </div>
                     </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="col-md-2">
+                            <label>Domains:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select multiple name="DomainIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="col-md-2">
+                            <label>Directorates:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select multiple name="DirectorateIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="col-md-2">
+                            <label>Health Facility Type:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select multiple name="HealthFacilityTypeIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="col-md-2">
+                            <label>Health Facilities:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select multiple name="HealthFacilityIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="col-md-2">
+                            <label>Reports:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select multiple name="ReportIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -122,24 +190,105 @@
     </div>
 </div>
 
-<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addRoleModalLabel">Add New Role</h5>
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form method="POST">
+                <input type="hidden" name="Id">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="Name" class="col-form-label">Name:</label>
-                        <input type="text" class="form-control" name="Name" required>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="FirstName" class="col-form-label"><span class="required">*</span> First Name:</label>
+                            <input class="form-control" name="FirstName" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="LastName" class="col-form-label"><span class="required">*</span> Last Name:</label>
+                            <input type="text" class="form-control" name="LastName" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="Description" class="col-form-label">Description:</label>
-                        <textarea class="form-control" name="Description"></textarea>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="UserName" class="col-form-label"><span class="required">*</span> Username:</label>
+                            <input type="text" class="form-control" name="UserName" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Password" class="col-form-label"><span class="required">*</span> Password:</label>
+                            <input type="password" class="form-control" name="Password">
+                        </div>
+                        @*<div class="form-group col-md-6">
+                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                <input type="text" class="form-control" name="PhoneNumber">
+            </div>*@
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Email" class="col-form-label">Email:</label>
+                            <input type="email" class="form-control" name="Email">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ConfirmPassword" class="col-form-label"><span class="required">*</span> Confirm Password:</label>
+                            <input type="password" class="form-control" name="ConfirmPassword">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Roles:</h5>
+                            <hr>
+                            <select multiple name="RoleIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Domains:</h5>
+                            <hr>
+                            <select multiple name="DomainIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Directorates:</h5>
+                            <hr>
+                            <select multiple name="DirectorateIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Health Facility Type:</h5>
+                            <hr>
+                            <select multiple name="HealthFacilityTypeIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Health Facilities:</h5>
+                            <hr>
+                            <select multiple name="HealthFacilityIds">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <h5>Reports:</h5>
+                            <hr>
+                            <select multiple name="ReportIds">
+                                <option></option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
@@ -156,12 +305,38 @@
     <script type="text/javascript">
         var users = [];
         var roles = [];
-        
+        var domains = [];
+        var directorates = [];
+        var governorates = [];
+        var healthFacilityTypes = [];
+        var healthFacilities = [];
+        var reports = [];
+        var indicators = [];
+
         $(document).ready(function () {
             getAllUsers();
             getAllRoles();
-            
-            $('#addUserModal form').submit(function() {
+            getAllDomains();
+            getAllDirectorates();
+            getAllHealthFacilityTypes();
+            getAllHealthFacilities();
+            getAllReports();
+
+            $('#addUserModal form').submit(function () {
+                var password = $(this).find('input[name="Password"]').val();
+                var confirmPassword = $(this).find('input[name="ConfirmPassword"]').val();
+                if (password && password != confirmPassword) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password and Password Confirmation do not match. Please try again', 'error');
+                    return false;
+                }
+                if (password && password.length < 6) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password is too short. It should be 6 or more characters. Please try again', 'error');
+                    return false;
+                }
                 $('#addUserModal').modal('hide');
                 Swal.showLoading();
                 $.ajax({
@@ -171,104 +346,389 @@
                 }).done(function (res) {
                     $('#addUserModal form').trigger("reset");
                     getAllUsers();
-                    Swal.fire('Success', 'User added successfully' , 'success');
-                }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseText , 'error');
+                    Swal.fire('Success', 'User added successfully', 'success');
+                }).fail(function (xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseJSON.Message, 'error');
                 });
                 return false;
             });
 
-            $('#addRoleModal form').submit(function() {
-                $('#addRoleModal').modal('hide');
+            $('#editUserModal').on('show.bs.modal', function (e) {
+                $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
+                $(e.currentTarget).find('input[name="FirstName"]').val($(e.relatedTarget).data('firstname'));
+                $(e.currentTarget).find('input[name="LastName"]').val($(e.relatedTarget).data('lastname'));
+                $(e.currentTarget).find('input[name="Email"]').val($(e.relatedTarget).data('email'));
+                $(e.currentTarget).find('input[name="UserName"]').val($(e.relatedTarget).data('username'));
+                //$(e.currentTarget).find('input[name="PhoneNumber"]').val($(e.relatedTarget).data('phonenumber'));
+                $(e.currentTarget).find('select[name="RoleIds"]').val($(e.relatedTarget).data('roleids').toString().split(","));
+                $(e.currentTarget).find('select[name="RoleIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="DomainIds"]').val($(e.relatedTarget).data('domainids').toString().split(","));
+                $(e.currentTarget).find('select[name="DomainIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="DirectorateIds"]').val($(e.relatedTarget).data('directorateids').toString().split(","));
+                $(e.currentTarget).find('select[name="DirectorateIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="HealthFacilityTypeIds"]').val($(e.relatedTarget).data('healthfacilitytypeids').toString().split(","));
+                $(e.currentTarget).find('select[name="HealthFacilityTypeIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="HealthFacilityIds"]').val($(e.relatedTarget).data('healthfacilityids').toString().split(","));
+                $(e.currentTarget).find('select[name="HealthFacilityIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="ReportIds"]').val($(e.relatedTarget).data('reportids').toString().split(","));
+                $(e.currentTarget).find('select[name="ReportIds"]').trigger('change');
+            });
+
+            $('#editUserModal form').submit(function () {
+                var password = $(this).find('input[name="Password"]').val();
+                var confirmPassword = $(this).find('input[name="ConfirmPassword"]').val();
+                if (password && password != confirmPassword) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password and Password Confirmation do not match. Please try again', 'error');
+                    return false;
+                }
+                if (password && password.length < 6) {
+                    $(this).find('input[name="Password"]').val('');
+                    $(this).find('input[name="ConfirmPassword"]').val('');
+                    Swal.fire('Error', 'Password is too short. It should be 6 or more characters. Please try again', 'error');
+                    return false;
+                }
+                $('#editUserModal').modal('hide');
+                var id = $('#editUserModal form').find('input[name="Id"]').val();
                 Swal.showLoading();
                 $.ajax({
-                    type: 'POST',
-                    url: '../api/roles',
-                    data: $('#addRoleModal form').serialize()
+                    type: 'PUT',
+                    url: '../api/users/' + id,
+                    data: $('#editUserModal form').serialize()
                 }).done(function (res) {
-                    $('#addRoleModal form').trigger("reset");
-                    getAllRoles();
-                    Swal.fire('Success', 'Role added successfully' , 'success');
-                }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseText , 'error');
+                    $('#editUserModal form').trigger("reset");
+                    getAllUsers();
+                    showUserDetails(res);
+                    Swal.fire('Success', 'User updated successfully', 'success');
+                }).fail(function (xhr, textStatus, errorThrown) {
+                    Swal.fire('Error', xhr.responseJSON.Message, 'error');
                 });
                 return false;
             });
-            
-            function getAllUsers() {
-                $('#userDataTableSpinner').removeAttr('hidden');
-                var url = '../api/users';
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    contentType: "application/json; charset=utf-8"
-                }).done(function (res) {
-                    users = res;
-                    populateUserDataTables();
-                });
-            }
 
-            function getAllRoles() {
-                $('#roleDataTableSpinner').removeAttr('hidden');
-                var url = '../api/roles';
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    contentType: "application/json; charset=utf-8"
-                }).done(function (res) {
-                    roles = res;
-                    populateRoleDataTables();
-                    populateRoleIdsSelects();
-                });
-            }
+            $('#userDetailsCloseButton').click(function () {
+                $('#userDetailsDiv').attr('style', 'display:none');
+                $('#userDataTableDiv').attr('style', 'display:flex');
+                $('#roleDataTableDiv').attr('style', 'display:flex');
+            });
 
-            function populateUserDataTables() {
-                var dataTableUsers = users.map(user => {
-                    var roleNames = [];
-                    user.Roles.forEach(function (role) {
-                        roleNames.push(role.Name);
-                    });
-                    user.Roles = roleNames.join();
-                    return user;
-                });
-                $('#userDataTable').DataTable({
-                    destroy: true,
-                    data: dataTableUsers,
-                    columns: [
-                        { data: 'UserName' },
-                        { data: 'FirstName' },
-                        { data: 'LastName' },
-                        { data: 'Email' },
-                        { data: 'PhoneNumber' },
-                        { data: 'Roles' },
-                    ]
-                });
-                $('#userDataTableSpinner').attr('hidden', true);
-            }
+            $('select[name="RoleIds"]').each(function () {
+                $(this).select2({ width: '100%' });
+            });
 
-            function populateRoleDataTables() {
-                $('#roleDataTable').DataTable({
-                    destroy: true,
-                    data: roles,
-                    columns: [
-                        { data: 'Name' },
-                        { data: 'Description' }
-                    ]
-                });
-                $('#roleDataTableSpinner').attr('hidden', true);
-            }
+            $('select[name="DomainIds"]').each(function () {
+                $(this).select2({ width: '100%' });
+            });
 
-            function populateRoleIdsSelects() {
-                $('select[name="RoleIds"]').each(function(){
-                    var element = $(this);
-                    element.empty();
-                    roles.forEach(function (role) {
-                        element.append($("<option></option>")
-                            .attr("value", role.Id)
-                            .text(role.Name));
-                    });
-                });
-            }
+            $('select[name="DirectorateIds"]').each(function () {
+                $(this).select2({ width: '100%' });
+            });
+
+            $('select[name="HealthFacilityTypeIds"]').each(function () {
+                $(this).select2({ width: '100%' });
+            });
+
+            $('select[name="HealthFacilityIds"]').each(function () {
+                $(this).select2({ width: '100%' });
+            });
+
+            $('select[name="ReportIds"]').each(function () {
+                $(this).select2({ width: '100%' });
+            });
         });
+
+        function showUserDetails(data) {
+            $('#userDetailsRightButtons').html(
+                '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editUserModal"' +
+                ' data-id="' + data.Id + '" data-firstname="' + data.FirstName + '" data-lastname="' + data.LastName +
+                '" data-username="' + data.UserName + '" data-email="' + data.Email + /*'" data-phonenumber="' + data.PhoneNumber +*/ '" data-roleids="' + data.RoleIds +
+                '" data-domainids="' + data.DomainIds + '" data-directorateids="' + data.DirectorateIds +
+                '" data-reportids="' + data.ReportIds + '" data-healthfacilitytypeids="' + data.HealthFacilityTypeIds + '" data-healthfacilityids="' + data.HealthFacilityIds + '">' +
+                '<i class="fa fa-edit" aria-hidden="true"></i> Edit</button>&nbsp;&nbsp;' +
+                '<button type="button" class="btn btn-danger btn-sm" onclick="deleteUser(\'' + data.Id + '\')">' +
+                '<i class="fa fa-trash" aria-hidden="true"></i> Delete</button>'
+            );
+            var body = '' +
+                '<table class="table table-bordered">' +
+                '<tr><td>Name</td><td>' + (data.FirstName || '') + ' ' + (data.LastName || '') + '</td></tr>' +
+                '<tr><td>Username</td><td>' + (data.UserName || '') + '</td></tr>' +
+                '<tr><td>Email</td><td>' + (data.Email || '') + '</td></tr>';
+            //'<tr><td>Phone Number</td><td>' + (data.PhoneNumber || '') + '</td></tr>';
+            body = body + '<tr><td>Roles</td><td><ul>';
+            roles.forEach(function (role) {
+                if (data.RoleIds.indexOf(role.Id) != -1) {
+                    body = body + '<li>' + role.Name + '</li>';
+                }
+            });
+            body = body + '</ul></td></tr>';
+            body = body + '<tr><td>Domains</td><td><ul>';
+            domains.forEach(function (domain) {
+                if (data.DomainIds.indexOf(domain.DomainID.toString()) != -1) {
+                    body = body + '<li>' + domain.DomainNameEn + '</li>';
+                }
+            });
+            body = body + '</ul></td></tr>';
+            body = body + '<tr><td>Directorates</td><td><ul>';
+            directorates.forEach(function (directorate) {
+                if (data.DirectorateIds.indexOf(directorate.DirectorateID.toString()) != -1) {
+                    body = body + '<li>' + directorate.DirectorateNameEn + '</li>';
+                }
+            });
+            body = body + '</ul></td></tr>';
+            body = body + '<tr><td>Health Facility Types</td><td><ul>';
+            healthFacilityTypes.forEach(function (healthFacilityType) {
+                if (data.HealthFacilityTypeIds.indexOf(healthFacilityType.HealthFacilityTypeID.toString()) != -1) {
+                    body = body + '<li>' + healthFacilityType.HealthFacilityTypeNameEn + '</li>';
+                }
+            });
+            body = body + '</ul></td></tr>';
+            body = body + '<tr><td>Health Facilities</td><td><ul>';
+            healthFacilities.forEach(function (healthFacility) {
+                if (data.HealthFacilityIds.indexOf(healthFacility.ID.toString()) != -1) {
+                    body = body + '<li>' + healthFacility.HealthFacilityName + '</li>';
+                }
+            });
+            body = body + '</ul></td></tr>';
+            body = body + '<tr><td>Reports</td><td><ul>';
+            reports.forEach(function (report) {
+                if (data.ReportIds.indexOf(report.ReportID.toString()) != -1) {
+                    body = body + '<li>' + report.ReportNameEn + '</li>';
+                }
+            });
+            body = body + '</ul></td></tr>';
+            body = body + '</table>';
+            $('#userDetailsBody').html(body);
+            $('#userDetailsDiv').attr('style', 'display:flex');
+            $('#userDataTableDiv').attr('style', 'display:none');
+        }
+
+        function getAllUsers() {
+            $('#userDataTableSpinner').removeAttr('hidden');
+            $.ajax({
+                type: 'GET',
+                url: '../api/users',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                users = res;
+                populateUserDataTables();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function getAllRoles() {
+            $('#roleDataTableSpinner').removeAttr('hidden');
+            $.ajax({
+                type: 'GET',
+                url: '../api/roles',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                roles = res;
+                populateRoleIdsSelects();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function getAllDomains() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/domains',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                domains = res;
+                populateDomainIdsSelects();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function getAllDirectorates() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/directorates',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                directorates = res;
+                populateDirectorateIdsSelects();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function getAllHealthFacilityTypes() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/HealthFacilityTypes',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                console.log(res);
+                healthFacilityTypes = res;
+                populateHealthFacilityTypeIdsSelects();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function getAllHealthFacilities() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/HealthFacilities/GetHealthFacilities',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                healthFacilities = res;
+                populateHealthFacilityIdsSelects();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function getAllReports() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/reports',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                reports = res;
+                populateReportIdsSelects();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function populateUserDataTables() {
+            var dataTableUsers = users.map(user => {
+                var roleNames = [];
+                user.Roles.forEach(function (role) {
+                    roleNames.push(role.Name);
+                });
+                user.Roles = roleNames.join();
+                return user;
+            });
+            $('#userDataTable').DataTable({
+                destroy: true,
+                data: dataTableUsers,
+                columns: [
+                    { data: 'UserName' },
+                    { data: 'FirstName' },
+                    { data: 'LastName' },
+                    { data: 'Email' },
+                    //{ data: 'PhoneNumber' },
+                    { data: 'Roles' },
+                    {
+                        searchable: false,
+                        sortable: false,
+                        render: function (data, type, full, meta) {
+                            return "<button type='button' class='btn btn-success btn-sm' onclick='showUserDetails(" + JSON.stringify(full) + ")'>" +
+                                '<i class="fa fa-eye" aria-hidden="true"></i> Details</button>';
+                        }
+                    }
+                ]
+            });
+            $('#userDataTableSpinner').attr('hidden', true);
+        }
+
+
+        function populateRoleIdsSelects() {
+            $('select[name="RoleIds"]').each(function () {
+                var element = $(this);
+                element.empty();
+                roles.forEach(function (role) {
+                    element.append($("<option></option>")
+                        .attr("value", role.Id)
+                        .text(role.Name));
+                });
+            });
+        }
+
+        function populateDomainIdsSelects() {
+            $('select[name="DomainIds"]').each(function () {
+                var element = $(this);
+                element.empty();
+                domains.forEach(function (domain) {
+                    element.append($("<option></option>")
+                        .attr("value", domain.DomainID)
+                        .text(domain.DomainCode));
+                });
+            });
+        }
+
+        function populateDirectorateIdsSelects() {
+            $('select[name="DirectorateIds"]').each(function () {
+                var element = $(this);
+                element.empty();
+                directorates.forEach(function (directorate) {
+                    element.append($("<option></option>")
+                        .attr("value", directorate.DirectorateID)
+                        .text(directorate.DirectorateNameEn));
+                });
+            });
+        }
+
+        function populateHealthFacilityTypeIdsSelects() {
+            $('select[name="HealthFacilityTypeIds"]').each(function () {
+                var element = $(this);
+                element.empty();
+                healthFacilityTypes.forEach(function (healthFacilityType) {
+                    element.append($("<option></option>")
+                        .attr("value", healthFacilityType.ID)
+                        .text(healthFacilityType.HealthFacilityTypeNameEn));
+                });
+            });
+        }
+
+        function populateHealthFacilityIdsSelects() {
+            $('select[name="HealthFacilityIds"]').each(function () {
+                var element = $(this);
+                element.empty();
+                healthFacilities.forEach(function (healthFacility) {
+                    element.append($("<option></option>")
+                        .attr("value", healthFacility.ID)
+                        .text(healthFacility.HealthFacilityName));
+                });
+            });
+        }
+
+        function populateReportIdsSelects() {
+            $('select[name="ReportIds"]').each(function () {
+                var element = $(this);
+                element.empty();
+                reports.forEach(function (report) {
+                    element.append($("<option></option>")
+                        .attr("value", report.ReportID)
+                        .text(report.ReportNameEn));
+                });
+            });
+        }
+
+        function deleteUser(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.showLoading();
+                    var url = '../api/users/' + id;
+                    $.ajax({
+                        type: 'DELETE',
+                        url: url,
+                        contentType: "application/json; charset=utf-8"
+                    }).done(function (res) {
+                        $('#userDetailsDiv').attr('style', 'display:none');
+                        $('#userDataTableDiv').attr('style', 'display:flex');
+                        $('#roleDataTableDiv').attr('style', 'display:flex');
+                        getAllUsers();
+                        Swal.fire('Success', 'User deleted successfully', 'success');
+                    }).fail(function (xhr, textStatus, errorThrown) {
+                        Swal.fire('Error', xhr.responseJSON.Message, 'error');
+                    });
+                }
+            });
+        }
     </script>
 }

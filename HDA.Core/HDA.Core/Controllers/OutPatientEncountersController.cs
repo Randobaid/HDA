@@ -1,235 +1,162 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Utilities;
 using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
+using LinqKit;
+using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
+    [Authorize]
     public class OutPatientEncountersController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
-        
-        public IHttpActionResult GetMonthlyTotals([FromUri] WorkloadRequest payload)
+        private HDAReportsContext db = new HDAReportsContext();
+        [HttpPost]
+        public IHttpActionResult GetMonthlyTotals([FromUri] WorkloadRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
             if (ModelState.IsValid)
             {
+                var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                var allowedHealthFacilityIDsSP = PredicateBuilder.New<OutPatientEncounterTotal>();
+                var allowedHealthFacilityIDsSP_HealthFacility = PredicateBuilder.New<HealthFacility>();
+                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                {
+                    allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                    allowedHealthFacilityIDsSP_HealthFacility = allowedHealthFacilityIDsSP_HealthFacility.Or(a => a.HealthFacilityID == healthFacilityId);
+                }
+
+                var selectedFacilitiesPayload = selectedFacilityPayload.First();
+
                 DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                 DateTime toDate = Convert.ToDateTime(payload.ToDate);
+
                 List<MonthlyTotal> monthlyTotals = new List<MonthlyTotal>();
-                List<Target> targets = db.Targets.Where(t => 
+                List<Target> targets = db.Targets.Where(t =>
                     t.Indicator.IndicatorNameEn == "Outpatient Encounters"
                 ).OrderByDescending(tg => tg.EffectiveDate).ToList();
 
-                if(payload.HealthFacilityID == 0)
+                /* Search Predicates */
+                var baseOutPatientEncounterTotalSP = PredicateBuilder.New<OutPatientEncounterTotal>();
+                baseOutPatientEncounterTotalSP = baseOutPatientEncounterTotalSP.And(a => a.Total > 0);
+
+                var baseHealthFacilitySP = PredicateBuilder.New<HealthFacility>();
+                baseHealthFacilitySP = baseHealthFacilitySP.And(a => a.HealthFacilityID > 0);
+
+                var healthFacilitySP_healthFacilityType = PredicateBuilder.New<HealthFacility>();
+                var healthFacilitySP_healthFacility = PredicateBuilder.New<HealthFacility>();
+
+
+                var outpatientEncounterTotalSP = PredicateBuilder.New<OutPatientEncounterTotal>();
+                
+                foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
-                    var g = from t in db.OutPatientEncounterTotals.Where(h => 
+                    outpatientEncounterTotalSP = outpatientEncounterTotalSP.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
+                    healthFacilitySP_healthFacilityType = healthFacilitySP_healthFacilityType.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
+                }
+
+                var selectedHealthFacilitiesSP = PredicateBuilder.New<OutPatientEncounterTotal>();
+                if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
+                {
+                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    {
+                        selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+                        healthFacilitySP_healthFacility = healthFacilitySP_healthFacility.Or(a => a.HealthFacilityID == id);
+                    }
+                }
+
+                /* Search Predicates */
+
+                List<HealthFacility> healthFacilities = db.HealthFacilities.
+                    Where(healthFacilitySP_healthFacilityType).
+                    Where(allowedHealthFacilityIDsSP_HealthFacility).
+                    Where((healthFacilitySP_healthFacility.IsStarted) ? healthFacilitySP_healthFacility : baseHealthFacilitySP).ToList();
+                int NumberOfClinics = healthFacilities.Select(t => t.EstimatedClinics).Sum();
+
+
+                var g = from t in db.OutPatientEncounterTotals.
+                        Where(outpatientEncounterTotalSP).
+                        Where(allowedHealthFacilityIDsSP).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP: baseOutPatientEncounterTotalSP).
+                        Where(h =>
                         h.Month >= fromDate.Month
                         && h.Month <= toDate.Month
                         && h.Year >= fromDate.Year
                         && h.Year <= toDate.Year
-                        )
-                            group t by new { t.Month } into x
-                            select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
-                    foreach (var total in g)
-                    {
-                        Target target = new Target();
-                        Target targetPrevYear = new Target();
-                        foreach(var tgt in targets)
-                        {
-                            if(tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1))
-                            {
-                                target = tgt;
-                                break;
-                            }
-                        }
-                        int totalPrevYear = 0;
-                        HDACoreContext newConnection = new HDACoreContext();
-                        if (payload.PreviousYear == 1)
-                        {
-                            var y = from t in newConnection.OutPatientEncounterTotals.Where(h => 
-                                             h.Month == total.MonthId
-                                             && h.Year == fromDate.Year - 1
-                                             )
-                                    group t by new { t.Month } into x
-                                    select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
-                            foreach (var t in y)
-                            {
-                                totalPrevYear = t.Total;
-                            }
-                            foreach(var tgt in targets)
-                            {
-                                if(tgt.EffectiveDate <= new DateTime(fromDate.Year - 1, total.MonthId, 1))
-                                {
-                                    targetPrevYear = tgt;
-                                    break;
-                                }
-                            }
-                        }
-                        DateTimeFormatInfo d = new DateTimeFormatInfo();
-                        MonthlyTotal m = new MonthlyTotal
-                        {
-                            MonthId = total.MonthId,
-                            MonthName = d.GetMonthName(total.MonthId),
-                            Total = total.Total,
-                            TotalPreviousYear = totalPrevYear,
-                            Target = target.Value,
-                            TargetPreviousYear = targetPrevYear.Value
-                        };
-                        monthlyTotals.Add(m);
-                    }
-                    return Ok(monthlyTotals);
-                }
+                        && ((payload.ProviderID > 0) ? h.ProviderID == payload.ProviderID : true))
 
-                if (payload.ProviderID > 0 && payload.HealthFacilityID > 0)
+                        group t by new { t.Year, t.Month } into x
+                        select new
+                        {
+                            x.Key.Year,
+                            MonthId = x.Key.Month,
+                            Total = x.Sum(t => t.Total),
+                        };
+                foreach (var total in g)
                 {
-                    var g = from t in db.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID 
-                        && h.ProviderID == payload.ProviderID
-                        && h.Month >= fromDate.Month
-                        && h.Month <= toDate.Month
-                        && h.Year >= fromDate.Year
-                        && h.Year <= toDate.Year
-                        )
-                            group t by new { t.HealthFacilityID, t.Month } into x
-                            select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
-                    foreach (var total in g)
+                    Target target = new Target();
+                    Target targetPrevYear = new Target();
+                    foreach (var tgt in targets)
                     {
-                        Target target = new Target();
-                        Target targetPrevYear = new Target();
-                        foreach(var tgt in targets)
+                        if (tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1))
                         {
-                            if(
-                                tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
-                                && tgt.ProviderID == payload.ProviderID
-                                && tgt.HealthFacilityID == payload.HealthFacilityID
-                            )
+                            target = tgt;
+                            break;
+                        }
+                    }
+                    int totalPrevYear = 0;
+                    HDAReportsContext newConnection = new HDAReportsContext();
+                    if (payload.PreviousYear == 1)
+                    {
+                        var y = from t in newConnection.OutPatientEncounterTotals.
+                                Where(outpatientEncounterTotalSP).
+                                Where(allowedHealthFacilityIDsSP).
+                                Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseOutPatientEncounterTotalSP).
+                                Where(h =>
+                                         h.Month == total.MonthId
+                                         && h.Year == fromDate.Year - 1
+                                         && ((payload.ProviderID > 0) ? h.ProviderID == payload.ProviderID : true)
+                                         )
+                                group t by new { t.Year, t.Month } into x
+                                select new
+                                {
+                                    x.Key.Year,
+                                    MonthId = x.Key.Month,
+                                    Total = x.Sum(t => t.Total),
+                                    
+                                };
+                        foreach (var t in y)
+                        {
+                            totalPrevYear = t.Total;
+                        }
+                        foreach (var tgt in targets)
+                        {
+                            if (tgt.EffectiveDate <= new DateTime(fromDate.Year - 1, total.MonthId, 1))
                             {
-                                target = tgt;
+                                targetPrevYear = tgt;
                                 break;
                             }
                         }
-                        int totalPrevYear = 0;
-                        if (payload.PreviousYear == 1)
-                        {
-                            HDACoreContext newConnection = new HDACoreContext();
-                            var y = from t in newConnection.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
-                                             && h.ProviderID == payload.ProviderID
-                                             && h.Month == total.MonthId
-                                             && h.Year == fromDate.Year - 1
-                                             )
-                                    group t by new { t.HealthFacilityID, t.Month } into x
-                                    select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
-                            foreach (var t in y)
-                            {
-                                totalPrevYear = t.Total;
-                            }
-                            foreach(var tgt in targets)
-                            {
-                                if(
-                                    tgt.EffectiveDate <= new DateTime(fromDate.Year - 1, total.MonthId, 1)
-                                    && tgt.ProviderID == payload.ProviderID
-                                    && tgt.HealthFacilityID == payload.HealthFacilityID
-                                )
-                                {
-                                    targetPrevYear = tgt;
-                                    break;
-                                }
-                            }
-                        }
-
-                        DateTimeFormatInfo d = new DateTimeFormatInfo();
-                        MonthlyTotal m = new MonthlyTotal
-                        {
-                            MonthId = total.MonthId,
-                            MonthName = d.GetMonthName(total.MonthId),
-                            Total = total.Total,
-                            TotalPreviousYear = totalPrevYear,
-                            Target = target.Value,
-                            TargetPreviousYear = targetPrevYear.Value,
-                        };
-                        monthlyTotals.Add(m);
-
                     }
-                    return Ok(monthlyTotals);
-                }
-
-                if (payload.HealthFacilityID > 0 && payload.ProviderID == 0)
-                {
-                    var g = from t in db.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
-                        && h.Month >= fromDate.Month
-                        && h.Month <= toDate.Month
-                        && h.Year >= fromDate.Year
-                        && h.Year <= toDate.Year
-                        )
-                            group t by new { t.HealthFacilityID, t.Month } into x
-                        select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
-                    foreach (var total in g)
+                    
+                    MonthlyTotal m = new MonthlyTotal
                     {
-                        Target target = new Target();
-                        Target targetPrevYear = new Target();
-                        foreach(var tgt in targets)
-                        {
-                            if(
-                                tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
-                                && tgt.HealthFacilityID == payload.HealthFacilityID
-                            )
-                            {
-                                target = tgt;
-                                break;
-                            }
-                        }
-                        int totalPrevYear = 0;
-                        if (payload.PreviousYear == 1)
-                        {
-                            HDACoreContext newConnection = new HDACoreContext();
-                            var y = from t in newConnection.OutPatientEncounterTotals.Where(h => h.HealthFacilityID == payload.HealthFacilityID
-                                             && h.Month == total.MonthId
-                                             && h.Year == fromDate.Year - 1
-                                             )
-                                            group t by new { t.HealthFacilityID, t.Month } into x
-                                            select new { MonthId = x.Key.Month, Total = x.Sum(t => t.Total) };
-                            foreach(var t in y)
-                            {
-                                totalPrevYear = t.Total;
-                            }
-                            foreach(var tgt in targets)
-                            {
-                                if(
-                                    tgt.EffectiveDate <= new DateTime(fromDate.Year - 1, total.MonthId, 1)
-                                    && tgt.HealthFacilityID == payload.HealthFacilityID
-                                )
-                                {
-                                    targetPrevYear = tgt;
-                                    break;
-                                }
-                            }
-                        }
-                        DateTimeFormatInfo d = new DateTimeFormatInfo();
-                        MonthlyTotal m = new MonthlyTotal
-                        {
-                            MonthId = total.MonthId,
-                            MonthName = d.GetMonthName(total.MonthId),
-                            Total = total.Total,
-                            TotalPreviousYear = totalPrevYear,
-                            Target = target.Value,
-                            TargetPreviousYear = targetPrevYear.Value
-                        };
-                        monthlyTotals.Add(m);
-                    }
-                    return Ok(monthlyTotals);
+                        Year = total.Year,
+                        MonthId = total.MonthId,
+                        Total = total.Total,
+                        TotalPreviousYear = totalPrevYear,
+                        Target = Convert.ToInt32(target.Value) * NumberOfClinics ,
+                        TargetPreviousYear = Convert.ToInt32(targetPrevYear.Value) * NumberOfClinics
+                    };
+                    monthlyTotals.Add(m);
                 }
-
-                return BadRequest("Nothing to do");
+                return Ok(monthlyTotals);
             }
+
             return BadRequest(ModelState);
-            
         }
 
-        
     }
 }

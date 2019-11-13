@@ -20,8 +20,5 @@ namespace HDA.Core.Models.HDACore
         public int? CountryID { get; set; }
         public virtual Country Country { get; set; }
 
-        //public List<OutPatientEncounter> OutPatientEncounters { get; set; }
-        //public List<InPatientEncounter> InPatientEncounters { get; set; }
-
     }
 }

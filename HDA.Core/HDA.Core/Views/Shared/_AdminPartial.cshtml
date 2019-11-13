@@ -10,7 +10,7 @@
             <div class="dropdown-divider"></div>
             @Html.ActionLink("Data Management", "DataManagement", "Administration", null, new { @class = "dropdown-item" })
             <div class="dropdown-divider"></div>
-            <a href="@Url.Action("Index", "RefreshData")" class="dropdown-item">Refresh Data</a>
+            @Html.ActionLink("Refresh Data", "Index", "RefreshData", null, new { @class = "dropdown-item" })
         </div>
     </li>
 }

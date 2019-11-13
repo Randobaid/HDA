@@ -1,6 +1,5 @@
-﻿using HDA.Core.Models;
+﻿/*using HDA.Core.Models;
 using HDA.Core.Models.HDACore;
-using HDA.Core.Models.HDACore.RefreshData;
 using System;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -30,34 +29,33 @@ namespace HDA.Core.Migrations
             SeedMaritalStatusLookups(context);
             SeedSurgerySeverityLookups(context);
             SeedDirectorates(context);
-            //SeedHealthFacilities(context);
             SeedDepartments(context);
             SeedMovementLookups(context);
-            SeedStoredProcedures(context);
-            SeedProceduresToCall(context);
-            //SeedPharmacies(context);
+            SeedDiagnosisCodingSystems(context);
+            
             base.Seed(context);
         }
-
-        private void SeedPharmacies(HDACoreContext context)
+        private void SeedDiagnosisCodingSystems(HDACoreContext context)
         {
-           context.Pharmacies.AddOrUpdate(p => p.PharmacyName,
-               new Pharmacy
-               {
-                   PharmacyName = "Al Karak GF OPD Pharmacy",
-                   SourceID = 99283,
-                   HealthFacilityID = context.HealthFacilities.Where(h=> h.HealthFacilityNameEn.ToLower() == "AL KARAK HOSPITAL".ToLower()).First().HealthFacilityID,
-
-               }
-               );
-            context.SaveChanges();
-        }
-        private void SeedStoredProcedures(HDACoreContext context)
-        {
-            context.DataRefreshProcedures.AddOrUpdate(m => m.ProcedureName,
-                 new DataRefreshProcedureStatus { ProcedureName = "sp_prescriptiontotals" },
-                 new DataRefreshProcedureStatus { ProcedureName = "sp_inpatientencountertotals" }
-
+            context.DiagnosisCodingSystems.AddOrUpdate(d => d.CodingSystemName,
+                new DiagnosisCodingSystem
+                {
+                    CodingSystemName = "ICD-09-CM",
+                    CodingSystemVersion = "2009",
+                    CodingSystemEffectiveDate = new DateTime(2009, 1, 1)
+                },
+                new DiagnosisCodingSystem
+                {
+                    CodingSystemName = "ICD-10-CM",
+                    CodingSystemVersion = "2012",
+                    CodingSystemEffectiveDate = new DateTime(2020, 1, 1)
+                },
+                new DiagnosisCodingSystem
+                {
+                    CodingSystemName = "SNOMED CT",
+                    CodingSystemVersion = "20190301",
+                    CodingSystemEffectiveDate = new DateTime(2019, 5, 27)
+                }
                 );
             context.SaveChanges();
         }
@@ -102,17 +100,18 @@ namespace HDA.Core.Migrations
         {
             context.SurgerySeverityLookups.AddOrUpdate(s => s.SeverityEn,
                 new SurgerySeverityLookup { SeverityEn = "Major" },
-                new SurgerySeverityLookup { SeverityEn = "Minor" }//,
-                //new SurgerySeverityLookup { SeverityEn = "Undefined" }
+                new SurgerySeverityLookup { SeverityEn = "Minor" }
                 );
         }
 
         private void SeedMaritalStatusLookups(HDACoreContext context)
         {
             context.MaritalStatusLookups.AddOrUpdate(m => m.MaritalStatusEn,
-                new MaritalStatusLookup { MaritalStatusEn = "Single", MaritalStatusAr = "أعزب" },
-                new MaritalStatusLookup { MaritalStatusEn = "Married", MaritalStatusAr = "متزوج" },
-                new MaritalStatusLookup { MaritalStatusEn = "Divorced", MaritalStatusAr = "خالع" }
+                new MaritalStatusLookup { MaritalStatusEn = "Single" },
+                new MaritalStatusLookup { MaritalStatusEn = "Married"},
+                new MaritalStatusLookup { MaritalStatusEn = "Divorced" },
+                new MaritalStatusLookup { MaritalStatusEn = "Widowed" },
+                new MaritalStatusLookup { MaritalStatusEn = "Others" }
                 );
             context.SaveChanges();
         }
@@ -121,7 +120,9 @@ namespace HDA.Core.Migrations
         {
             context.GenderLookups.AddOrUpdate(g => g.GenderEn,
                 new GenderLookup { GenderEn = "Female", GenderAr = "أنثى" },
-                new GenderLookup { GenderEn = "Male", GenderAr = "ذكر" });
+                new GenderLookup { GenderEn = "Male", GenderAr = "ذكر" },
+                new GenderLookup { GenderEn = "Undefined" }
+                );
             context.SaveChanges();
         }
 
@@ -220,7 +221,7 @@ namespace HDA.Core.Migrations
             context.SaveChanges();
         }
 
-        /*private void SeedServices(HDACoreContext context)
+        private void SeedServices(HDACoreContext context)
         {
             context.Services.AddOrUpdate(s => s.ServiceNameEn,
                 new Service { ServiceNameEn = "LABORATORY" },
@@ -311,9 +312,9 @@ namespace HDA.Core.Migrations
                 new Service { ServiceNameEn = "ELECTROCHOCARDIOGRAPHY (ECG)" }
                 );
             context.SaveChanges();
-        }*/
+        }
 
-        /*private void SeedLocations(HDACoreContext context)
+        private void SeedLocations(HDACoreContext context)
         {
             context.Locations.AddOrUpdate(l => l.LocationCode,
                 new Location
@@ -323,9 +324,9 @@ namespace HDA.Core.Migrations
                     LocationNameEn = "Location 1"
                 });
             context.SaveChanges();
-        }*/
+        }
 
-        /*private void SeedHealthFacilityLocations(HDACoreContext context)
+        private void SeedHealthFacilityLocations(HDACoreContext context)
         {
             context.HealthFacilityLocations.AddOrUpdate(h => new {h.HealthFacilityID, h.LocationID},
                 new HealthFacilityLocation
@@ -348,8 +349,7 @@ namespace HDA.Core.Migrations
                 );
 
             context.SaveChanges();
-        }*/
-
+        }
         private void SeedDepartments(HDACoreContext context)
         {
             context.DepartmentLookups.AddOrUpdate(d => d.DepartmentCode,
@@ -393,14 +393,6 @@ namespace HDA.Core.Migrations
                 );
             context.SaveChanges();
         }
-
-        private void SeedProceduresToCall(HDACoreContext context)
-        {
-            context.DataRefreshProcedures.AddOrUpdate(d => d.ProcedureName,
-                new DataRefreshProcedureStatus { ProcedureName = "Test",ProcedureDetail = "SELECT * FROM drugs",ProcedureStartime = DateTime.Now,ProcedureEndDate =DateTime.Now,ProcedureStatus = "Completed"}
-                );
-            context.SaveChanges();
-        }
-
     }
 }
+*/

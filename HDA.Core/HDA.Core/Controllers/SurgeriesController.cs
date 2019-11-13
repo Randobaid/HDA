@@ -1,6 +1,8 @@
-﻿using HDA.Core.Models.HDACore;
+﻿using HDA.Core.Utilities;
 using HDA.Core.Models.HDAReports;
 using HDA.Core.ViewModels;
+using LinqKit;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,162 +16,103 @@ namespace HDA.Core.Controllers
     [Authorize]
     public class SurgeriesController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
-        public IHttpActionResult GetMonthlyTotalsBySeverity([FromUri] WorkloadRequest payload)
+        private HDAReportsContext db = new HDAReportsContext();
+        [HttpPost]
+        public IHttpActionResult GetMonthlyTotalsBySeverity([FromUri] WorkloadRequest payload, [FromBody] List<SelectedFacilityPayload> selectedFacilityPayload)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+                    var allowedHealthFacilityIDsSP = PredicateBuilder.New<SurgeryTotal>();
+                    foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                    {
+                        allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+                    }
+
                     DateTime fromDate = Convert.ToDateTime(payload.FromDate);
                     DateTime toDate = Convert.ToDateTime(payload.ToDate);
                     List<SurgeryBySeverityTotal> result = new List<SurgeryBySeverityTotal>();
-                    List<Target> targets = db.Targets.Where(t => 
+                    List<Target> targets = db.Targets.Where(t =>
                         t.Indicator.IndicatorNameEn == "Surgeries"
                     ).OrderByDescending(tg => tg.EffectiveDate).ToList();
 
-                    if(payload.HealthFacilityID == 0)
+                    var selectedFacilitiesPayload = selectedFacilityPayload.First();
+
+                    /* Search Predicates */
+                    var baseSurgeriesTotalSP = PredicateBuilder.New<SurgeryTotal>();
+                    baseSurgeriesTotalSP = baseSurgeriesTotalSP.And(a => a.Total > 0);
+
+                    
+
+                    var healthFacilitySP_healthFacilityType = PredicateBuilder.New<HealthFacility>();
+                    var healthFacilitySP_healthFacility = PredicateBuilder.New<HealthFacility>();
+
+
+                    var SurgeriesTotalSP = PredicateBuilder.New<SurgeryTotal>();
+                    
+                    foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                     {
-                        var a = from b in db.SurgeryTotals.Where(h =>
+                        SurgeriesTotalSP = SurgeriesTotalSP.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
+                        healthFacilitySP_healthFacilityType = healthFacilitySP_healthFacilityType.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
+                    }
+
+                    var selectedHealthFacilitiesSP = PredicateBuilder.New<SurgeryTotal>();
+                    if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
+                    {
+                        foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                        {
+                            selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+                            healthFacilitySP_healthFacility = healthFacilitySP_healthFacility.Or(a => a.HealthFacilityID == id);
+                        }
+                    }
+
+                    /* Search Predicates */
+
+                    
+
+                    var g = from b in db.SurgeryTotals.
+                            Where(SurgeriesTotalSP).
+                            Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseSurgeriesTotalSP).
+                            Where(allowedHealthFacilityIDsSP).
+                            Where(h =>
                             h.Month >= fromDate.Month
                             && h.Month <= toDate.Month
                             && h.Year >= fromDate.Year
-                            && h.Year <= toDate.Year)
-                                group b by b.Month into c
-                                select new
-                                {
-                                    MonthId = c.Key
-                                ,
-                                    MinorSeverityTotal = c.Where(d => d.SurgerySeverityID == 2).Sum(t => t.Total)
-                                ,
-                                    MajorSeverityTotal = c.Where(d => d.SurgerySeverityID == 1).Sum(t => t.Total)
-                                //,
-                                    //UndefinedSeverityTotal = c.Where(d => d.SurgerySeverityID == 3).Sum(t => t.Total)
-                                };
-                        foreach (var total in a)
-                        {
-                            Target target = new Target();
-                            foreach(var tgt in targets)
+                            && h.Year <= toDate.Year
+                            && ((payload.ProviderID > 0) ? h.ProviderID == payload.ProviderID : true))
+                            group b by new { b.Year, b.Month } into c
+                            select new
                             {
-                                if(tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1))
-                                {
-                                    target = tgt;
-                                    break;
-                                }
-                            }
-                            DateTimeFormatInfo d = new DateTimeFormatInfo();
-                            SurgeryBySeverityTotal m = new SurgeryBySeverityTotal
-                            {
-                                MonthId = total.MonthId,
-                                MonthName = d.GetMonthName(total.MonthId),
-                                MinorSeverityTotal = total.MinorSeverityTotal,
-                                MajorSeverityTotal = total.MajorSeverityTotal,
-                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal,
-                                Target = target.Value
+                                c.Key.Year,
+                                MonthId = c.Key.Month,
+                                MinorSeverityTotal = c.Where(d => d.SurgerySeverityID == 2).Sum(t => t.Total),
+                                MajorSeverityTotal = c.Where(d => d.SurgerySeverityID == 1).Sum(t => t.Total)
                             };
-                            result.Add(m);
-                        }
-                        return Ok(result);
-                    }
-
-                    if (payload.ProviderID > 0 && payload.HealthFacilityID > 0)
+                    foreach (var total in g.OrderBy(d => new { d.Year, d.MonthId }))
                     {
-                        var a = from b in db.SurgeryTotals.Where(
-                            h => h.HealthFacilityID == payload.HealthFacilityID
-                            && h.ProviderID == payload.ProviderID
-                            && h.Month >= fromDate.Month
-                            && h.Month <= toDate.Month
-                            && h.Year >= fromDate.Year
-                            && h.Year <= toDate.Year)
-                                group b by new { b.HealthFacilityID, b.Month } into c
-                                select new
-                                {
-                                    MonthId = c.Key.Month
-                                ,
-                                    MinorSeverityTotal = c.Where(d => d.SurgerySeverityID == 2).Sum(t => t.Total)
-                                ,
-                                    MajorSeverityTotal = c.Where(d => d.SurgerySeverityID == 1).Sum(t => t.Total)
-                                //,
-                                    //UndefinedSeverityTotal = c.Where(d => d.SurgerySeverityID == 3).Sum(t => t.Total)
-                                };
-                        foreach (var total in a)
+                        Target target = new Target();
+                        foreach (var tgt in targets)
                         {
-                            Target target = new Target();
-                            foreach(var tgt in targets)
+                            if (tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1))
                             {
-                                if(
-                                    tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
-                                    && tgt.ProviderID == payload.ProviderID
-                                    && tgt.HealthFacilityID == payload.HealthFacilityID
-                                )
-                                {
-                                    target = tgt;
-                                    break;
-                                }
+                                target = tgt;
+                                break;
                             }
-                            DateTimeFormatInfo d = new DateTimeFormatInfo();
-                            SurgeryBySeverityTotal m = new SurgeryBySeverityTotal
-                            {
-                                MonthId = total.MonthId,
-                                MonthName = d.GetMonthName(total.MonthId),
-                                MinorSeverityTotal = total.MinorSeverityTotal,
-                                MajorSeverityTotal = total.MajorSeverityTotal,
-                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal,
-                                Target = target.Value
-                            };
-                            result.Add(m);
                         }
-                        return Ok(result);
-                    }
-                    if(payload.ProviderID == 0 && payload.HealthFacilityID > 0)
-                    {
-                        var a = from b in db.SurgeryTotals.Where(
-                            h => h.HealthFacilityID == payload.HealthFacilityID
-                            && h.Month >= fromDate.Month
-                            && h.Month <= toDate.Month
-                            && h.Year >= fromDate.Year
-                            && h.Year <= toDate.Year)
-                                group b by new { b.HealthFacilityID, b.Month } into c
-                                select new
-                                {
-                                    MonthId = c.Key.Month
-                                ,
-                                    MinorSeverityTotal = c.Where(d => d.SurgerySeverityID == 2).Sum(t => t.Total)
-                                ,
-                                    MajorSeverityTotal = c.Where(d => d.SurgerySeverityID == 1).Sum(t => t.Total)
-                                //,
-                                    //UndefinedSeverityTotal = c.Where(d => d.SurgerySeverityID == 3).Sum(t => t.Total)
-                                };
-                        foreach(var total in a)
+                        
+                        SurgeryBySeverityTotal m = new SurgeryBySeverityTotal
                         {
-                            Target target = new Target();
-                            foreach(var tgt in targets)
-                            {
-                                if(
-                                    tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1)
-                                    && tgt.HealthFacilityID == payload.HealthFacilityID
-                                )
-                                {
-                                    target = tgt;
-                                    break;
-                                }
-                            }
-                            DateTimeFormatInfo d = new DateTimeFormatInfo();
-                            SurgeryBySeverityTotal m = new SurgeryBySeverityTotal
-                            {
-                                MonthId = total.MonthId,
-                                MonthName = d.GetMonthName(total.MonthId),
-                                MinorSeverityTotal = total.MinorSeverityTotal,
-                                MajorSeverityTotal = total.MajorSeverityTotal,
-                                //UndefinedSeverityTotal = total.UndefinedSeverityTotal,
-                                Target = target.Value
-                            };
-                            result.Add(m);
-                        }
-                        return Ok(result);
+                            Year = total.Year,
+                            MonthId = total.MonthId,
+                            MinorSeverityTotal = total.MinorSeverityTotal,
+                            MajorSeverityTotal = total.MajorSeverityTotal,
+                            Target = target.Value
+                        };
+                        result.Add(m);
                     }
-
-                    return BadRequest("No directive");
+                    return Ok(result);
                 }
                 catch (Exception ex)
                 {

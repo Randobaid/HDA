@@ -5,13 +5,17 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
+using LinqKit;
+using HDA.Core.Utilities;
+using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
+    [Authorize]
     public class HealthFacilitiesController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
         
         public IHttpActionResult GetHealthFacilities()
         {
@@ -41,11 +45,55 @@ namespace HDA.Core.Controllers
             }
             return Ok(healthFacilities);
         }
+       
 
-        public IHttpActionResult GetPharmacies(int id)
+        
+        [HttpPost]
+        public IHttpActionResult PostHealthFacilitiesByType([FromBody] List<SelectedFacilityType> payload)
+        {
+            
+            List<HealthFacilityVM> healthFacilities = new List<HealthFacilityVM>();
+
+            var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+            var allowedHealthFacilityIDsSP = PredicateBuilder.New<HealthFacility>();
+            foreach (int healthFacilityId in allowedHealthFacilityIDs)
+            {
+                allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+            }
+
+            var searchPredicate = PredicateBuilder.New<HealthFacility>();
+            foreach (SelectedFacilityType str in payload)
+            {
+                searchPredicate =
+                  searchPredicate.Or(a => a.HealthFacilityTypeID == str.HealthFacilityTypeId);
+            }
+
+           
+            var hfs = db.HealthFacilities.
+                Where(searchPredicate).
+                Where(allowedHealthFacilityIDsSP);
+            foreach (var hf in hfs)
+            {
+                HealthFacilityVM h = new HealthFacilityVM();
+                h.ID = hf.HealthFacilityID;
+                h.HealthFacilityName = hf.HealthFacilityNameEn;
+                healthFacilities.Add(h);
+            }
+            return Ok(healthFacilities);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetPharmacies([FromBody] List<int> payload)
         {
             List<PharmacyVM> pharmacies = new List<PharmacyVM>();
-            var hfs = db.Pharmacies.Where(i => i.HealthFacilityID == id);
+
+            var selectedHealthFacilitiesSP = PredicateBuilder.New<Pharmacy>();
+            foreach(int id in payload)
+            {
+                selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+            }
+
+            var hfs = db.Pharmacies.Where(selectedHealthFacilitiesSP);
             foreach (var hf in hfs)
             {
                 PharmacyVM h = new PharmacyVM

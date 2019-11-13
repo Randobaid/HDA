@@ -5,14 +5,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
-using HDA.Core.Models.HDACore;
+using HDA.Core.Models.HDAReports;
 
 namespace HDA.Core.Controllers
 {
     [Authorize]
     public class TargetsController : ApiController
     {
-        private HDACoreContext db = new HDACoreContext();
+        private HDAReportsContext db = new HDAReportsContext();
 
         [Route("api/targets")]
         [HttpGet]
@@ -21,13 +21,43 @@ namespace HDA.Core.Controllers
             List<TargetViewModel> targets = new List<TargetViewModel>();
             foreach (var target in db.Targets)
             {
+                Indicator indicator = new HDAReportsContext().Indicators.Where(i => i.IndicatorID == target.IndicatorID).FirstOrDefault();
+                HealthFacility healthFacility = new HDAReportsContext().HealthFacilities.Where(h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
+                Provider provider = new HDAReportsContext().Providers.Where(i => i.ProviderID == target.ProviderID).FirstOrDefault();
+                Domain domain = new HDAReportsContext().Domains.Where(i => i.DomainID == target.DomainID).FirstOrDefault();
+                Directorate directorate = new HDAReportsContext().Directorates.Where(i => i.DirectorateID == target.DirectorateID).FirstOrDefault();
                 TargetViewModel t = new TargetViewModel {
                     TargetID = target.TargetID,
                     IndicatorID = target.IndicatorID,
+                    Indicator = target.IndicatorID != 0 ? new IndicatorViewModel {
+                        IndicatorID = indicator.IndicatorID,
+                        IndicatorShortName = indicator.IndicatorShortName,
+                        IndicatorNameEn = indicator.IndicatorNameEn,
+                        IndicatorNameAr = indicator.IndicatorNameAr,
+                    } : new IndicatorViewModel {},
                     HealthFacilityID = target.HealthFacilityID,
+                    HealthFacility = target.HealthFacilityID != null ? new HealthFacilityVM {
+                        ID = healthFacility.HealthFacilityID,
+                        HealthFacilityName = healthFacility.HealthFacilityNameEn,
+                    } : new HealthFacilityVM {},
                     ProviderID = target.ProviderID,
-                    DomainLookupID = target.DomainLookupID,
-                    DirectorateLookupID = target.DirectorateLookupID,
+                    Provider = target.ProviderID != null ? new ProviderVM {
+                        ProviderID = provider.ProviderID,
+                        ProviderName = provider.ProviderNameEn,
+                    } : new ProviderVM {},
+                    DomainID = target.DomainID,
+                    Domain = target.DomainID != null ? new DomainViewModel {
+                        DomainID = domain.DomainID,
+                        DomainCode = domain.DomainCode,
+                        DomainNameEn = domain.DomainNameEn,
+                        DomainNameAr = domain.DomainNameAr,
+                    } : new DomainViewModel {},
+                    DirectorateID = target.DirectorateID,
+                    Directorate = target.DirectorateID != null ? new DirectorateViewModel {
+                        DirectorateID = directorate.DirectorateID,
+                        DirectorateNameEn = directorate.DirectorateNameEn,
+                        DirectorateNameAr = directorate.DirectorateNameAr,
+                    } : new DirectorateViewModel {},
                     EffectiveDate = target.EffectiveDate,
                     Value = target.Value,
                 };
@@ -35,8 +65,8 @@ namespace HDA.Core.Controllers
                 if (!(query is null) && query.IndicatorID > 0 && t.IndicatorID != query.IndicatorID) { continue; }
                 if (!(query is null) && query.HealthFacilityID > 0 && t.HealthFacilityID != query.HealthFacilityID) { continue; }
                 if (!(query is null) && query.ProviderID > 0 && t.ProviderID != query.ProviderID) { continue; }
-                if (!(query is null) && query.DomainLookupID > 0 && t.DomainLookupID != query.DomainLookupID) { continue; }
-                if (!(query is null) && query.DirectorateLookupID > 0 && t.DirectorateLookupID != query.DirectorateLookupID) { continue; }
+                if (!(query is null) && query.DomainID > 0 && t.DomainID != query.DomainID) { continue; }
+                if (!(query is null) && query.DirectorateID > 0 && t.DirectorateID != query.DirectorateID) { continue; }
                 targets.Add(t);
             }
             return Ok(targets);
@@ -47,17 +77,51 @@ namespace HDA.Core.Controllers
         public IHttpActionResult Details(int id)
         {
             Target target = db.Targets.Where(i => i.TargetID == id).FirstOrDefault();
-            TargetViewModel targetVM = new TargetViewModel {
+            if(target == null)
+            {
+                return NotFound();
+            }
+            Indicator indicator = new HDAReportsContext().Indicators.Where(i => i.IndicatorID == target.IndicatorID).FirstOrDefault();
+            HealthFacility healthFacility = new HDAReportsContext().HealthFacilities.Where(h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
+            Provider provider = new HDAReportsContext().Providers.Where(i => i.ProviderID == target.ProviderID).FirstOrDefault();
+            Domain domain = new HDAReportsContext().Domains.Where(i => i.DomainID == target.DomainID).FirstOrDefault();
+            Directorate directorate = new HDAReportsContext().Directorates.Where(i => i.DirectorateID == target.DirectorateID).FirstOrDefault();
+            TargetViewModel targetViewModel = new TargetViewModel {
                 TargetID = target.TargetID,
                 IndicatorID = target.IndicatorID,
+                Indicator = target.IndicatorID != 0 ? new IndicatorViewModel {
+                    IndicatorID = indicator.IndicatorID,
+                    IndicatorShortName = indicator.IndicatorShortName,
+                    IndicatorNameEn = indicator.IndicatorNameEn,
+                    IndicatorNameAr = indicator.IndicatorNameAr,
+                } : new IndicatorViewModel {},
                 HealthFacilityID = target.HealthFacilityID,
+                HealthFacility = target.HealthFacilityID != null ? new HealthFacilityVM {
+                    ID = healthFacility.HealthFacilityID,
+                    HealthFacilityName = healthFacility.HealthFacilityNameEn,
+                } : new HealthFacilityVM {},
                 ProviderID = target.ProviderID,
-                DomainLookupID = target.DomainLookupID,
-                DirectorateLookupID = target.DirectorateLookupID,
+                Provider = target.ProviderID != null ? new ProviderVM {
+                    ProviderID = provider.ProviderID,
+                    ProviderName = provider.ProviderNameEn,
+                } : new ProviderVM {},
+                DomainID = target.DomainID,
+                Domain = target.DomainID != null ? new DomainViewModel {
+                    DomainID = domain.DomainID,
+                    DomainCode = domain.DomainCode,
+                    DomainNameEn = domain.DomainNameEn,
+                    DomainNameAr = domain.DomainNameAr,
+                } : new DomainViewModel {},
+                DirectorateID = target.DirectorateID,
+                Directorate = target.DirectorateID != null ? new DirectorateViewModel {
+                    DirectorateID = directorate.DirectorateID,
+                    DirectorateNameEn = directorate.DirectorateNameEn,
+                    DirectorateNameAr = directorate.DirectorateNameAr,
+                } : new DirectorateViewModel {},
                 EffectiveDate = target.EffectiveDate,
                 Value = target.Value,
             };
-            return Ok(targetVM);
+            return Ok(targetViewModel);
         }
 
         [Route("api/targets")]
@@ -66,7 +130,7 @@ namespace HDA.Core.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (target.IndicatorID > 0 && target.EffectiveDate != null && target.Value != null)
                 {
                     db.Targets.Add(target);
                     db.SaveChanges();
@@ -81,17 +145,34 @@ namespace HDA.Core.Controllers
         }
 
         [Route("api/targets/{id}")]
-        [HttpPost]
-        public IHttpActionResult Edit(int id, Target target)
+        [HttpPut]
+        public IHttpActionResult Edit(int id, TargetViewModel targetViewModel)
         {
-            return Ok();
-        }
-
-        [Route("api/targets/{id}")]
-        [HttpPost]
-        public IHttpActionResult Delete(int id, Target target)
-        {
-            return Ok();
+            Target target = db.Targets.Where(i => i.TargetID == id).FirstOrDefault();
+            if(target == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                if (targetViewModel.IndicatorID > 0 && targetViewModel.EffectiveDate != null && targetViewModel.Value != null)
+                {
+                    target.IndicatorID = targetViewModel.IndicatorID;
+                    target.HealthFacilityID = targetViewModel.HealthFacilityID;
+                    target.ProviderID = targetViewModel.ProviderID;
+                    target.DomainID = targetViewModel.DomainID;
+                    target.DirectorateID = targetViewModel.DirectorateID;
+                    target.EffectiveDate = targetViewModel.EffectiveDate;
+                    target.Value = targetViewModel.Value;
+                    db.SaveChanges();
+                    return this.Details(target.TargetID);
+                }
+                return BadRequest("An error occured while updating your record");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

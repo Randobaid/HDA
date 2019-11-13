@@ -31,9 +31,10 @@ namespace HDA.Core.ViewModels
 
     public class PrescriptionsPerInstitutionTotal
     {
+        public string HealthFacilityName { get; set; }
+        public int HealthFacilityID { get; set; }
         public int Year { get; set; }
         public int MonthId { get; set; }
-        public string MonthName { get; set; }
         public int DrugClass { get; set; }
         public int DrugId { get; set; }
         public int Total { get; set; }
@@ -45,5 +46,24 @@ namespace HDA.Core.ViewModels
         public string PharmacyName { get; set; }
         public int TotalPrescriptions { get; set; }
         public int TotalQuantity { get; set; }
+        public int TotalRefillQuantity { get; set; }
+    }
+    public class PrescriptionsPerProvider
+    {
+        public string ProviderName { get; set; }
+        public int TotalPrescriptions { get; set; }
+        
+    }
+
+    public class SummaryCounts
+    {
+        public int TotalFacilities { get; set; }
+        public int TotalPharmacies { get; set; }
+        public int TotalProviders { get; set; }
+        public int TotalDrugClasses { get; set; }
+        public int TotalDrugs { get; set; }
+        public int TotalQuantityPerDrug { get; set; }
+        public int AverageQuantityPerPrescription { get; set; }
+        public int? NormalAmountToOrder { get; set; }
     }
 }

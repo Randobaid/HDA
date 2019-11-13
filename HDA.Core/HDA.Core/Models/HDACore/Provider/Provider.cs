@@ -17,13 +17,9 @@ namespace HDA.Core.Models.HDACore
         public int? NationalID { get; set; }
         public string ProviderNameEn { get; set; }
         public string ProviderNameAr { get; set; }
-        public int SpecialityLookupID { get; set; }
-        public virtual SpecialityLookup SpecialityLookup { get; set; }
+        //public int SpecialityLookupID { get; set; }
+        //public virtual SpecialityLookup SpecialityLookup { get; set; }
         public int DomainLookupID { get; set; }
         public virtual DomainLookup DomainLookup { get; set; }
-
-        //public List<OutPatientEncounter> OutPatientEncounters { get; set; }
-        //public List<InPatientEncounter> InPatientEncounters { get; set; }
-
     }
 }

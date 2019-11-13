@@ -17,4 +17,15 @@ namespace HDA.Core.ViewModels
         public int HealthFacilityID { get; set; }
         public string PharmacyName { get; set; }
     }
+
+    public class SelectedFacilityPayload
+    {
+        public List<SelectedFacilityType> HealthFacilityTypes { get; set; }
+        public List<int> HealthFacilities { get; set; }
+    }
+
+    public class SelectedFacilityType
+    {
+        public int HealthFacilityTypeId { get; set; }
+    }
 }

@@ -55,19 +55,17 @@ namespace HDA.Core.Migrations
         {
             var roleStore = new ApplicationRoleStore(context);
             var roleManager = new ApplicationRoleManager(roleStore);
-
-            var role = roleManager.FindByName("Admin");
-            if(role == null)
+            var roles = new List<ApplicationRole> {
+                new ApplicationRole { Name = "Admin", Description = "Administrator" },
+            };
+            foreach(var role in roles)
             {
-                role = new ApplicationRole
+                var r = roleManager.FindByName(role.Name);
+                if(r == null)
                 {
-                    Name = "Admin",
-                    Description = "Administrator"
-                };
-
-                var roleResult = roleManager.Create(role);
+                    roleManager.Create(role);
+                }
             }
-
         }
     }
 }
