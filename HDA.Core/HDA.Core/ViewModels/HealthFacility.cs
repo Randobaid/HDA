@@ -9,6 +9,9 @@ namespace HDA.Core.ViewModels
     {
         public int ID { get; set; }
         public string HealthFacilityName { get; set; }
+        public int DomainID { get; set; }
+        public int HealthFacilityTypeID { get; set; }
+        public int DirectorateID { get; set; }
     }
 
     public class PharmacyVM
