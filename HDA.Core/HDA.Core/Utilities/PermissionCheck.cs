@@ -59,13 +59,7 @@ namespace HDA.Core.Utilities
             var allowedDomainIDs = this.GetAllowedDomainIds(userId);
             var allHealthFacilityIDs = new List<int>();
             if (allowedHealthFacilityIDs.Count() > 0) {
-                allHealthFacilityIDs = db.HealthFacilities.Where(h =>
-                    allowedHealthFacilityIDs.Contains((int) h.HealthFacilityID) &&
-                    allowedGovernorateIDs.Contains((int) h.GovernorateID) &&
-                    allowedDirectorateIDs.Contains((int) h.DirectorateID) &&
-                    allowedHealthFacilityTypeIDs.Contains((int) h.HealthFacilityTypeID) &&
-                    allowedDomainIDs.Contains((int) h.DomainID)
-                ).Select(h => h.HealthFacilityID).ToList();
+                allHealthFacilityIDs = allowedHealthFacilityIDs;
             } else if (allowedGovernorateIDs.Count() > 0) {
                 allHealthFacilityIDs = db.HealthFacilities.Where(h => 
                     allowedGovernorateIDs.Contains((int) h.GovernorateID) &&
