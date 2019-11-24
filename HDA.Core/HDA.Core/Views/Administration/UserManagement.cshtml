@@ -442,6 +442,15 @@
                 filterDirectoratesByDomain();
                 filterHealthFacilitiesByDomain();
             });
+
+            $('select[name="HealthFacilityTypeIds"]').on('select2:select select2:unselect', function (e) {
+                filterDirectoratesByDomainAndHealthFacilityType();
+                filterHealthFacilitiesByDomainAndHealthFacilityType();
+            });
+
+            $('select[name="DirectorateIds"]').on('select2:select select2:unselect', function (e) {
+                filterHealthFacilitiesByDomainAndHealthFacilityTypeAndDirectorate();
+            });
         });
 
         function filterHealthFacilityTypesByDomain() {
@@ -479,6 +488,66 @@
             var filteredHealthFacilities = [];
             healthFacilities.forEach(function (healthFacility) {
                 if (healthFacilityIds.indexOf(healthFacility.ID) != -1) {
+                    filteredHealthFacilities.push(healthFacility);
+                }
+            });
+            populateHealthFacilityIdsSelects(filteredHealthFacilities);
+            $('select[name="HealthFacilityIds"]').select2('val', selectedHealthFacilityIds);
+        }
+
+        function filterDirectoratesByDomainAndHealthFacilityType() {
+            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
+            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
+            var selectedDirectorateIds = $('select[name="DirectorateIds"]').select2('val');
+            var directorateIds = getDirectorateIdsInDomain(selectedDomainIds);
+            var directorateIds2 = getDirectorateIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
+            var filteredDirectorates = [];
+            directorates.forEach(function (directorate) {
+                if (
+                    directorateIds.indexOf(directorate.DirectorateID) != -1 &&
+                    directorateIds2.indexOf(directorate.DirectorateID) != -1
+                ) {
+                    filteredDirectorates.push(directorate);
+                }
+            });
+            populateDirectorateIdsSelects(filteredDirectorates);
+            $('select[name="DirectorateIds"]').select2('val', selectedDirectorateIds);
+        }
+
+        function filterHealthFacilitiesByDomainAndHealthFacilityType() {
+            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
+            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
+            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').select2('val');
+            var healthFacilityIds = getHealthFacilityIdsInDomain(selectedDomainIds);
+            var healthFacilityIds2 = getHealthFacilityIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
+            var filteredHealthFacilities = [];
+            healthFacilities.forEach(function (healthFacility) {
+                if (
+                    healthFacilityIds.indexOf(healthFacility.ID) != -1 &&
+                    healthFacilityIds2.indexOf(healthFacility.ID) != -1
+                ) {
+                    filteredHealthFacilities.push(healthFacility);
+                }
+            });
+            populateHealthFacilityIdsSelects(filteredHealthFacilities);
+            $('select[name="HealthFacilityIds"]').select2('val', selectedHealthFacilityIds);
+        }
+
+        function filterHealthFacilitiesByDomainAndHealthFacilityTypeAndDirectorate() {
+            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
+            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
+            var selectedDirectorateIds = $('select[name="DirectorateIds"]').select2('val');
+            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').select2('val');
+            var healthFacilityIds = getHealthFacilityIdsInDomain(selectedDomainIds);
+            var healthFacilityIds2 = getHealthFacilityIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
+            var healthFacilityIds3 = getHealthFacilityIdsInDirectorate(selectedDirectorateIds);
+            var filteredHealthFacilities = [];
+            healthFacilities.forEach(function (healthFacility) {
+                if (
+                    healthFacilityIds.indexOf(healthFacility.ID) != -1 &&
+                    healthFacilityIds2.indexOf(healthFacility.ID) != -1 &&
+                    healthFacilityIds3.indexOf(healthFacility.ID) != -1
+                ) {
                     filteredHealthFacilities.push(healthFacility);
                 }
             });
@@ -682,6 +751,25 @@
             return directorateIds;
         }
 
+        function getDirectorateIdsInHealthFacilityType(healthFacilityTypeIds) {
+            var directorateIds = [];
+            healthFacilities.forEach(function (healthFacility) {
+                if (
+                    healthFacilityTypeIds.length &&
+                    !(directorateIds.indexOf(healthFacility.DirectorateID) != -1) &&
+                    (healthFacilityTypeIds.indexOf(healthFacility.HealthFacilityTypeID.toString()) != -1)
+                ) {
+                    directorateIds.push(healthFacility.DirectorateID);
+                } else if (
+                    !healthFacilityTypeIds.length &&
+                    !(directorateIds.indexOf(healthFacility.DirectorateID) != -1)
+                ) {
+                    directorateIds.push(healthFacility.DirectorateID);
+                }
+            });
+            return directorateIds;
+        }
+
         function getHealthFacilityIdsInDomain(domainIds) {
             var healthFacilityIds = [];
             healthFacilities.forEach(function (healthFacility) {
@@ -693,6 +781,44 @@
                     healthFacilityIds.push(healthFacility.ID);
                 } else if (
                     !domainIds.length &&
+                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1)
+                ) {
+                    healthFacilityIds.push(healthFacility.ID);
+                }
+            });
+            return healthFacilityIds;
+        }
+
+        function getHealthFacilityIdsInHealthFacilityType(healthFacilityTypeIds) {
+            var healthFacilityIds = [];
+            healthFacilities.forEach(function (healthFacility) {
+                if (
+                    healthFacilityTypeIds.length &&
+                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1) &&
+                    (healthFacilityTypeIds.indexOf(healthFacility.HealthFacilityTypeID.toString()) != -1)
+                ) {
+                    healthFacilityIds.push(healthFacility.ID);
+                } else if (
+                    !healthFacilityTypeIds.length &&
+                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1)
+                ) {
+                    healthFacilityIds.push(healthFacility.ID);
+                }
+            });
+            return healthFacilityIds;
+        }
+
+        function getHealthFacilityIdsInDirectorate(directorateIds) {
+            var healthFacilityIds = [];
+            healthFacilities.forEach(function (healthFacility) {
+                if (
+                    directorateIds.length &&
+                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1) &&
+                    (directorateIds.indexOf(healthFacility.DirectorateID.toString()) != -1)
+                ) {
+                    healthFacilityIds.push(healthFacility.ID);
+                } else if (
+                    !directorateIds.length &&
                     !(healthFacilityIds.indexOf(healthFacility.ID) != -1)
                 ) {
                     healthFacilityIds.push(healthFacility.ID);
