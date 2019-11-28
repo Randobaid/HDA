@@ -5,17 +5,12 @@ using System.Web;
 
 namespace HDA.Core.Models.HDAReports
 {
-    public class DataRefreshProcedureStatus
+    public class DataRefreshProcedure
     {
         public int Id { get; set; }
         public string ProcedureName { get; set; }
 
         public string ProcedureDetail { get; set; }
 
-        public DateTime ProcedureStartime { get; set; }
-
-        public DateTime ProcedureEndDate { get; set; }
-
-        public string ProcedureStatus { get; set; }
     }
 }
