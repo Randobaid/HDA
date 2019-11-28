@@ -8,7 +8,7 @@ namespace HDA.Core.Migrations
 {
     internal sealed class HDACoreConfig : DbMigrationsConfiguration<HDACoreContext>
     {
-        public HDACoreConfig() 
+       --- public HDACoreConfig() 
         {
             AutomaticMigrationsEnabled = false;
             AutomaticMigrationDataLossAllowed = true;
