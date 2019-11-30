@@ -37,8 +37,6 @@ namespace HDA.Core.Models.HDAReports
         public DbSet<Report> Reports { get; set; }
         public DbSet<DataRefreshProcedureStatus> DataRefreshProcedures { get; set; }
 
-        public DbSet<DataRefreshProcedure> DataRefreshProcedure { get; set; }
-
     }
     
 }

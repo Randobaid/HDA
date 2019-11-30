@@ -179,7 +179,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\ajax-loader.gif" />
     <Content Include="Content\awesomplete.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -1663,23 +1662,6 @@
     <Compile Include="Migrations\HDAReports\201911131205398_DataRefreshProcedureStatus.Designer.cs">
       <DependentUpon>201911131205398_DataRefreshProcedureStatus.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\HDAReports\201911220856483_UpdateDatabase.cs" />
-    <Compile Include="Migrations\HDAReports\201911220856483_UpdateDatabase.Designer.cs">
-      <DependentUpon>201911220856483_UpdateDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDAReports\201911261029153_AddDataRefreshProcedureTable.cs" />
-    <Compile Include="Migrations\HDAReports\201911261029153_AddDataRefreshProcedureTable.Designer.cs">
-      <DependentUpon>201911261029153_AddDataRefreshProcedureTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDAReports\201911261036394_AddDataRefreshProcedureTableWithIt.cs" />
-    <Compile Include="Migrations\HDAReports\201911261036394_AddDataRefreshProcedureTableWithIt.Designer.cs">
-      <DependentUpon>201911261036394_AddDataRefreshProcedureTableWithIt.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\HDAReports\201911261042468_AddDataRefreshProcedureTableWithTable.cs" />
-    <Compile Include="Migrations\HDAReports\201911261042468_AddDataRefreshProcedureTableWithTable.Designer.cs">
-      <DependentUpon>201911261042468_AddDataRefreshProcedureTableWithTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\HDAReports\DataRefreshProcedure.cs" />
     <Compile Include="Models\HDAReports\DataRefreshProcedureStatus.cs" />
     <Compile Include="Utilities\PermissionCheck.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -1808,7 +1790,6 @@
     <Compile Include="ViewModels\Directorate.cs" />
     <Compile Include="ViewModels\Domain.cs" />
     <Compile Include="ViewModels\Governorate.cs" />
-    <Compile Include="ViewModels\RefreshViewModel.cs" />
     <Compile Include="ViewModels\Report.cs" />
     <Compile Include="ViewModels\Role.cs" />
     <Compile Include="ViewModels\User.cs" />
@@ -1847,7 +1828,6 @@
     <Content Include="Views\Administration\UserManagement.cshtml" />
     <Content Include="Views\Shared\_ReportsPartial.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
-    <Content Include="Views\RefreshData\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1860,6 +1840,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="DatabaseScripts\hdareports_totals\" />
     <Folder Include="Migrations\HDACore\" />
+    <Folder Include="Views\RefreshData\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -1882,18 +1863,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\HDAReports\201911131205398_DataRefreshProcedureStatus.resx">
       <DependentUpon>201911131205398_DataRefreshProcedureStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDAReports\201911220856483_UpdateDatabase.resx">
-      <DependentUpon>201911220856483_UpdateDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDAReports\201911261029153_AddDataRefreshProcedureTable.resx">
-      <DependentUpon>201911261029153_AddDataRefreshProcedureTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDAReports\201911261036394_AddDataRefreshProcedureTableWithIt.resx">
-      <DependentUpon>201911261036394_AddDataRefreshProcedureTableWithIt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\HDAReports\201911261042468_AddDataRefreshProcedureTableWithTable.resx">
-      <DependentUpon>201911261042468_AddDataRefreshProcedureTableWithTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

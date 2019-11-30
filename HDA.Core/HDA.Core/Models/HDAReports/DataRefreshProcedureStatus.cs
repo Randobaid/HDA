@@ -10,6 +10,8 @@ namespace HDA.Core.Models.HDAReports
         public int Id { get; set; }
         public string ProcedureName { get; set; }
 
+        public string ProcedureDetail { get; set; }
+
         public DateTime ProcedureStartime { get; set; }
 
         public DateTime ProcedureEndDate { get; set; }

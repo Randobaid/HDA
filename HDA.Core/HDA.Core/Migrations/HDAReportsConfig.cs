@@ -190,9 +190,9 @@ namespace HDA.Core.Migrations
 
         private void SeedStoredProcedures(HDAReportsContext context)
         {
-            context.DataRefreshProcedure.AddOrUpdate(m => m.ProcedureName,
-                 new DataRefreshProcedure { ProcedureName = "sp_prescriptiontotals" },
-                 new DataRefreshProcedure { ProcedureName = "sp_inpatientencountertotals" }
+            context.DataRefreshProcedures.AddOrUpdate(m => m.ProcedureName,
+                 new DataRefreshProcedureStatus { ProcedureName = "sp_prescriptiontotals" },
+                 new DataRefreshProcedureStatus { ProcedureName = "sp_inpatientencountertotals" }
 
                 );
             context.SaveChanges();
@@ -200,8 +200,8 @@ namespace HDA.Core.Migrations
 
         private void SeedProceduresToCall(HDAReportsContext context)
         {
-            context.DataRefreshProcedure.AddOrUpdate(d => d.ProcedureName,
-                new DataRefreshProcedure { ProcedureName = "Test",ProcedureDetail = "Select * From Drugs"}
+            context.DataRefreshProcedures.AddOrUpdate(d => d.ProcedureName,
+                new DataRefreshProcedureStatus { ProcedureName = "Test",ProcedureDetail = "SELECT * FROM drugs",ProcedureStartime = DateTime.Now,ProcedureEndDate =DateTime.Now,ProcedureStatus = "Completed"}
                 );
             context.SaveChanges();
         }
