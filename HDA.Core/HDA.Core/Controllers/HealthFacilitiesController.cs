@@ -26,9 +26,6 @@ namespace HDA.Core.Controllers
                 HealthFacilityVM h = new HealthFacilityVM();
                 h.ID = hf.HealthFacilityID;
                 h.HealthFacilityName = hf.HealthFacilityNameEn;
-                h.DomainID = (int) hf.DomainID;
-                h.HealthFacilityTypeID = (int) hf.HealthFacilityTypeID;
-                h.DirectorateID = (int) hf.DirectorateID;
                 healthFacilities.Add(h);
             }
             return Ok(healthFacilities);
@@ -44,9 +41,6 @@ namespace HDA.Core.Controllers
                 HealthFacilityVM h = new HealthFacilityVM();
                 h.ID = hf.HealthFacilityID;
                 h.HealthFacilityName = hf.HealthFacilityNameEn;
-                h.DomainID = (int) hf.DomainID;
-                h.HealthFacilityTypeID = (int) hf.HealthFacilityTypeID;
-                h.DirectorateID = (int) hf.DirectorateID;
                 healthFacilities.Add(h);
             }
             return Ok(healthFacilities);

@@ -137,10 +137,10 @@
                     <hr />
                     <div class="form-row">
                         <div class="col-md-2">
-                            <label>Health Facility Type:</label>
+                            <label>Directorates:</label>
                         </div>
                         <div class="col-md-10">
-                            <select multiple name="HealthFacilityTypeIds">
+                            <select multiple name="DirectorateIds">
                                 <option></option>
                             </select>
                         </div>
@@ -148,10 +148,10 @@
                     <hr />
                     <div class="form-row">
                         <div class="col-md-2">
-                            <label>Directorates:</label>
+                            <label>Health Facility Type:</label>
                         </div>
                         <div class="col-md-10">
-                            <select multiple name="DirectorateIds">
+                            <select multiple name="HealthFacilityTypeIds">
                                 <option></option>
                             </select>
                         </div>
@@ -218,18 +218,18 @@
                             <input type="text" class="form-control" name="UserName" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="Email" class="col-form-label">Email:</label>
-                            <input type="email" class="form-control" name="Email">
+                            <label for="Password" class="col-form-label"><span class="required">*</span> Password:</label>
+                            <input type="password" class="form-control" name="Password">
                         </div>
                         @*<div class="form-group col-md-6">
-                            <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
-                            <input type="text" class="form-control" name="PhoneNumber">
-                        </div>*@
+                <label for="PhoneNumber" class="col-form-label">Phone Number:</label>
+                <input type="text" class="form-control" name="PhoneNumber">
+            </div>*@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="Password" class="col-form-label"><span class="required">*</span> Password:</label>
-                            <input type="password" class="form-control" name="Password">
+                            <label for="Email" class="col-form-label">Email:</label>
+                            <input type="email" class="form-control" name="Email">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ConfirmPassword" class="col-form-label"><span class="required">*</span> Confirm Password:</label>
@@ -256,18 +256,18 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <h5>Health Facility Type:</h5>
+                            <h5>Directorates:</h5>
                             <hr>
-                            <select multiple name="HealthFacilityTypeIds">
+                            <select multiple name="DirectorateIds">
                                 <option></option>
                             </select>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <h5>Directorates:</h5>
+                            <h5>Health Facility Type:</h5>
                             <hr>
-                            <select multiple name="DirectorateIds">
+                            <select multiple name="HealthFacilityTypeIds">
                                 <option></option>
                             </select>
                         </div>
@@ -317,8 +317,8 @@
             getAllUsers();
             getAllRoles();
             getAllDomains();
-            getAllHealthFacilityTypes();
             getAllDirectorates();
+            getAllHealthFacilityTypes();
             getAllHealthFacilities();
             getAllReports();
 
@@ -364,10 +364,10 @@
                 $(e.currentTarget).find('select[name="RoleIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="DomainIds"]').val($(e.relatedTarget).data('domainids').toString().split(","));
                 $(e.currentTarget).find('select[name="DomainIds"]').trigger('change');
-                $(e.currentTarget).find('select[name="HealthFacilityTypeIds"]').val($(e.relatedTarget).data('healthfacilitytypeids').toString().split(","));
-                $(e.currentTarget).find('select[name="HealthFacilityTypeIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="DirectorateIds"]').val($(e.relatedTarget).data('directorateids').toString().split(","));
                 $(e.currentTarget).find('select[name="DirectorateIds"]').trigger('change');
+                $(e.currentTarget).find('select[name="HealthFacilityTypeIds"]').val($(e.relatedTarget).data('healthfacilitytypeids').toString().split(","));
+                $(e.currentTarget).find('select[name="HealthFacilityTypeIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').val($(e.relatedTarget).data('healthfacilityids').toString().split(","));
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="ReportIds"]').val($(e.relatedTarget).data('reportids').toString().split(","));
@@ -421,11 +421,11 @@
                 $(this).select2({ width: '100%' });
             });
 
-            $('select[name="HealthFacilityTypeIds"]').each(function () {
+            $('select[name="DirectorateIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
 
-            $('select[name="DirectorateIds"]').each(function () {
+            $('select[name="HealthFacilityTypeIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
 
@@ -436,124 +436,7 @@
             $('select[name="ReportIds"]').each(function () {
                 $(this).select2({ width: '100%' });
             });
-
-            $('select[name="DomainIds"]').on('select2:select select2:unselect', function (e) {
-                filterHealthFacilityTypesByDomain();
-                filterDirectoratesByDomain();
-                filterHealthFacilitiesByDomain();
-            });
-
-            $('select[name="HealthFacilityTypeIds"]').on('select2:select select2:unselect', function (e) {
-                filterDirectoratesByDomainAndHealthFacilityType();
-                filterHealthFacilitiesByDomainAndHealthFacilityType();
-            });
-
-            $('select[name="DirectorateIds"]').on('select2:select select2:unselect', function (e) {
-                filterHealthFacilitiesByDomainAndHealthFacilityTypeAndDirectorate();
-            });
         });
-
-        function filterHealthFacilityTypesByDomain() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
-            var healthFacilityTypeIds = getHealthFacilityTypeIdsInDomain(selectedDomainIds);
-            var filteredHealthFacilityTypes = [];
-            healthFacilityTypes.forEach(function (healthFacilityType) {
-                if (healthFacilityTypeIds.indexOf(healthFacilityType.HealthFacilityTypeID) != -1) {
-                    filteredHealthFacilityTypes.push(healthFacilityType);
-                }
-            });
-            populateHealthFacilityTypeIdsSelects(filteredHealthFacilityTypes);
-            $('select[name="HealthFacilityTypeIds"]').select2('val', selectedHealthFacilityTypeIds);
-        }
-
-        function filterDirectoratesByDomain() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedDirectorateIds = $('select[name="DirectorateIds"]').select2('val');
-            var directorateIds = getDirectorateIdsInDomain(selectedDomainIds);
-            var filteredDirectorates = [];
-            directorates.forEach(function (directorate) {
-                if (directorateIds.indexOf(directorate.DirectorateID) != -1) {
-                    filteredDirectorates.push(directorate);
-                }
-            });
-            populateDirectorateIdsSelects(filteredDirectorates);
-            $('select[name="DirectorateIds"]').select2('val', selectedDirectorateIds);
-        }
-
-        function filterHealthFacilitiesByDomain() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').select2('val');
-            var healthFacilityIds = getHealthFacilityIdsInDomain(selectedDomainIds);
-            var filteredHealthFacilities = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (healthFacilityIds.indexOf(healthFacility.ID) != -1) {
-                    filteredHealthFacilities.push(healthFacility);
-                }
-            });
-            populateHealthFacilityIdsSelects(filteredHealthFacilities);
-            $('select[name="HealthFacilityIds"]').select2('val', selectedHealthFacilityIds);
-        }
-
-        function filterDirectoratesByDomainAndHealthFacilityType() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
-            var selectedDirectorateIds = $('select[name="DirectorateIds"]').select2('val');
-            var directorateIds = getDirectorateIdsInDomain(selectedDomainIds);
-            var directorateIds2 = getDirectorateIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
-            var filteredDirectorates = [];
-            directorates.forEach(function (directorate) {
-                if (
-                    directorateIds.indexOf(directorate.DirectorateID) != -1 &&
-                    directorateIds2.indexOf(directorate.DirectorateID) != -1
-                ) {
-                    filteredDirectorates.push(directorate);
-                }
-            });
-            populateDirectorateIdsSelects(filteredDirectorates);
-            $('select[name="DirectorateIds"]').select2('val', selectedDirectorateIds);
-        }
-
-        function filterHealthFacilitiesByDomainAndHealthFacilityType() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
-            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').select2('val');
-            var healthFacilityIds = getHealthFacilityIdsInDomain(selectedDomainIds);
-            var healthFacilityIds2 = getHealthFacilityIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
-            var filteredHealthFacilities = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (
-                    healthFacilityIds.indexOf(healthFacility.ID) != -1 &&
-                    healthFacilityIds2.indexOf(healthFacility.ID) != -1
-                ) {
-                    filteredHealthFacilities.push(healthFacility);
-                }
-            });
-            populateHealthFacilityIdsSelects(filteredHealthFacilities);
-            $('select[name="HealthFacilityIds"]').select2('val', selectedHealthFacilityIds);
-        }
-
-        function filterHealthFacilitiesByDomainAndHealthFacilityTypeAndDirectorate() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
-            var selectedDirectorateIds = $('select[name="DirectorateIds"]').select2('val');
-            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').select2('val');
-            var healthFacilityIds = getHealthFacilityIdsInDomain(selectedDomainIds);
-            var healthFacilityIds2 = getHealthFacilityIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
-            var healthFacilityIds3 = getHealthFacilityIdsInDirectorate(selectedDirectorateIds);
-            var filteredHealthFacilities = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (
-                    healthFacilityIds.indexOf(healthFacility.ID) != -1 &&
-                    healthFacilityIds2.indexOf(healthFacility.ID) != -1 &&
-                    healthFacilityIds3.indexOf(healthFacility.ID) != -1
-                ) {
-                    filteredHealthFacilities.push(healthFacility);
-                }
-            });
-            populateHealthFacilityIdsSelects(filteredHealthFacilities);
-            $('select[name="HealthFacilityIds"]').select2('val', selectedHealthFacilityIds);
-        }
 
         function showUserDetails(data) {
             $('#userDetailsRightButtons').html(
@@ -586,17 +469,17 @@
                 }
             });
             body = body + '</ul></td></tr>';
-            body = body + '<tr><td>Health Facility Types</td><td><ul>';
-            healthFacilityTypes.forEach(function (healthFacilityType) {
-                if (data.HealthFacilityTypeIds.indexOf(healthFacilityType.HealthFacilityTypeID.toString()) != -1) {
-                    body = body + '<li>' + healthFacilityType.HealthFacilityTypeNameEn + '</li>';
-                }
-            });
-            body = body + '</ul></td></tr>';
             body = body + '<tr><td>Directorates</td><td><ul>';
             directorates.forEach(function (directorate) {
                 if (data.DirectorateIds.indexOf(directorate.DirectorateID.toString()) != -1) {
                     body = body + '<li>' + directorate.DirectorateNameEn + '</li>';
+                }
+            });
+            body = body + '</ul></td></tr>';
+            body = body + '<tr><td>Health Facility Types</td><td><ul>';
+            healthFacilityTypes.forEach(function (healthFacilityType) {
+                if (data.HealthFacilityTypeIds.indexOf(healthFacilityType.HealthFacilityTypeID.toString()) != -1) {
+                    body = body + '<li>' + healthFacilityType.HealthFacilityTypeNameEn + '</li>';
                 }
             });
             body = body + '</ul></td></tr>';
@@ -628,7 +511,7 @@
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 users = res;
-                populateUserDataTables(users);
+                populateUserDataTables();
             }).fail(function (xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
@@ -642,7 +525,7 @@
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 roles = res;
-                populateRoleIdsSelects(roles);
+                populateRoleIdsSelects();
             }).fail(function (xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
@@ -655,20 +538,7 @@
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 domains = res;
-                populateDomainIdsSelects(domains);
-            }).fail(function (xhr, textStatus, errorThrown) {
-                Swal.fire('Error', xhr.responseJSON.Message, 'error');
-            });
-        }
-
-        function getAllHealthFacilityTypes() {
-            $.ajax({
-                type: 'GET',
-                url: '../api/HealthFacilityTypes',
-                contentType: "application/json; charset=utf-8"
-            }).done(function (res) {
-                healthFacilityTypes = res;
-                populateHealthFacilityTypeIdsSelects(healthFacilityTypes);
+                populateDomainIdsSelects();
             }).fail(function (xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
@@ -681,7 +551,21 @@
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 directorates = res;
-                populateDirectorateIdsSelects(directorates);
+                populateDirectorateIdsSelects();
+            }).fail(function (xhr, textStatus, errorThrown) {
+                Swal.fire('Error', xhr.responseJSON.Message, 'error');
+            });
+        }
+
+        function getAllHealthFacilityTypes() {
+            $.ajax({
+                type: 'GET',
+                url: '../api/HealthFacilityTypes',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (res) {
+                console.log(res);
+                healthFacilityTypes = res;
+                populateHealthFacilityTypeIdsSelects();
             }).fail(function (xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
@@ -694,7 +578,7 @@
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 healthFacilities = res;
-                populateHealthFacilityIdsSelects(healthFacilities);
+                populateHealthFacilityIdsSelects();
             }).fail(function (xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
@@ -707,127 +591,13 @@
                 contentType: "application/json; charset=utf-8"
             }).done(function (res) {
                 reports = res;
-                populateReportIdsSelects(reports);
+                populateReportIdsSelects();
             }).fail(function (xhr, textStatus, errorThrown) {
                 Swal.fire('Error', xhr.responseJSON.Message, 'error');
             });
         }
 
-        function getHealthFacilityTypeIdsInDomain(domainIds) {
-            var healthFacilityTypeIds = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (
-                    domainIds.length &&
-                    !(healthFacilityTypeIds.indexOf(healthFacility.HealthFacilityTypeID) != -1) &&
-                    (domainIds.indexOf(healthFacility.DomainID.toString()) != -1)
-                ) {
-                    healthFacilityTypeIds.push(healthFacility.HealthFacilityTypeID);
-                } else if (
-                    !domainIds.length &&
-                    !(healthFacilityTypeIds.indexOf(healthFacility.HealthFacilityTypeID) != -1)
-                ) {
-                    healthFacilityTypeIds.push(healthFacility.HealthFacilityTypeID);
-                }
-            });
-            return healthFacilityTypeIds;
-        }
-
-        function getDirectorateIdsInDomain(domainIds) {
-            var directorateIds = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (
-                    domainIds.length &&
-                    !(directorateIds.indexOf(healthFacility.DirectorateID) != -1) &&
-                    (domainIds.indexOf(healthFacility.DomainID.toString()) != -1)
-                ) {
-                    directorateIds.push(healthFacility.DirectorateID);
-                } else if (
-                    !domainIds.length &&
-                    !(directorateIds.indexOf(healthFacility.DirectorateID) != -1)
-                ) {
-                    directorateIds.push(healthFacility.DirectorateID);
-                }
-            });
-            return directorateIds;
-        }
-
-        function getDirectorateIdsInHealthFacilityType(healthFacilityTypeIds) {
-            var directorateIds = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (
-                    healthFacilityTypeIds.length &&
-                    !(directorateIds.indexOf(healthFacility.DirectorateID) != -1) &&
-                    (healthFacilityTypeIds.indexOf(healthFacility.HealthFacilityTypeID.toString()) != -1)
-                ) {
-                    directorateIds.push(healthFacility.DirectorateID);
-                } else if (
-                    !healthFacilityTypeIds.length &&
-                    !(directorateIds.indexOf(healthFacility.DirectorateID) != -1)
-                ) {
-                    directorateIds.push(healthFacility.DirectorateID);
-                }
-            });
-            return directorateIds;
-        }
-
-        function getHealthFacilityIdsInDomain(domainIds) {
-            var healthFacilityIds = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (
-                    domainIds.length &&
-                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1) &&
-                    (domainIds.indexOf(healthFacility.DomainID.toString()) != -1)
-                ) {
-                    healthFacilityIds.push(healthFacility.ID);
-                } else if (
-                    !domainIds.length &&
-                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1)
-                ) {
-                    healthFacilityIds.push(healthFacility.ID);
-                }
-            });
-            return healthFacilityIds;
-        }
-
-        function getHealthFacilityIdsInHealthFacilityType(healthFacilityTypeIds) {
-            var healthFacilityIds = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (
-                    healthFacilityTypeIds.length &&
-                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1) &&
-                    (healthFacilityTypeIds.indexOf(healthFacility.HealthFacilityTypeID.toString()) != -1)
-                ) {
-                    healthFacilityIds.push(healthFacility.ID);
-                } else if (
-                    !healthFacilityTypeIds.length &&
-                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1)
-                ) {
-                    healthFacilityIds.push(healthFacility.ID);
-                }
-            });
-            return healthFacilityIds;
-        }
-
-        function getHealthFacilityIdsInDirectorate(directorateIds) {
-            var healthFacilityIds = [];
-            healthFacilities.forEach(function (healthFacility) {
-                if (
-                    directorateIds.length &&
-                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1) &&
-                    (directorateIds.indexOf(healthFacility.DirectorateID.toString()) != -1)
-                ) {
-                    healthFacilityIds.push(healthFacility.ID);
-                } else if (
-                    !directorateIds.length &&
-                    !(healthFacilityIds.indexOf(healthFacility.ID) != -1)
-                ) {
-                    healthFacilityIds.push(healthFacility.ID);
-                }
-            });
-            return healthFacilityIds;
-        }
-
-        function populateUserDataTables(users) {
+        function populateUserDataTables() {
             var dataTableUsers = users.map(user => {
                 var roleNames = [];
                 user.Roles.forEach(function (role) {
@@ -860,7 +630,7 @@
         }
 
 
-        function populateRoleIdsSelects(roles) {
+        function populateRoleIdsSelects() {
             $('select[name="RoleIds"]').each(function () {
                 var element = $(this);
                 element.empty();
@@ -872,7 +642,7 @@
             });
         }
 
-        function populateDomainIdsSelects(domains) {
+        function populateDomainIdsSelects() {
             $('select[name="DomainIds"]').each(function () {
                 var element = $(this);
                 element.empty();
@@ -884,19 +654,7 @@
             });
         }
 
-        function populateHealthFacilityTypeIdsSelects(healthFacilityTypes) {
-            $('select[name="HealthFacilityTypeIds"]').each(function () {
-                var element = $(this);
-                element.empty();
-                healthFacilityTypes.forEach(function (healthFacilityType) {
-                    element.append($("<option></option>")
-                        .attr("value", healthFacilityType.HealthFacilityTypeID)
-                        .text(healthFacilityType.HealthFacilityTypeNameEn));
-                });
-            });
-        }
-
-        function populateDirectorateIdsSelects(directorates) {
+        function populateDirectorateIdsSelects() {
             $('select[name="DirectorateIds"]').each(function () {
                 var element = $(this);
                 element.empty();
@@ -908,7 +666,19 @@
             });
         }
 
-        function populateHealthFacilityIdsSelects(healthFacilities) {
+        function populateHealthFacilityTypeIdsSelects() {
+            $('select[name="HealthFacilityTypeIds"]').each(function () {
+                var element = $(this);
+                element.empty();
+                healthFacilityTypes.forEach(function (healthFacilityType) {
+                    element.append($("<option></option>")
+                        .attr("value", healthFacilityType.ID)
+                        .text(healthFacilityType.HealthFacilityTypeNameEn));
+                });
+            });
+        }
+
+        function populateHealthFacilityIdsSelects() {
             $('select[name="HealthFacilityIds"]').each(function () {
                 var element = $(this);
                 element.empty();
@@ -920,7 +690,7 @@
             });
         }
 
-        function populateReportIdsSelects(reports) {
+        function populateReportIdsSelects() {
             $('select[name="ReportIds"]').each(function () {
                 var element = $(this);
                 element.empty();
