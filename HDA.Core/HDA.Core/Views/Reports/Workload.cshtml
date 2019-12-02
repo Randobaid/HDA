@@ -246,6 +246,9 @@
                 buttonWidth: '100%',
                 includeSelectAllOption: true,
                 allSelectedText: 'All Selected',
+                onSelectAll: function () {
+                    updateSelectedHospitalTypes();
+                },
                 buttonClass: 'btn btn-primary btn-block',
                 buttonText: function (options, select) {
                     if (options.length === 0) {
@@ -267,8 +270,12 @@
                         return labels.join(', ') + '';
                     }
                 },
+                onChange: function (element, checked) {
+                    updateSelectedHospitalTypes();
+                },
+                
                 onDropdownHidden: function (event) {
-                    selectedHospitalTypes = [];
+                    /*selectedHospitalTypes = [];
                     $.each($('#hospital_types option:selected'), function () {
                         var a = new Object();
                         a.HealthFacilityTypeId = $(this).val();
@@ -276,10 +283,24 @@
                     });
 
                     selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
-                    GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
+                    GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);*/
                 }
             });
+    });
+
+    function updateSelectedHospitalTypes() {
+        
+        selectedHospitalTypes = [];
+        $.each($('#hospital_types option:selected'), function () {
+            var a = new Object();
+            a.HealthFacilityTypeId = $(this).val();
+            selectedHospitalTypes.push(a);
         });
+
+        selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
+        GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
+        //refreshCharts();
+    }
 
         $(function () {
             var start = moment().startOf('year');

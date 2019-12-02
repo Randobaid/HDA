@@ -322,6 +322,9 @@
                 buttonWidth: '100%',
                 includeSelectAllOption: true,
                 allSelectedText: 'All Selected',
+                onSelectAll: function () {
+                    updateSelectedHospitalTypes();
+                },
                 buttonClass: 'btn btn-primary btn-block',
                 buttonText: function (options, select) {
                     if (options.length === 0) {
@@ -343,8 +346,11 @@
                         return labels.join(', ') + '';
                     }
                 },
+                onChange: function (element, checked) {
+                    updateSelectedHospitalTypes();
+                },
                 onDropdownHidden: function (event) {
-                    selectedHospitalTypes = [];
+                    /*selectedHospitalTypes = [];
                     $.each($('#hospital_types option:selected'), function () {
                         var a = new Object();
                         a.HealthFacilityTypeId = $(this).val();
@@ -353,7 +359,7 @@
 
                     selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
                     GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
-                    //refreshCharts();
+                    //refreshCharts();*/
                 }
             });
 
@@ -371,6 +377,7 @@
             drugTextBox = document.getElementById("TextDrug");
             drugAws = new Awesomplete(drugTextBox, { minChars: 0 });
         });
+
 
         $("#allHospitals").change(function () {
             if (this.checked) {
@@ -487,7 +494,21 @@
             cb(start, end);
         });
 
-        function SelectFacility() {
+    function updateSelectedHospitalTypes() {
+        
+        selectedHospitalTypes = [];
+        $.each($('#hospital_types option:selected'), function () {
+            var a = new Object();
+            a.HealthFacilityTypeId = $(this).val();
+            selectedHospitalTypes.push(a);
+        });
+
+        selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
+        GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
+        
+    }
+
+    function SelectFacility() {
             var result = this.value.split("~");
             var healthFacilityName = result[1];
             var healthFacilityId = result[0];
@@ -844,7 +865,7 @@
         }
 
         function refreshCharts() {
-
+            
             if (selectedHospitalTypesJson !== undefined) {
                 $('.facilityPrompt').attr('hidden', true);
                 prescriptionsTrendChart();

@@ -211,6 +211,9 @@
                 buttonWidth: '100%',
                 includeSelectAllOption: true,
                 allSelectedText: 'All Selected',
+                onSelectAll: function () {
+                    updateSelectedHospitalTypes();
+                },
                 buttonClass: 'btn btn-primary btn-block',
                 buttonText: function (options, select) {
                     if (options.length === 0) {
@@ -232,8 +235,11 @@
                         return labels.join(', ') + '';
                     }
                 },
+                onChange: function (element, checked) {
+                    updateSelectedHospitalTypes();
+                },
                 onDropdownHidden: function (event) {
-                    selectedHospitalTypes = [];
+                    /*selectedHospitalTypes = [];
                     $.each($('#hospital_types option:selected'), function () {
                         var a = new Object();
                         a.HealthFacilityTypeId = $(this).val();
@@ -241,7 +247,7 @@
                     });
 
                     selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
-                    GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
+                    GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);*/
                 }
             });
 
@@ -249,7 +255,19 @@
             facilityAws = new Awesomplete(fInput, { minChars: 0 });
             GetStartCodes();
         });
+    function updateSelectedHospitalTypes() {
+        
+        selectedHospitalTypes = [];
+        $.each($('#hospital_types option:selected'), function () {
+            var a = new Object();
+            a.HealthFacilityTypeId = $(this).val();
+            selectedHospitalTypes.push(a);
+        });
 
+        selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
+        GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
+        //refreshCharts();
+    }
         $("#allHospitals").change(function () {
             if (this.checked) {
                 $('#TextHospital').attr('disabled', true);
@@ -396,7 +414,8 @@
                 ('<tr><td class="font-weight-bold">' + healthFacilityName + '</td><td><a href="#" onclick="updateTable(this,' + healthFacilityId + ');"><i class="fa fa-trash" ></i></a></td></tr>');
 
         }
-        function updateTable(row, removeId) {
+
+    function updateTable(row, removeId) {
             $(row).parent().parent().remove();
             selectedHospitals.splice($.inArray(removeId, selectedHospitals), 1);
             var t = document.getElementById("selectedFacilitiesTable");
