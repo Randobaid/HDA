@@ -344,7 +344,12 @@ namespace HDA.Core.Controllers
                     {
                         NormalAmountToOrder = db.Drugs.Where(d => d.DrugID == payload.DrugId).First().NormalAmountToOrder;
                         TotalQuantityPerDrug = totals.Select(v => v.TotalQuantity).Sum() + totals.Select(v => v.TotalRefillQuantity).Sum();
-                        AverageQuantityPerPrescription = TotalQuantityPerDrug / totals.Select(v => v.TotalPrescriptions).Sum();
+                        int sumPrescriptions = totals.Select(v => v.TotalPrescriptions).Sum();
+                        if(sumPrescriptions > 0)
+                        {
+                            AverageQuantityPerPrescription = TotalQuantityPerDrug / sumPrescriptions;
+                        }
+                        
                     }
 
                     SummaryCounts p = new SummaryCounts
@@ -371,5 +376,99 @@ namespace HDA.Core.Controllers
                 return BadRequest(ModelState);
             }
         }
+
+        [HttpPost]
+        public IHttpActionResult PostHealthFacilitiesByType([FromBody] List<SelectedFacilityType> payload)
+        {
+
+            List<HealthFacilityVM> healthFacilities = new List<HealthFacilityVM>();
+
+            var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
+            var allowedHealthFacilityIDsSP = PredicateBuilder.New<HealthFacility>();
+            foreach (int healthFacilityId in allowedHealthFacilityIDs)
+            {
+                allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
+            }
+
+            var searchPredicate = PredicateBuilder.New<HealthFacility>();
+            foreach (SelectedFacilityType str in payload)
+            {
+                searchPredicate =
+                  searchPredicate.Or(a => a.HealthFacilityTypeID == str.HealthFacilityTypeId);
+            }
+
+
+            var hfs = db.HealthFacilities.
+                Where(searchPredicate).
+                Where(allowedHealthFacilityIDsSP);
+            foreach (var hf in hfs)
+            {
+                HealthFacilityVM h = new HealthFacilityVM();
+                h.ID = hf.HealthFacilityID;
+                h.HealthFacilityName = hf.HealthFacilityNameEn;
+                healthFacilities.Add(h);
+            }
+            return Ok(healthFacilities);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetPharmacies([FromBody] List<int> payload)
+        {
+            List<PharmacyVM> pharmacies = new List<PharmacyVM>();
+
+            var selectedHealthFacilitiesSP = PredicateBuilder.New<Pharmacy>();
+            foreach (int id in payload)
+            {
+                selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
+            }
+
+            var hfs = db.Pharmacies.Where(selectedHealthFacilitiesSP);
+            foreach (var hf in hfs)
+            {
+                PharmacyVM h = new PharmacyVM
+                {
+                    ID = hf.PharmacyID,
+                    PharmacyName = hf.PharmacyName,
+                    HealthFacilityID = hf.HealthFacilityID
+                };
+                pharmacies.Add(h);
+            }
+            return Ok(pharmacies);
+        }
+
+        public IHttpActionResult GetDrugClasses()
+        {
+            List<DrugClassVM> drugClasses = new List<DrugClassVM>();
+            var hfs = db.DrugClasses;
+            foreach (var hf in hfs)
+            {
+                DrugClassVM h = new DrugClassVM
+                {
+                    ID = hf.DrugClassID,
+                    DrugClassName = hf.DrugClassNameEn,
+                };
+                drugClasses.Add(h);
+            }
+            return Ok(drugClasses);
+        }
+
+        public IHttpActionResult GetDrugs(int id)
+        {
+            List<DrugVM> drugs = new List<DrugVM>();
+            var hfs = db.Drugs.Where(d => d.DrugClassID == id);
+            foreach (var hf in hfs)
+            {
+                DrugVM h = new DrugVM
+                {
+                    ID = hf.DrugID,
+                    DrugName = hf.DrugGenericName,
+                };
+                drugs.Add(h);
+            }
+            return Ok(drugs);
+        }
+
+
+
     }
 }

@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using HDA.Core.ViewModels;
 using HDA.Core.Models.HDAReports;
+using HDA.Core.Utilities;
+using Microsoft.AspNet.Identity;
 
 namespace HDA.Core.Controllers
 {
@@ -116,6 +118,50 @@ namespace HDA.Core.Controllers
                 db.HealthFacilityTypes.Remove(healthFacilityType);
                 db.SaveChanges();
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [Route("api/HealthFacilityTypes/GetAllowedHealthFacilityTypes")]
+        [HttpGet]
+        public IHttpActionResult GetAllowedHealthFacilityTypes()
+        {
+            try
+            {
+                List<HealthFacilityTypeViewModel> allowedHealthFacilityTypes = new List<HealthFacilityTypeViewModel>();
+                var allowedHealthFacilityTypeIDs = new PermissionCheck().GetAllowedHealthFacilityTypeIds(User.Identity.GetUserId());
+                if(allowedHealthFacilityTypeIDs.Count == 0)
+                {
+                    List<HealthFacilityTypeViewModel> allhealthFacilityTypes = new List<HealthFacilityTypeViewModel>();
+                    foreach (var healthFacilityType in db.HealthFacilityTypes)
+                    {
+                        HealthFacilityTypeViewModel i = new HealthFacilityTypeViewModel
+                        {
+                            HealthFacilityTypeID = healthFacilityType.HealthFacilityTypeID,
+                            HealthFacilityTypeCode = healthFacilityType.HealthFacilityTypeCode,
+                            HealthFacilityTypeNameEn = healthFacilityType.HealthFacilityTypeNameEn,
+                            HealthFacilityTypeNameAr = healthFacilityType.HealthFacilityTypeNameAr,
+                        };
+                        allhealthFacilityTypes.Add(i);
+                    }
+                    return Ok(allhealthFacilityTypes);
+                }
+                foreach (int i in allowedHealthFacilityTypeIDs)
+                {
+                    
+                    HealthFacilityType healthFacilityType = db.HealthFacilityTypes.Where(t => t.HealthFacilityTypeID == i).FirstOrDefault();
+                    HealthFacilityTypeViewModel healthFacilityTypeViewModel = new HealthFacilityTypeViewModel
+                    {
+                        HealthFacilityTypeID = healthFacilityType.HealthFacilityTypeID,
+                        HealthFacilityTypeCode = healthFacilityType.HealthFacilityTypeCode,
+                        HealthFacilityTypeNameEn = healthFacilityType.HealthFacilityTypeNameEn,
+                        HealthFacilityTypeNameAr = healthFacilityType.HealthFacilityTypeNameAr
+                    };
+                    allowedHealthFacilityTypes.Add(healthFacilityTypeViewModel);
+                }
+                return Ok(allowedHealthFacilityTypes);
             }
             catch (Exception ex)
             {

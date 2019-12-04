@@ -16,24 +16,19 @@
 
                         <div class="form-group col-md-12">
                             <div class="dropdown">
-                                <select id="hospital_types" multiple="multiple">
-                                    <option value="1">Hospitals</option>
-                                    <option value="2">Comprehensive Centers</option>
-                                    <option value="3">Specialized Medical Centers</option>
-                                    <option value="4">Peripheral Centers</option>
-                                    <option value="5">Primary Centers</option>
-                                    <option value="6">Educational Hospitals</option>
+                                <select id="hospital_types" multiple="multiple" class="hospital_types">
+                                    <option></option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group col-md-12">
                             <div class="row">
                                 <div class="col-md-10 col-sm-12">
-                                    <input type="text" class="form-control" id="TextHospital" placeholder="Select Facility.." disabled="disabled" />
+                                    <input type="text" class="form-control text_hospital" id="TextHospital" placeholder="Select Facility.." disabled="disabled" />
                                 </div>
                                 <div class="col-md-2 col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input " type="checkbox" checked="checked" value="" id="allHospitals">
+                                        <input class="form-check-input all_hospitals" type="checkbox" checked="checked" value="" id="allHospitals">
                                         <label class="form-check-label" for="allHospitals">
                                             All
                                         </label>
@@ -60,7 +55,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label for="reportrange" class="col-form-label">Reporting Period</label>
-                            <div id="reportrange" class="rounded" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <div id="reportrange" class="rounded report_range" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
                             </div>
@@ -176,8 +171,7 @@
 
 @section Scripts {
     <script type="text/javascript">
-        var fInput;
-        var facilityAws;
+        
         var facilityId = 0;
 
         var selectedHospitalTypes = [];
@@ -194,80 +188,13 @@
         var selectedHospitals = [];
 
 
-        $(document).ajaxStart(function () {
-            $('#ajaxProgress').removeAttr('hidden');
-        });
-
-        $(document).ajaxStop(function () {
-            $('#ajaxProgress').attr('hidden', true);
-        });
+        
 
     $(document).ready(function () {
-            toastr.options = {
-            'positionClass': 'toast-bottom-left',
-        }
-            $('#hospital_types').multiselect({
-                enableHTML: true,
-                buttonWidth: '100%',
-                includeSelectAllOption: true,
-                allSelectedText: 'All Selected',
-                onSelectAll: function () {
-                    updateSelectedHospitalTypes();
-                },
-                buttonClass: 'btn btn-primary btn-block',
-                buttonText: function (options, select) {
-                    if (options.length === 0) {
-                        return '<i class="fa fa-hospital-o fa-lg" aria-hidden="true"></i> Select Hospital Type';
-                    }
-                    else if (options.length > 3) {
-                        return options.length + ' selected';
-                    }
-                    else {
-                        var labels = [];
-                        options.each(function () {
-                            if ($(this).attr('label') !== undefined) {
-                                labels.push($(this).attr('label'));
-                            }
-                            else {
-                                labels.push($(this).html());
-                            }
-                        });
-                        return labels.join(', ') + '';
-                    }
-                },
-                onChange: function (element, checked) {
-                    updateSelectedHospitalTypes();
-                },
-                onDropdownHidden: function (event) {
-                    /*selectedHospitalTypes = [];
-                    $.each($('#hospital_types option:selected'), function () {
-                        var a = new Object();
-                        a.HealthFacilityTypeId = $(this).val();
-                        selectedHospitalTypes.push(a);
-                    });
-
-                    selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
-                    GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);*/
-                }
-            });
-
-            fInput = document.getElementById("TextHospital");
-            facilityAws = new Awesomplete(fInput, { minChars: 0 });
+            getAllowedHealthFacilityTypes();
             GetStartCodes();
         });
-    function updateSelectedHospitalTypes() {
-        
-        selectedHospitalTypes = [];
-        $.each($('#hospital_types option:selected'), function () {
-            var a = new Object();
-            a.HealthFacilityTypeId = $(this).val();
-            selectedHospitalTypes.push(a);
-        });
-
-        selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
-        GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
-        //refreshCharts();
-    }
+    
         $("#allHospitals").change(function () {
             if (this.checked) {
                 $('#TextHospital').attr('disabled', true);
@@ -281,32 +208,8 @@
                 $('#TextHospital').removeAttr('disabled');
             }
         });
-    $('#TextHospital').focus(function () {
-        if (facilityAws._list.length < 10) {
-            facilityAws.evaluate();
-        }
-    });
-        function GetFacilityList(fInput, aws1, selectedFacilityTypes) {
-            fInput.addEventListener('awesomplete-selectcomplete', SelectFacility);
-            $.ajax({
-                url: '../api/HealthFacilities/PostHealthFacilitiesByType',
-                type: 'POST',
-                data: selectedFacilityTypes,
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    var serverData = data;
-                    var hfList = [];
-                    for (var i = 0; i < serverData.length; i++) {
-                        hfList.push({ label: serverData[i]['HealthFacilityName'], value: serverData[i]['ID'] + '~' + serverData[i]['HealthFacilityName'] });
-                    }
-                    aws1.list = hfList;
-                },
-                error: function (data) {
-                    console.log(data);
-                }
-            });
-        }
+    
+       
 
         function GetStartCodes() {
             var diagnosisStartCodeTextBox = document.getElementById("diagnosisStartCode");
@@ -379,29 +282,7 @@
             diagnosisEndCodeId = result[0];
         }
 
-        $(function () {
-            var start = moment().startOf('year');
-            var end = moment();
-
-            function cb(start, end) {
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                startDate = start.format('YYYY-MM-DD');
-                endDate = end.format('YYYY-MM-DD');
-            }
-
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                alwaysShowCalendars: true,
-                ranges: {
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                    'Year to Date': [moment().startOf('year'), moment()],
-                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')]
-                }
-            }, cb);
-            cb(start, end);
-        });
+        
 
         function SelectFacility() {
             var result = this.value.split("~");

@@ -88,7 +88,7 @@ namespace HDA.Core.Controllers
             return Ok(healthFacilities);
         }
 
-        [HttpPost]
+       /* [HttpPost]
         public IHttpActionResult GetPharmacies([FromBody] List<int> payload)
         {
             List<PharmacyVM> pharmacies = new List<PharmacyVM>();
@@ -159,7 +159,7 @@ namespace HDA.Core.Controllers
                             , NumberOfBeds = d.Sum(e => e.NumberOfBeds)
                             , NumberOfClinics = 57 //TODO
                             , NumberOfOperatingRooms = d.Sum(e => e.NumberOfOperatingRooms)
-                        };*/
+                        };
                 h.NumberOfBeds = 200;//a.FirstOrDefault().NumberOfBeds;
                 h.NumberOfClinics = 10;//a.FirstOrDefault().NumberOfClinics;
                 h.NumberOfOperatingRooms = 5;//a.FirstOrDefault().NumberOfOperatingRooms;
@@ -178,7 +178,7 @@ namespace HDA.Core.Controllers
                             NumberOfClinics = 100 //TODO
                             ,
                             NumberOfOperatingRooms = d.Sum(e => e.NumberOfOperatingRooms)
-                        };*/
+                        };
                 h.NumberOfBeds = 100;//a.FirstOrDefault().NumberOfBeds;
                 h.NumberOfClinics = 10; //a.FirstOrDefault().NumberOfClinics;
                 h.NumberOfOperatingRooms = 5; //a.FirstOrDefault().NumberOfOperatingRooms;
@@ -186,6 +186,6 @@ namespace HDA.Core.Controllers
             }
             return BadRequest();
 
-        }
+        }*/
     }
 }
