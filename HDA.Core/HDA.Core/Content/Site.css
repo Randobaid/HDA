@@ -227,6 +227,6 @@ body #toast-container > div {
     font-size: 0.8em;
 }
 
-.card.border {
+.card.inpatient-transfers-card {
     height: 100%;
 }
