@@ -140,7 +140,7 @@
                             <label>Health Facility Type:</label>
                         </div>
                         <div class="col-md-10">
-                            <select multiple name="HealthFacilityTypeIds">
+                            <select multiple name="HealthFacilityTypeIds" id="testmultiple">
                                 <option></option>
                             </select>
                         </div>
@@ -317,6 +317,7 @@
         var healthFacilities = [];
         var reports = [];
         var indicators = [];
+        var addedit = 0;
 
         $(document).ready(function () {
             getAllUsers();
@@ -359,6 +360,7 @@
             });
 
             $('#editUserModal').on('show.bs.modal', function (e) {
+                addedit = 1;
                 $(e.currentTarget).find('input[name="Id"]').val($(e.relatedTarget).data('id'));
                 $(e.currentTarget).find('input[name="FirstName"]').val($(e.relatedTarget).data('firstname'));
                 $(e.currentTarget).find('input[name="LastName"]').val($(e.relatedTarget).data('lastname'));
@@ -377,6 +379,11 @@
                 $(e.currentTarget).find('select[name="HealthFacilityIds"]').trigger('change');
                 $(e.currentTarget).find('select[name="ReportIds"]').val($(e.relatedTarget).data('reportids').toString().split(","));
                 $(e.currentTarget).find('select[name="ReportIds"]').trigger('change');
+                
+            });
+
+            $('#addUserModal').on('show.bs.modal', function (e) {
+                addedit = 0;
             });
 
             $('#editUserModal form').submit(function () {
@@ -459,8 +466,8 @@
         });
 
         function filterHealthFacilityTypesByDomain() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
+            var selectedDomainIds = $('select[name="DomainIds"]').eq(addedit).select2('val');
+            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').eq(addedit).select2('val');
             var healthFacilityTypeIds = getHealthFacilityTypeIdsInDomain(selectedDomainIds);
             var filteredHealthFacilityTypes = [];
             healthFacilityTypes.forEach(function (healthFacilityType) {
@@ -469,12 +476,12 @@
                 }
             });
             populateHealthFacilityTypeIdsSelects(filteredHealthFacilityTypes);
-            $('select[name="HealthFacilityTypeIds"]').select2('val', selectedHealthFacilityTypeIds);
+            $('select[name="HealthFacilityTypeIds"]').eq(addedit).select2('val', selectedHealthFacilityTypeIds);
         }
 
         function filterDirectoratesByDomain() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedDirectorateIds = $('select[name="DirectorateIds"]').select2('val');
+            var selectedDomainIds = $('select[name="DomainIds"]').eq(addedit).select2('val');
+            var selectedDirectorateIds = $('select[name="DirectorateIds"]').eq(addedit).select2('val');
             var directorateIds = getDirectorateIdsInDomain(selectedDomainIds);
             var filteredDirectorates = [];
             directorates.forEach(function (directorate) {
@@ -483,12 +490,12 @@
                 }
             });
             populateDirectorateIdsSelects(filteredDirectorates);
-            $('select[name="DirectorateIds"]').select2('val', selectedDirectorateIds);
+            $('select[name="DirectorateIds"]').eq(addedit).select2('val', selectedDirectorateIds);
         }
 
         function filterHealthFacilitiesByDomain() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').select2('val');
+            var selectedDomainIds = $('select[name="DomainIds"]').eq(addedit).select2('val');
+            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').eq(addedit).select2('val');
             var healthFacilityIds = getHealthFacilityIdsInDomain(selectedDomainIds);
             var filteredHealthFacilities = [];
             healthFacilities.forEach(function (healthFacility) {
@@ -497,13 +504,13 @@
                 }
             });
             populateHealthFacilityIdsSelects(filteredHealthFacilities);
-            $('select[name="HealthFacilityIds"]').select2('val', selectedHealthFacilityIds);
+            $('select[name="HealthFacilityIds"]').eq(addedit).select2('val', selectedHealthFacilityIds);
         }
 
         function filterDirectoratesByDomainAndHealthFacilityType() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
-            var selectedDirectorateIds = $('select[name="DirectorateIds"]').select2('val');
+            var selectedDomainIds = $('select[name="DomainIds"]').eq(addedit).select2('val');
+            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').eq(addedit).select2('val');
+            var selectedDirectorateIds = $('select[name="DirectorateIds"]').eq(addedit).select2('val');
             var directorateIds = getDirectorateIdsInDomain(selectedDomainIds);
             var directorateIds2 = getDirectorateIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
             var filteredDirectorates = [];
@@ -516,13 +523,14 @@
                 }
             });
             populateDirectorateIdsSelects(filteredDirectorates);
-            $('select[name="DirectorateIds"]').select2('val', selectedDirectorateIds);
+            $('select[name="DirectorateIds"]').eq(addedit).select2('val', selectedDirectorateIds);
         }
 
         function filterHealthFacilitiesByDomainAndHealthFacilityType() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
-            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').select2('val');
+            var selectedDomainIds = $('select[name="DomainIds"]').eq(addedit).select2('val');
+            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').eq(addedit).select2('val');
+            
+            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').eq(addedit).select2('val');
             var healthFacilityIds = getHealthFacilityIdsInDomain(selectedDomainIds);
             var healthFacilityIds2 = getHealthFacilityIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
             var filteredHealthFacilities = [];
@@ -534,15 +542,16 @@
                     filteredHealthFacilities.push(healthFacility);
                 }
             });
+            
             populateHealthFacilityIdsSelects(filteredHealthFacilities);
-            $('select[name="HealthFacilityIds"]').select2('val', selectedHealthFacilityIds);
+            $('select[name="HealthFacilityIds"]').eq(addedit).select2('val', selectedHealthFacilityIds);
         }
 
         function filterHealthFacilitiesByDomainAndHealthFacilityTypeAndDirectorate() {
-            var selectedDomainIds = $('select[name="DomainIds"]').select2('val');
-            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').select2('val');
-            var selectedDirectorateIds = $('select[name="DirectorateIds"]').select2('val');
-            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').select2('val');
+            var selectedDomainIds = $('select[name="DomainIds"]').eq(addedit).select2('val');
+            var selectedHealthFacilityTypeIds = $('select[name="HealthFacilityTypeIds"]').eq(addedit).select2('val');
+            var selectedDirectorateIds = $('select[name="DirectorateIds"]').eq(addedit).select2('val');
+            var selectedHealthFacilityIds = $('select[name="HealthFacilityIds"]').eq(addedit).select2('val');
             var healthFacilityIds = getHealthFacilityIdsInDomain(selectedDomainIds);
             var healthFacilityIds2 = getHealthFacilityIdsInHealthFacilityType(selectedHealthFacilityTypeIds);
             var healthFacilityIds3 = getHealthFacilityIdsInDirectorate(selectedDirectorateIds);
@@ -557,7 +566,7 @@
                 }
             });
             populateHealthFacilityIdsSelects(filteredHealthFacilities);
-            $('select[name="HealthFacilityIds"]').select2('val', selectedHealthFacilityIds);
+            $('select[name="HealthFacilityIds"]').eq(addedit).select2('val', selectedHealthFacilityIds);
         }
 
         function showUserDetails(data) {
@@ -795,6 +804,7 @@
         }
 
         function getHealthFacilityIdsInHealthFacilityType(healthFacilityTypeIds) {
+            console.log(healthFacilityTypeIds);
             var healthFacilityIds = [];
             healthFacilities.forEach(function (healthFacility) {
                 if (
