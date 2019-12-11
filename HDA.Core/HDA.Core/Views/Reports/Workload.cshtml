@@ -434,6 +434,7 @@
                 if (jQuery.inArray("1", selectedHospitalsIds) !== -1) {
                     //remove hint please select hospital 
                     $('#hospitalPrompt').attr('hidden', true);
+                    $('.inpatient-transfers-card').css('height', '100%');
                     inPatientChart = new Highcharts.chart('inPatientChart', {
                         chart: { type: 'column' },
                         title: { text: '' },
