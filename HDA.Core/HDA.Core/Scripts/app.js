@@ -108,6 +108,7 @@ function populateHealthFacilityTypeIdsSelects(healthFacilityTypes) {
         allSelectedText: 'All Selected',
         onSelectAll: function () {
             updateSelectedHospitalTypes();
+            updateSelectedHospitalsIds();
         },
         buttonClass: 'btn btn-primary btn-block',
         buttonText: function (options, select) {
@@ -132,6 +133,7 @@ function populateHealthFacilityTypeIdsSelects(healthFacilityTypes) {
         },
         onChange: function (element, checked) {
             updateSelectedHospitalTypes();
+            updateSelectedHospitalsIds();
         }
     });
 }
@@ -150,6 +152,20 @@ function updateSelectedHospitalTypes() {
     console.log(selectedHospitalTypes);
     selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
     GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
+
+}
+
+function updateSelectedHospitalsIds() {
+
+    selectedHospitalsIds = [];
+
+    selectedHospitalTypes.forEach(function (e) {
+        selectedHospitalsIds.push(e.HealthFacilityTypeId);
+    });
+
+    //console.log(selectedHospitalsIds);
+    //selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
+    //GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
 
 }
 
