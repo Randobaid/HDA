@@ -148,8 +148,9 @@ function updateSelectedHospitalTypes() {
         var a = new Object();
         a.HealthFacilityTypeId = $(this).val();
         selectedHospitalTypes.push(a);
+        facilityTypeId = a.HealthFacilityTypeId;
     });
-    console.log(selectedHospitalTypes);
+    //console.log(selectedHospitalTypes);
     selectedHospitalTypesJson = JSON.stringify(selectedHospitalTypes);
     GetFacilityList(fInput, facilityAws, selectedHospitalTypesJson);
 

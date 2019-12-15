@@ -20,7 +20,7 @@ namespace HDA.Core.ViewModels
 
     public class DiseaseManagementRequestPayload
     {
-        public int HealthFacilityID { get; set; }
+        public string HealthFacilityID { get; set; }
         public int StartCodeID { get; set; }
         public int EndCodeID { get; set; }
         public string FromDate { get; set; }

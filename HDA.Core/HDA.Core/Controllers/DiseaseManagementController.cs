@@ -46,7 +46,7 @@ namespace HDA.Core.Controllers
 
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
-                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                foreach (string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -69,7 +69,7 @@ namespace HDA.Core.Controllers
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
 
@@ -125,7 +125,7 @@ namespace HDA.Core.Controllers
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
-                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                foreach (string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -147,7 +147,7 @@ namespace HDA.Core.Controllers
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
 
@@ -198,7 +198,7 @@ namespace HDA.Core.Controllers
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
-                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                foreach (string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -218,7 +218,7 @@ namespace HDA.Core.Controllers
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                     }
@@ -274,7 +274,7 @@ namespace HDA.Core.Controllers
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
-                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                foreach (string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -294,7 +294,7 @@ namespace HDA.Core.Controllers
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                     }
@@ -348,7 +348,7 @@ namespace HDA.Core.Controllers
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<DiagnosisTotal>();
-                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                foreach (string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -369,7 +369,7 @@ namespace HDA.Core.Controllers
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<DiagnosisTotal>();
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                     }
@@ -396,7 +396,7 @@ namespace HDA.Core.Controllers
                                 && h.Month <= toDate.Month
                                 && h.Year >= fromDate.Year
                                 && h.Year <= toDate.Year
-                                && ((payload.HealthFacilityID > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
+                                && ((payload.HealthFacilityID.Length > 0) ? h.HealthFacilityID == payload.HealthFacilityID : true)
                                 && h.DiagnosisCodeID >= payload.StartCodeID
                                 && h.DiagnosisCodeID <= payload.EndCodeID)
                         group t by 1

@@ -47,17 +47,17 @@ namespace HDA.Core.Utilities
             return allowedGovernorateIDs;
         }
 
-        public List<int> GetAllowedFacilityIds(string userId)
+        public List<string> GetAllowedFacilityIds(string userId)
         {
             var userManager = new ApplicationUserManager(new ApplicationUserStore(new HDAIdentityContext()));
             var allowedHealthFacilityIDs = userManager.GetClaims(userId).Where(
                 c => c.Type == "HDA.Core.Models.HDAReports.HealthFacility"
-            ).Select(c => Convert.ToInt32(c.Value)).ToList();
+            ).Select(c => Convert.ToString(c.Value)).ToList();
             var allowedGovernorateIDs = this.GetAllowedGovernorateIds(userId);
             var allowedDirectorateIDs = this.GetAllowedDirectorateIds(userId);
             var allowedHealthFacilityTypeIDs = this.GetAllowedHealthFacilityTypeIds(userId);
             var allowedDomainIDs = this.GetAllowedDomainIds(userId);
-            var allHealthFacilityIDs = new List<int>();
+            var allHealthFacilityIDs = new List<string>();
             if (allowedHealthFacilityIDs.Count() > 0) {
                 allHealthFacilityIDs = allowedHealthFacilityIDs;
             } else if (allowedGovernorateIDs.Count() > 0) {

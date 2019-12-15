@@ -7,7 +7,7 @@ namespace HDA.Core.ViewModels
 {
     public class HealthFacilityVM
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string HealthFacilityName { get; set; }
         public int DomainID { get; set; }
         public int HealthFacilityTypeID { get; set; }
@@ -16,7 +16,7 @@ namespace HDA.Core.ViewModels
 
     public class PharmacyVM
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public int HealthFacilityID { get; set; }
         public string PharmacyName { get; set; }
     }
@@ -24,7 +24,7 @@ namespace HDA.Core.ViewModels
     public class SelectedFacilityPayload
     {
         public List<SelectedFacilityType> HealthFacilityTypes { get; set; }
-        public List<int> HealthFacilities { get; set; }
+        public List<string> HealthFacilities { get; set; }
     }
 
     public class SelectedFacilityType

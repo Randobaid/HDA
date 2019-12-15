@@ -8,7 +8,7 @@ namespace HDA.Core.Models.HDAReports
 {
     public class HealthFacility
     {
-        public int HealthFacilityID { get; set; }
+        public string HealthFacilityID { get; set; }
         [Index]
         public int SourceID { get; set; }
         public string FacilityShortName { get; set; }

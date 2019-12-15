@@ -24,7 +24,7 @@ namespace HDA.Core.Controllers
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<InPatientEncounterTotal>();
-                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                foreach (string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -43,7 +43,7 @@ namespace HDA.Core.Controllers
                 baseOutPatientEncounterTotalSP = baseOutPatientEncounterTotalSP.And(a => a.Total > 0);
 
                 var baseHealthFacilitySP = PredicateBuilder.New<HealthFacility>();
-                baseHealthFacilitySP = baseHealthFacilitySP.And(a => a.HealthFacilityID > 0);
+                baseHealthFacilitySP = baseHealthFacilitySP.And(a => a.HealthFacilityID.Length > 0); //was > 0
 
                 var healthFacilitySP_healthFacilityType = PredicateBuilder.New<HealthFacility>();
                 var healthFacilitySP_healthFacility = PredicateBuilder.New<HealthFacility>();
@@ -60,7 +60,7 @@ namespace HDA.Core.Controllers
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<InPatientEncounterTotal>();
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                         healthFacilitySP_healthFacility = healthFacilitySP_healthFacility.Or(a => a.HealthFacilityID == id);
@@ -85,7 +85,7 @@ namespace HDA.Core.Controllers
                             && h.Month <= toDate.Month
                             && h.Year >= fromDate.Year
                             && h.Year <= toDate.Year
-                            && ((payload.ProviderID > 0) ? h.ProviderID == payload.ProviderID : true))
+                            && ((payload.ProviderID.Length > 0) ? h.ProviderID == payload.ProviderID : true))
                         group t by new { t.Year, t.Month } into x
                         select new
                         {

@@ -12,7 +12,12 @@ namespace HDA.Core.Models.HDAReports
     {
         public HDAReportsContext() : base("hdareports") { }
 
-        
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer<HDAReportsContext>(null);
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Country> Countries { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Governorate> Governorates { get; set; }

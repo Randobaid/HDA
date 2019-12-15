@@ -14,7 +14,7 @@ namespace HDA.Core.Models.HDAReports
         public virtual Directorate Directorate { get; set; }
         public int HealthFacilityTypeID { get; set; }
         public virtual HealthFacilityType HealthFacilityType { get; set; }
-        public int HealthFacilityID { get; set; }
+        public string HealthFacilityID { get; set; }
         public virtual HealthFacility HealthFacility { get; set; }
         public int DiagnosisCodeID { get; set; }
         public virtual DiagnosisCode DiagnosisCode { get; set; }

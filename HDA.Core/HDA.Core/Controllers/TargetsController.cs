@@ -63,8 +63,8 @@ namespace HDA.Core.Controllers
                 };
                 if (!(query is null) && query.TargetID > 0 && t.TargetID != query.TargetID) { continue; }
                 if (!(query is null) && query.IndicatorID > 0 && t.IndicatorID != query.IndicatorID) { continue; }
-                if (!(query is null) && query.HealthFacilityID > 0 && t.HealthFacilityID != query.HealthFacilityID) { continue; }
-                if (!(query is null) && query.ProviderID > 0 && t.ProviderID != query.ProviderID) { continue; }
+                if (!(query is null) && query.HealthFacilityID.Length > 0 && t.HealthFacilityID != query.HealthFacilityID) { continue; }
+                if (!(query is null) && query.ProviderID.Length > 0 && t.ProviderID != query.ProviderID) { continue; }
                 if (!(query is null) && query.DomainID > 0 && t.DomainID != query.DomainID) { continue; }
                 if (!(query is null) && query.DirectorateID > 0 && t.DirectorateID != query.DirectorateID) { continue; }
                 targets.Add(t);

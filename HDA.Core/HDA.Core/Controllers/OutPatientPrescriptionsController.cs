@@ -22,7 +22,7 @@ namespace HDA.Core.Controllers
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<PrescriptionTotal>();
-                foreach(int healthFacilityId in allowedHealthFacilityIDs)
+                foreach(string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -44,7 +44,7 @@ namespace HDA.Core.Controllers
                 
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                     }
@@ -64,9 +64,9 @@ namespace HDA.Core.Controllers
                                 && h.Month <= toDate.Month
                                 && h.Year >= fromDate.Year
                                 && h.Year <= toDate.Year
-                                && ((payload.PharmacyID > 0) ? h.PharmacyID == payload.PharmacyID : true)
+                                && ((payload.PharmacyID.Length > 0) ? h.PharmacyID == payload.PharmacyID : true)
                                 && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
-                                && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)
+                                && ((payload.DrugId.Length > 0) ? h.DrugId == payload.DrugId : true)
                             )
                             group t by new { t.Year, t.Month } into x
                             select new
@@ -97,9 +97,9 @@ namespace HDA.Core.Controllers
                                 && h.Month <= toDate.Month
                                 && h.Year >= fromDate.Year
                                 && h.Year <= toDate.Year
-                                && ((payload.PharmacyID > 0) ? h.PharmacyID == payload.PharmacyID : true)
+                                && ((payload.PharmacyID.Length > 0) ? h.PharmacyID == payload.PharmacyID : true)
                                 && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
-                                && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)
+                                && ((payload.DrugId.Length > 0) ? h.DrugId == payload.DrugId : true)
                             )
                             group t by new {t.HealthFacilityID, t.Year, t.Month } into x
                             select new
@@ -138,7 +138,7 @@ namespace HDA.Core.Controllers
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<PrescriptionTotal>();
-                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                foreach (string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -157,7 +157,7 @@ namespace HDA.Core.Controllers
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<PrescriptionTotal>();
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                     }
@@ -176,9 +176,9 @@ namespace HDA.Core.Controllers
                             && h.Month <= toDate.Month
                             && h.Year >= fromDate.Year
                             && h.Year <= toDate.Year
-                            && ((payload.PharmacyID > 0) ? h.PharmacyID == payload.PharmacyID : true)
+                            && ((payload.PharmacyID.Length > 0) ? h.PharmacyID == payload.PharmacyID : true)
                             && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
-                            && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)
+                            && ((payload.DrugId.Length > 0) ? h.DrugId == payload.DrugId : true)
                         )
                         group t by new { t.PharmacyID } into x
                         select new
@@ -215,7 +215,7 @@ namespace HDA.Core.Controllers
             {
                 var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                 var allowedHealthFacilityIDsSP = PredicateBuilder.New<PrescriptionTotal>();
-                foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                foreach (string healthFacilityId in allowedHealthFacilityIDs)
                 {
                     allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                 }
@@ -234,7 +234,7 @@ namespace HDA.Core.Controllers
                 var selectedHealthFacilitiesSP = PredicateBuilder.New<PrescriptionTotal>();
                 if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                 {
-                    foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                    foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                     {
                         selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                     }
@@ -252,9 +252,9 @@ namespace HDA.Core.Controllers
                             && h.Month <= toDate.Month
                             && h.Year >= fromDate.Year
                             && h.Year <= toDate.Year
-                            && ((payload.PharmacyID > 0) ? h.PharmacyID == payload.PharmacyID : true)
+                            && ((payload.PharmacyID.Length > 0) ? h.PharmacyID == payload.PharmacyID : true)
                             && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
-                            && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)
+                            && ((payload.DrugId.Length > 0) ? h.DrugId == payload.DrugId : true)
                         )
                         group t by new {t.HealthFacilityID } into x
                         select new
@@ -291,7 +291,7 @@ namespace HDA.Core.Controllers
                 try
                 {
                     var allowedHealthFacilityIDsSP = PredicateBuilder.New<PrescriptionTotal>();
-                    foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                    foreach (string healthFacilityId in allowedHealthFacilityIDs)
                     {
                         allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                     }
@@ -313,7 +313,7 @@ namespace HDA.Core.Controllers
                     var selectedHealthFacilitiesSP = PredicateBuilder.New<PrescriptionTotal>();
                     if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                     {
-                        foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                        foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                         {
                             selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                         }
@@ -335,12 +335,12 @@ namespace HDA.Core.Controllers
                             && h.Year >= fromDate.Year
                             && h.Year <= toDate.Year
                             && h.TotalQuantity > 0
-                            && ((payload.PharmacyID > 0) ? h.PharmacyID == payload.PharmacyID : true)
+                            && ((payload.PharmacyID.Length > 0) ? h.PharmacyID == payload.PharmacyID : true)
                             && ((payload.DrugClassId > 0) ? h.DrugClassID == payload.DrugClassId : true)
-                            && ((payload.DrugId > 0) ? h.DrugId == payload.DrugId : true)
+                            && ((payload.DrugId.Length > 0) ? h.DrugId == payload.DrugId : true)
                         ).ToList();
 
-                    if (payload.DrugId > 0)
+                    if (payload.DrugId.Length > 0)
                     {
                         NormalAmountToOrder = db.Drugs.Where(d => d.DrugID == payload.DrugId).First().NormalAmountToOrder;
                         TotalQuantityPerDrug = totals.Select(v => v.TotalQuantity).Sum() + totals.Select(v => v.TotalRefillQuantity).Sum();
@@ -385,7 +385,7 @@ namespace HDA.Core.Controllers
 
             var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
             var allowedHealthFacilityIDsSP = PredicateBuilder.New<HealthFacility>();
-            foreach (int healthFacilityId in allowedHealthFacilityIDs)
+            foreach (string healthFacilityId in allowedHealthFacilityIDs)
             {
                 allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
             }
