@@ -167,7 +167,7 @@
                     <div class="card border border-primary bg-light inpatient-transfers-card" id="inPatientDiv">
                         <div class="card-header bg-primary text-white">Inpatient</div>
                         <div class="card-body">
-                            <div class="prompt" id="hospitalPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select Hospital to View this Chart</i></div>
+                            <div class="prompt" id="inpatientPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select Hospital to View this Chart</i></div>
                             <div class="col-md-12">
                                 <div class="chart" id="inPatientChart" hidden></div>
                             </div>
@@ -181,7 +181,7 @@
                     <div class="card border border-primary bg-light" id="surgeriesDiv">
                         <div class="card-header bg-primary text-white">Surgeries</div>
                         <div class="card-body ">
-                            <div class="prompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select a Facility to View this Chart</i></div>
+                            <div class="prompt" id="surgeryPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select Hospital to View this Chart</i></div>
                             <div class="col-md-12 ">
                                 <div class="chart" id="surgeriesChart" style="height:300px;" hidden></div>
                             </div>
@@ -236,6 +236,13 @@
             selectedHospitals.push(healthFacilityId);
             this.value = "";
             facilityId = healthFacilityId;
+
+            //console.log(selectedHospitalsIds);
+
+            //Fill selectedHospitalsIds 
+            selectedHospitalTypes.forEach(function (e) {
+                selectedHospitalsIds.push(e.HealthFacilityTypeId);
+            });
 
 
             $('#selectedFacilitiesTable > tbody:last-child').append
@@ -423,17 +430,12 @@
                     }
                 }
 
-                //console.log(selectedHospitalsIds);
 
-                //Fill selectedHospitalsIds 
-                selectedHospitalTypes.forEach(function (e) {
-                    selectedHospitalsIds.push(e.HealthFacilityTypeId);
-                });
 
                 //check if selectedHospitalsIds contains id 1 (hospital)
                 if (jQuery.inArray("1", selectedHospitalsIds) !== -1) {
                     //remove hint please select hospital 
-                    $('#hospitalPrompt').attr('hidden', true);
+                    $('#inpatientPrompt').attr('hidden', true);
                     $('.inpatient-transfers-card').css('height', '100%');
                     inPatientChart = new Highcharts.chart('inPatientChart', {
                         chart: { type: 'column' },
@@ -460,7 +462,7 @@
                     if (inPatientChart != undefined) {
                         inPatientChart.destroy();
                     }
-                    $('#hospitalPrompt').attr('hidden', false);
+                    $('#inpatientPrompt').attr('hidden', false);
                     $('.inpatient-transfers-card').css('height','unset');
                 }
             });
@@ -494,23 +496,37 @@
                     seriesMajor.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['MajorSeverityTotal']]);
                     targets.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['Target']]);
                 }
-                new Highcharts.chart('surgeriesChart', {
-                    chart: { type: 'column' },
-                    title: { text: '' },
-                    subtitle: { text: '' },
-                    xAxis: {
-                        type: 'datetime',
-                        title: { text: '' }
-                    },
-                    yAxis: { title: { text: 'Number of Surgeries' } },
-                    series: [
-                        { name: 'Minor', data: seriesMinor },
-                        { name: 'Major', data: seriesMajor },
-                        //{ name: 'Target', data: targets, type: 'line' }
-                    ],
-                    plotOptions: { series: { stacking: 'normal' } },
-                    credits: false
-                });
+
+                //check if selectedHospitalsIds contains id 1 (hospital)
+                if (jQuery.inArray("1", selectedHospitalsIds) !== -1) {
+                    //remove hint please select hospital 
+                    $('#surgeryPrompt').attr('hidden', true);
+
+                    surgeriesChart = new Highcharts.chart('surgeriesChart', {
+                        chart: { type: 'column' },
+                        title: { text: '' },
+                        subtitle: { text: '' },
+                        xAxis: {
+                            type: 'datetime',
+                            title: { text: '' }
+                        },
+                        yAxis: { title: { text: 'Number of Surgeries' } },
+                        series: [
+                            { name: 'Minor', data: seriesMinor },
+                            { name: 'Major', data: seriesMajor },
+                            //{ name: 'Target', data: targets, type: 'line' }
+                        ],
+                        plotOptions: { series: { stacking: 'normal' } },
+                        credits: false
+                    });
+                }
+                else {
+                    // display hint please select hospital
+                    if (surgeriesChart != undefined) {
+                        surgeriesChart.destroy();
+                    }
+                    $('#surgeryPrompt').attr('hidden', false);
+                }
             });
 
         }
