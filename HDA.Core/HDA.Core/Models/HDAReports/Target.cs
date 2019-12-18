@@ -10,9 +10,9 @@ namespace HDA.Core.Models.HDAReports
         public int TargetID { get; set; }
         public int IndicatorID { get; set; }
         public virtual Indicator Indicator { get; set; }
-        public int? HealthFacilityID { get; set; }
+        public string HealthFacilityID { get; set; }
         public virtual HealthFacility HealthFacility { get; set; }
-        public int? ProviderID { get; set; }
+        public string ProviderID { get; set; }
         public virtual Provider Provider { get; set; }
         public int? DomainID { get; set; }
         public virtual Domain Domain { get; set; }

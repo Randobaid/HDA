@@ -34,7 +34,7 @@ namespace HDA.Core.Controllers
             return Ok(healthFacilities);
         }
         
-        public IHttpActionResult GetHealthFacilities(int id)
+        public IHttpActionResult GetHealthFacilities(string id)
         {
             List<HealthFacilityVM> healthFacilities = new List<HealthFacilityVM>();
             //var hfs = db.HealthFacilities.Where(i => i.HealthFacilityTypeID == id);
@@ -62,7 +62,7 @@ namespace HDA.Core.Controllers
 
             var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
             var allowedHealthFacilityIDsSP = PredicateBuilder.New<HealthFacility>();
-            foreach (int healthFacilityId in allowedHealthFacilityIDs)
+            foreach (string healthFacilityId in allowedHealthFacilityIDs)
             {
                 allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
             }

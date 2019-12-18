@@ -7,7 +7,7 @@ namespace HDA.Core.Models.HDAReports
 {
     public class Drug
     {
-        public int DrugID { get; set; }
+        public string DrugID { get; set; }
         public int SourceID { get; set; }
         public string DrugNameEn { get; set; }
         public string DrugNameAr { get; set; }

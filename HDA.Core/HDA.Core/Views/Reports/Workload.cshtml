@@ -197,8 +197,8 @@
 @section Scripts {
     <script type="text/javascript">
         var facilityTypeId = 0;
-        var facilityId = 0;
-        var providerId = 0;
+        var facilityId = "";
+        var providerId = "";
 
         var showPreviousYear = 0;
         var pInput = document.getElementById("TextProvider");
@@ -248,7 +248,7 @@
             $('#selectedFacilitiesTable > tbody:last-child').append
                 ('<tr><td class="font-weight-bold">' + healthFacilityName + '</td><td><a href="#" onclick="updateTable(this,' + healthFacilityId + ');"><i class="fa fa-trash" ></i></a></td></tr>');
             $('#TextProvider').val('');
-            providerId = 0;
+            providerId = "";
             $("#allProviders").prop('checked', true);
             $('#TextProvider').attr('disabled', true);
 
@@ -297,7 +297,7 @@
             if (this.checked) {
                 $('#TextProvider').attr('disabled', true);
                 $('#TextProvider').val('');
-                providerId = 0;
+                providerId = "";
 
             }
             else {
@@ -310,7 +310,7 @@
             if (this.checked) {
                 $('#TextHospital').attr('disabled', true);
                 $('#TextHospital').val('');
-                facilityId = 0;
+                facilityId = "";
                 selectedHospitals = [];
                 $('#selectedFacilitiesTable').empty();
                 $('#selectedFacilitiesTable').append('<tbody></tbody>');
@@ -425,7 +425,7 @@
                     series47.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['LOS47Total']]);
                     series8Plus.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['LOS8Total']]);
                     seriesNotDischarged.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['LOSNDTotal']]);
-                    if (providerId == 0) {
+                    if (providerId == "") {
                         targets.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['Target']]);
                     }
                 }

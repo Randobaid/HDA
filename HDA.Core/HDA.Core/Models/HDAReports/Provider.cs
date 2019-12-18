@@ -8,15 +8,16 @@ namespace HDA.Core.Models.HDAReports
 {
     public class Provider
     {
-        public int ProviderID { get; set; }
+        public string ProviderID { get; set; }
         [Index]
-        public int SourceID { get; set; }
+        public int ProviderSourceID { get; set; }
         public int? MasterProviderIndex { get; set; }
         public string JobID { get; set; }
         public string ProviderType { get; set; }
         public int? NationalID { get; set; }
         public string ProviderNameEn { get; set; }
         public string ProviderNameAr { get; set; }
+        public int SpecialtyID { get; set; }
         //public int SpecialityLookupID { get; set; }
         //public virtual SpecialityLookup SpecialityLookup { get; set; }
         public int DomainID { get; set; }

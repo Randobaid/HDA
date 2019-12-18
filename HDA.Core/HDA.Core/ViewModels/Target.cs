@@ -11,9 +11,9 @@ namespace HDA.Core.ViewModels
         public int TargetID { get; set; }
         public int IndicatorID { get; set; }
         public IndicatorViewModel Indicator { get; set; }
-        public int? HealthFacilityID { get; set; }
+        public string HealthFacilityID { get; set; }
         public HealthFacilityVM HealthFacility { get; set; }
-        public int? ProviderID { get; set; }
+        public string ProviderID { get; set; }
         public ProviderVM Provider { get; set; }
         public int? DomainID { get; set; }
         public DomainViewModel Domain { get; set;}

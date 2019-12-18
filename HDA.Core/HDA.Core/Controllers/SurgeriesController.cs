@@ -26,7 +26,7 @@ namespace HDA.Core.Controllers
                 {
                     var allowedHealthFacilityIDs = new PermissionCheck().GetAllowedFacilityIds(User.Identity.GetUserId());
                     var allowedHealthFacilityIDsSP = PredicateBuilder.New<SurgeryTotal>();
-                    foreach (int healthFacilityId in allowedHealthFacilityIDs)
+                    foreach (string healthFacilityId in allowedHealthFacilityIDs)
                     {
                         allowedHealthFacilityIDsSP = allowedHealthFacilityIDsSP.Or(a => a.HealthFacilityID == healthFacilityId);
                     }
@@ -61,7 +61,7 @@ namespace HDA.Core.Controllers
                     var selectedHealthFacilitiesSP = PredicateBuilder.New<SurgeryTotal>();
                     if (selectedFacilitiesPayload.HealthFacilities.Count > 0)
                     {
-                        foreach (int id in selectedFacilitiesPayload.HealthFacilities)
+                        foreach (string id in selectedFacilitiesPayload.HealthFacilities)
                         {
                             selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
                             healthFacilitySP_healthFacility = healthFacilitySP_healthFacility.Or(a => a.HealthFacilityID == id);
@@ -81,7 +81,7 @@ namespace HDA.Core.Controllers
                             && h.Month <= toDate.Month
                             && h.Year >= fromDate.Year
                             && h.Year <= toDate.Year
-                            && ((payload.ProviderID > 0) ? h.ProviderID == payload.ProviderID : true))
+                            && ((payload.ProviderID.Length > 0) ? h.ProviderID == payload.ProviderID : true))
                             group b by new { b.Year, b.Month } into c
                             select new
                             {

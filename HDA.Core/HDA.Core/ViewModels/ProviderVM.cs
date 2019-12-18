@@ -7,7 +7,7 @@ namespace HDA.Core.ViewModels
 {
     public class ProviderVM
     {
-        public int ProviderID { get; set; }
+        public string ProviderID { get; set; }
         public string ProviderName { get; set; }
     }
 }

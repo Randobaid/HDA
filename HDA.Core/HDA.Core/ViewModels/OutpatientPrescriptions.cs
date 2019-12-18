@@ -7,7 +7,7 @@ namespace HDA.Core.ViewModels
 {
     public class DrugVM
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string DrugName { get; set; }
     }
 
@@ -20,19 +20,19 @@ namespace HDA.Core.ViewModels
     public class OPRequest
     {
         public int HealthFacilityID { get; set; }
-        public int PharmacyID { get; set; }
+        public string PharmacyID { get; set; }
         public int ProviderID { get; set; }
         public string FromDate { get; set; }
         public string ToDate { get; set; }
         public int DrugClassId { get; set; }
-        public int DrugId { get; set; }
+        public string DrugId { get; set; }
 
     }
 
     public class PrescriptionsPerInstitutionTotal
     {
         public string HealthFacilityName { get; set; }
-        public int HealthFacilityID { get; set; }
+        public string HealthFacilityID { get; set; }
         public int Year { get; set; }
         public int MonthId { get; set; }
         public int DrugClass { get; set; }
