@@ -46,14 +46,14 @@ namespace HDA.Core.Controllers
                         ProviderName = provider.ProviderNameEn,
                     } : new ProviderVM {},
                     DomainID = target.DomainID,
-                    Domain = target.DomainID != null ? new DomainViewModel {
+                    Domain = target.DomainID > 0 ? new DomainViewModel {
                         DomainID = domain.DomainID,
                         DomainCode = domain.DomainCode,
                         DomainNameEn = domain.DomainNameEn,
                         DomainNameAr = domain.DomainNameAr,
                     } : new DomainViewModel {},
                     DirectorateID = target.DirectorateID,
-                    Directorate = target.DirectorateID != null ? new DirectorateViewModel {
+                    Directorate = target.DirectorateID > 0 ? new DirectorateViewModel {
                         DirectorateID = directorate.DirectorateID,
                         DirectorateNameEn = directorate.DirectorateNameEn,
                         DirectorateNameAr = directorate.DirectorateNameAr,
@@ -106,14 +106,14 @@ namespace HDA.Core.Controllers
                     ProviderName = provider.ProviderNameEn,
                 } : new ProviderVM {},
                 DomainID = target.DomainID,
-                Domain = target.DomainID != null ? new DomainViewModel {
+                Domain = target.DomainID > 0 ? new DomainViewModel {
                     DomainID = domain.DomainID,
                     DomainCode = domain.DomainCode,
                     DomainNameEn = domain.DomainNameEn,
                     DomainNameAr = domain.DomainNameAr,
                 } : new DomainViewModel {},
                 DirectorateID = target.DirectorateID,
-                Directorate = target.DirectorateID != null ? new DirectorateViewModel {
+                Directorate = target.DirectorateID > 0 ? new DirectorateViewModel {
                     DirectorateID = directorate.DirectorateID,
                     DirectorateNameEn = directorate.DirectorateNameEn,
                     DirectorateNameAr = directorate.DirectorateNameAr,

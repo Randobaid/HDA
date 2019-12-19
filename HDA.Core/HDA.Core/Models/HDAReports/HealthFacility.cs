@@ -10,7 +10,6 @@ namespace HDA.Core.Models.HDAReports
     {
         public string HealthFacilityID { get; set; }
         [Index]
-        public int SourceID { get; set; }
         public string FacilityShortName { get; set; }
         public string HealthFacilityNameEn { get; set; }
         public string HealthFacilityNameAr { get; set; }

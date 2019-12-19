@@ -14,9 +14,9 @@ namespace HDA.Core.Models.HDAReports
         public virtual HealthFacility HealthFacility { get; set; }
         public string ProviderID { get; set; }
         public virtual Provider Provider { get; set; }
-        public int? DomainID { get; set; }
+        public int DomainID { get; set; }
         public virtual Domain Domain { get; set; }
-        public int? DirectorateID { get; set; }
+        public int DirectorateID { get; set; }
         public virtual Directorate Directorate { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string Value { get; set; }

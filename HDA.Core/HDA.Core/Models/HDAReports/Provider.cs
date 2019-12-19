@@ -10,11 +10,10 @@ namespace HDA.Core.Models.HDAReports
     {
         public string ProviderID { get; set; }
         [Index]
-        public int ProviderSourceID { get; set; }
         public int? MasterProviderIndex { get; set; }
         public string JobID { get; set; }
         public string ProviderType { get; set; }
-        public int? NationalID { get; set; }
+        public string NationalID { get; set; }
         public string ProviderNameEn { get; set; }
         public string ProviderNameAr { get; set; }
         public int SpecialtyID { get; set; }
