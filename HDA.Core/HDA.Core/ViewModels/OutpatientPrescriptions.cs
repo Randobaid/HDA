@@ -19,9 +19,9 @@ namespace HDA.Core.ViewModels
 
     public class OPRequest
     {
-        public int HealthFacilityID { get; set; }
+        public string HealthFacilityID { get; set; }
         public string PharmacyID { get; set; }
-        public int ProviderID { get; set; }
+        public string ProviderID { get; set; }
         public string FromDate { get; set; }
         public string ToDate { get; set; }
         public int DrugClassId { get; set; }

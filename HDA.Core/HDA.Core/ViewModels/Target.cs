@@ -15,9 +15,9 @@ namespace HDA.Core.ViewModels
         public HealthFacilityVM HealthFacility { get; set; }
         public string ProviderID { get; set; }
         public ProviderVM Provider { get; set; }
-        public int? DomainID { get; set; }
+        public int DomainID { get; set; }
         public DomainViewModel Domain { get; set;}
-        public int? DirectorateID { get; set; }
+        public int DirectorateID { get; set; }
         public DirectorateViewModel Directorate { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string Value { get; set; }

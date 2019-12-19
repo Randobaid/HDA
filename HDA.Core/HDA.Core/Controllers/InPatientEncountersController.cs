@@ -39,21 +39,21 @@ namespace HDA.Core.Controllers
 
 
                 /* Search Predicates */
-                var baseOutPatientEncounterTotalSP = PredicateBuilder.New<InPatientEncounterTotal>();
-                baseOutPatientEncounterTotalSP = baseOutPatientEncounterTotalSP.And(a => a.Total > 0);
+                var baseInPatientEncounterTotalSP = PredicateBuilder.New<InPatientEncounterTotal>();
+                baseInPatientEncounterTotalSP = baseInPatientEncounterTotalSP.And(a => a.Total > 0);
 
                 var baseHealthFacilitySP = PredicateBuilder.New<HealthFacility>();
-                baseHealthFacilitySP = baseHealthFacilitySP.And(a => a.HealthFacilityID.Length > 0); //was > 0
+                baseHealthFacilitySP = baseHealthFacilitySP.And(a => a.HealthFacilityID.Length > 0);
 
                 var healthFacilitySP_healthFacilityType = PredicateBuilder.New<HealthFacility>();
                 var healthFacilitySP_healthFacility = PredicateBuilder.New<HealthFacility>();
 
 
-                var outpatientEncounterTotalSP = PredicateBuilder.New<InPatientEncounterTotal>();
+                var inpatientEncounterTotalSP = PredicateBuilder.New<InPatientEncounterTotal>();
 
                 foreach (SelectedFacilityType s in selectedFacilitiesPayload.HealthFacilityTypes)
                 {
-                    outpatientEncounterTotalSP = outpatientEncounterTotalSP.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
+                    inpatientEncounterTotalSP = inpatientEncounterTotalSP.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                     healthFacilitySP_healthFacilityType = healthFacilitySP_healthFacilityType.Or(a => a.HealthFacilityTypeID == s.HealthFacilityTypeId);
                 }
 
@@ -76,15 +76,19 @@ namespace HDA.Core.Controllers
 
                 int NumberOfBeds = healthFacilities.Select(t => t.EstimatedBeds).Sum();
 
+                //var NewFromDate = new DateTime(fromDate.Year, fromDate.Month, 1);
+                //var NewToDate = new DateTime(toDate.Year, toDate.Month, 1);
                 var g = from t in db.InPatientEncounterTotals.
-                        Where(outpatientEncounterTotalSP).
-                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseOutPatientEncounterTotalSP).
+                        Where(inpatientEncounterTotalSP).
+                        Where((selectedHealthFacilitiesSP.IsStarted) ? selectedHealthFacilitiesSP : baseInPatientEncounterTotalSP).
                         Where(allowedHealthFacilityIDsSP).
                         Where(h =>
                             h.Month >= fromDate.Month
                             && h.Month <= toDate.Month
                             && h.Year >= fromDate.Year
                             && h.Year <= toDate.Year
+                            //h.FirstMonthDate >= NewFromDate
+                            //&& h.FirstMonthDate <= NewToDate
                             && ((payload.ProviderID.Length > 0) ? h.ProviderID == payload.ProviderID : true))
                         group t by new { t.Year, t.Month } into x
                         select new
@@ -95,13 +99,15 @@ namespace HDA.Core.Controllers
                             Total47 = x.Where(w => w.LOSGroup == "4-7").Sum(t => (int?)t.Total) ?? 0,
                             Total8Plus = x.Where(w => w.LOSGroup == "8+").Sum(t => (int?)t.Total) ?? 0,
                             TotalNotDischarged = x.Where(w => w.LOSGroup == "ND").Sum(t => (int?)t.Total) ?? 0
+
                         };
                 foreach (var total in g.OrderBy(d => new { d.Year, d.MonthId }))
                 {
                     Target target = new Target();
+                    //to be filled only once not inside the data set
                     foreach (var tgt in targets)
                     {
-                        if (tgt.EffectiveDate <= new DateTime(fromDate.Year, total.MonthId, 1))
+                        if (tgt.EffectiveDate <= new DateTime(fromDate.Year, fromDate.Month, 1))
                         {
                             target = tgt;
                             break;
