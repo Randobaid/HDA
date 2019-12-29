@@ -322,7 +322,7 @@ namespace HDA.Core.Controllers
                     List<SummaryCounts> summary = new List<SummaryCounts>();
                     double AverageQuantityPerPrescription = 0;
                     int TotalQuantityPerDrug = 0;
-                    int? NormalAmountToOrder = 0;
+                    int NormalAmountToOrder = 0;
                     
 
                     List<PrescriptionTotal> totals = db.PrescriptionTotals.
@@ -361,7 +361,7 @@ namespace HDA.Core.Controllers
                         TotalDrugs = totals.Select(v => v.DrugId).Distinct().Count(),
                         TotalQuantityPerDrug = TotalQuantityPerDrug,
                         AverageQuantityPerPrescription = (int)Math.Ceiling(AverageQuantityPerPrescription),
-                        NormalAmountToOrder = NormalAmountToOrder == null ? 0 : NormalAmountToOrder,
+                        NormalAmountToOrder =  NormalAmountToOrder,
                     };
                     summary.Add(p);
                     return Ok(summary);
@@ -412,12 +412,12 @@ namespace HDA.Core.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetPharmacies([FromBody] List<int> payload)
+        public IHttpActionResult GetPharmacies([FromBody] List<string> payload)
         {
             List<PharmacyVM> pharmacies = new List<PharmacyVM>();
 
             var selectedHealthFacilitiesSP = PredicateBuilder.New<Pharmacy>();
-            foreach (int id in payload)
+            foreach (string id in payload)
             {
                 selectedHealthFacilitiesSP = selectedHealthFacilitiesSP.Or(a => a.HealthFacilityID == id);
             }

@@ -17,7 +17,7 @@ namespace HDA.Core.ViewModels
     public class PharmacyVM
     {
         public string ID { get; set; }
-        public int HealthFacilityID { get; set; }
+        public string HealthFacilityID { get; set; }
         public string PharmacyName { get; set; }
     }
 
