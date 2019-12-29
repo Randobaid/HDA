@@ -263,15 +263,15 @@
         var pharmacyAws;
 
         var facilityId = 0;
-        var providerId = 0;
-        var pharmacyId = 0;
+        var providerId = "";
+        var pharmacyId = "";
         var drugClassTextBox;
         var drugClassAws;
         var drugClassId = 0;
 
         var drugTextBox;
         var drugAws;
-        var drugId = 0;
+        var drugId = "";
         var pharmacyNames = [];
         var numberOfPharmacies = 0;
 
@@ -340,7 +340,7 @@
                 $('#TextDrugClass').attr('disabled', true);
                 $('#TextDrugClass').val('');
                 drugClassId = 0;
-                drugId = 0;
+                drugId = "";
                 $('#TextDrug').val('');
                 $('#TextDrug').attr('disabled', true);
                 $('#allDrugs').prop('checked', true);
@@ -358,7 +358,7 @@
             if (this.checked) {
                 $('#TextDrug').attr('disabled', true);
                 $('#TextDrug').val('');
-                drugId = 0;
+                drugId = "";
             }
             else {
                 $('#TextDrug').removeAttr('disabled');
@@ -395,7 +395,8 @@
             var healthFacilityName = result[1];
             var healthFacilityId = result[0];
             selectedHospitals.push(healthFacilityId);
-            this.value = "";
+        this.value = "";
+        console.log("selected facilities are" + selectedHospitals);
 
             $('#selectedFacilitiesTable > tbody:last-child').append
                 ('<tr><td class="font-weight-bold">' + healthFacilityName + '</td><td><a href="#" onclick="updateTable(this,' + healthFacilityId + ');"><i class="fa fa-trash" ></i></a></td></tr>');
@@ -604,7 +605,14 @@
                     pharmacyPrescriptions.push(json[i]['TotalPrescriptions']);
                     pharmacyQuantities.push(json[i]['TotalQuantity']);
                     pharmacyRefills.push(json[i]['TotalRefillQuantity']);
+
+                    console.log("pharmacies are " + pharmacyNames);
+                    console.log("Prescriptions are " + pharmacyPrescriptions);
+                    console.log("Quantities are " + pharmacyPrescriptions);
+                    console.log("Refills are " + pharmacyPrescriptions);
+
                 }
+
                 var xAxisMax = pharmacyNames.length - 1;
                 if (pharmacyNames.length > 10) {
                     xAxisMax = 10;
@@ -648,7 +656,7 @@
                     }],
                     credits: false
                 });
-                if (drugId > 0) {
+                if (drugId.length > 0) {
                     $('#drugPrompt').attr('hidden', true);
                     quantitiesPerPharmacyChart = new Highcharts.chart('quantitiesPerPharmacyChart', {
                         chart: { type: 'column' },
