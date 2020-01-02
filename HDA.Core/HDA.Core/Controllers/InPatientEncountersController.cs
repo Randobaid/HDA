@@ -101,30 +101,38 @@ namespace HDA.Core.Controllers
                             TotalNotDischarged = x.Where(w => w.LOSGroup == "ND").Sum(t => (int?)t.Total) ?? 0
 
                         };
-                foreach (var total in g.OrderBy(d => new { d.Year, d.MonthId }))
+                try
                 {
-                    Target target = new Target();
-                    //to be filled only once not inside the data set
-                    foreach (var tgt in targets)
+                    foreach (var total in g.OrderBy(d => new { d.Year, d.MonthId }))
                     {
-                        if (tgt.EffectiveDate <= new DateTime(fromDate.Year, fromDate.Month, 1))
+                        Target target = new Target();
+                        //to be filled only once not inside the data set
+                        foreach (var tgt in targets)
                         {
-                            target = tgt;
-                            break;
+                            if (tgt.EffectiveDate <= new DateTime(fromDate.Year, fromDate.Month, 1))
+                            {
+                                target = tgt;
+                                break;
+                            }
                         }
+                        InPatientLOSTotal m = new InPatientLOSTotal
+                        {
+                            Year = total.Year,
+                            MonthId = total.MonthId,
+                            LOS13Total = total.Total13,
+                            LOS47Total = total.Total47,
+                            LOS8Total = total.Total8Plus,
+                            LOSNDTotal = total.TotalNotDischarged,
+                            Target = Math.Ceiling(Convert.ToDouble(target.Value) * NumberOfBeds)
+                        };
+                        monthlyTotals.Add(m);
                     }
-                    InPatientLOSTotal m = new InPatientLOSTotal
-                    {
-                        Year = total.Year,
-                        MonthId = total.MonthId,
-                        LOS13Total = total.Total13,
-                        LOS47Total = total.Total47,
-                        LOS8Total = total.Total8Plus,
-                        LOSNDTotal = total.TotalNotDischarged,
-                        Target = Math.Ceiling(Convert.ToDouble(target.Value) * NumberOfBeds)
-                    };
-                    monthlyTotals.Add(m);
                 }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Operation cancelled");
+                }
+
                 return Ok(monthlyTotals);
             }
             return BadRequest(ModelState);
