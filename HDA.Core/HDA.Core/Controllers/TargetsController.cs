@@ -22,7 +22,7 @@ namespace HDA.Core.Controllers
             foreach (var target in db.Targets)
             {
                 Indicator indicator = new HDAReportsContext().Indicators.Where(i => i.IndicatorID == target.IndicatorID).FirstOrDefault();
-                HealthFacility healthFacility = new HDAReportsContext().HealthFacilities.Where(predicate: h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
+                HealthFacility healthFacility = new HDAReportsContext().HealthFacilities.Where(h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
                 Provider provider = new HDAReportsContext().Providers.Where(i => i.ProviderID == target.ProviderID).FirstOrDefault();
                 Domain domain = new HDAReportsContext().Domains.Where(i => i.DomainID == target.DomainID).FirstOrDefault();
                 Directorate directorate = new HDAReportsContext().Directorates.Where(i => i.DirectorateID == target.DirectorateID).FirstOrDefault();
