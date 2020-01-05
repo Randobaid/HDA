@@ -76,9 +76,9 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="IndicatorID" class="col-form-label">Indicator:</label>
+                            <label for="IndicatorID" class="col-form-label"><span class="required">*</span> Indicator:</label>
                             <select class="form-control" name="IndicatorID" required>
-                                <option value=""></option>
+                                <option value=""> - </option>
                             </select>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                             <input type="text" class="form-control" name="EffectiveDate" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="Value" class="col-form-label">Value:</label>
+                            <label for="Value" class="col-form-label"><span class="required">*</span> Value:</label>
                             <input type="text" class="form-control" name="Value" required>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="IndicatorID" class="col-form-label">Indicator:</label>
+                            <label for="IndicatorID" class="col-form-label"><span class="required">*</span> Indicator:</label>
                             <select class="form-control" name="IndicatorID" required>
                                 <option value=""></option>
                             </select>
@@ -185,7 +185,7 @@
                             <input type="text" class="form-control" name="EffectiveDate" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="Value" class="col-form-label">Value:</label>
+                            <label for="Value" class="col-form-label"><span class="required">*</span> Value:</label>
                             <input type="text" class="form-control" name="Value" required>
                         </div>
                     </div>
@@ -238,7 +238,8 @@
                     getAllTargets();
                     Swal.fire('Success', 'Target added successfully' , 'success');
                 }).fail( function(xhr, textStatus, errorThrown) {
-                    Swal.fire('Error', xhr.responseJSON.Message , 'error');
+                    Swal.fire('Error', xhr.responseJSON.Message, 'error');
+                    console.log("xxxxxxxx");
                 });
                 return false;
             });
@@ -403,7 +404,7 @@
             $('select[name="IndicatorID"]').each(function(){
                 var element = $(this);
                 element.empty();
-                element.append($("<option> -- </option>"));
+                element.append($("<option value=''> -- </option>"));
                 indicators.forEach(function (indicator) {
                     element.append($("<option></option>")
                         .attr("value", indicator.IndicatorID)
@@ -416,7 +417,7 @@
             $('select[name="HealthFacilityID"]').each(function(){
                 var element = $(this);
                 element.empty();
-                element.append($("<option> -- </option>"));
+                element.append($("<option value=''> -- </option>"));
                 healthFacilities.forEach(function (healthFacility) {
                     element.append($("<option></option>")
                         .attr("value", healthFacility.ID)
@@ -429,7 +430,7 @@
             $('select[name="ProviderID"]').each(function(){
                 var element = $(this);
                 element.empty();
-                element.append($("<option> -- </option>"));
+                element.append($("<option value=''> -- </option>"));
                 providers.forEach(function (provider) {
                     element.append($("<option></option>")
                         .attr("value", provider.ProviderID)
@@ -442,7 +443,7 @@
             $('select[name="DomainID"]').each(function(){
                 var element = $(this);
                 element.empty();
-                element.append($("<option> -- </option>"));
+                element.append($("<option value=''> -- </option>"));
                 domains.forEach(function (domain) {
                     element.append($("<option></option>")
                         .attr("value", domain.DomainID)
@@ -455,7 +456,7 @@
             $('select[name="DirectorateID"]').each(function(){
                 var element = $(this);
                 element.empty();
-                element.append($("<option> -- </option>"));
+                element.append($("<option value=''> -- </option>"));
                 directorates.forEach(function (directorate) {
                     element.append($("<option></option>")
                         .attr("value", directorate.DirectorateID)

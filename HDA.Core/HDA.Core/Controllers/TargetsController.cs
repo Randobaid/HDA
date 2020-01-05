@@ -22,7 +22,7 @@ namespace HDA.Core.Controllers
             foreach (var target in db.Targets)
             {
                 Indicator indicator = new HDAReportsContext().Indicators.Where(i => i.IndicatorID == target.IndicatorID).FirstOrDefault();
-                HealthFacility healthFacility = new HDAReportsContext().HealthFacilities.Where(h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
+                HealthFacility healthFacility = new HDAReportsContext().HealthFacilities.Where(predicate: h => h.HealthFacilityID == target.HealthFacilityID).FirstOrDefault();
                 Provider provider = new HDAReportsContext().Providers.Where(i => i.ProviderID == target.ProviderID).FirstOrDefault();
                 Domain domain = new HDAReportsContext().Domains.Where(i => i.DomainID == target.DomainID).FirstOrDefault();
                 Directorate directorate = new HDAReportsContext().Directorates.Where(i => i.DirectorateID == target.DirectorateID).FirstOrDefault();
@@ -36,12 +36,12 @@ namespace HDA.Core.Controllers
                         IndicatorNameAr = indicator.IndicatorNameAr,
                     } : new IndicatorViewModel {},
                     HealthFacilityID = target.HealthFacilityID,
-                    HealthFacility = target.HealthFacilityID != null ? new HealthFacilityVM {
+                    HealthFacility = target.HealthFacilityID != "--" ? new HealthFacilityVM {
                         ID = healthFacility.HealthFacilityID,
                         HealthFacilityName = healthFacility.HealthFacilityNameEn,
                     } : new HealthFacilityVM {},
                     ProviderID = target.ProviderID,
-                    Provider = target.ProviderID != null ? new ProviderVM {
+                    Provider = target.ProviderID != "--" ? new ProviderVM {
                         ProviderID = provider.ProviderID,
                         ProviderName = provider.ProviderNameEn,
                     } : new ProviderVM {},
@@ -63,8 +63,8 @@ namespace HDA.Core.Controllers
                 };
                 if (!(query is null) && query.TargetID > 0 && t.TargetID != query.TargetID) { continue; }
                 if (!(query is null) && query.IndicatorID > 0 && t.IndicatorID != query.IndicatorID) { continue; }
-                if (!(query is null) && query.HealthFacilityID.Length > 0 && t.HealthFacilityID != query.HealthFacilityID) { continue; }
-                if (!(query is null) && query.ProviderID.Length > 0 && t.ProviderID != query.ProviderID) { continue; }
+                if (!(query is null) && query.HealthFacilityID != "--" && t.HealthFacilityID != query.HealthFacilityID) { continue; }
+                if (!(query is null) && query.ProviderID != "--" && t.ProviderID != query.ProviderID) { continue; }
                 if (!(query is null) && query.DomainID > 0 && t.DomainID != query.DomainID) { continue; }
                 if (!(query is null) && query.DirectorateID > 0 && t.DirectorateID != query.DirectorateID) { continue; }
                 targets.Add(t);
@@ -96,12 +96,12 @@ namespace HDA.Core.Controllers
                     IndicatorNameAr = indicator.IndicatorNameAr,
                 } : new IndicatorViewModel {},
                 HealthFacilityID = target.HealthFacilityID,
-                HealthFacility = target.HealthFacilityID != null ? new HealthFacilityVM {
+                HealthFacility = target.HealthFacilityID != "--" ? new HealthFacilityVM {
                     ID = healthFacility.HealthFacilityID,
                     HealthFacilityName = healthFacility.HealthFacilityNameEn,
                 } : new HealthFacilityVM {},
                 ProviderID = target.ProviderID,
-                Provider = target.ProviderID != null ? new ProviderVM {
+                Provider = target.ProviderID != "--" ? new ProviderVM {
                     ProviderID = provider.ProviderID,
                     ProviderName = provider.ProviderNameEn,
                 } : new ProviderVM {},
