@@ -262,7 +262,7 @@
         var pharmacyTextBox;
         var pharmacyAws;
 
-        var facilityId = 0;
+        var facilityId = "";
         var providerId = "";
         var pharmacyId = "";
         var drugClassTextBox;
@@ -376,7 +376,7 @@
     if (this.checked) {
         $('.text_hospital').attr('disabled', true);
         $('.text_hospital').val('');
-        facilityId = 0;
+        facilityId = '';
         $('#allPharmacies').attr('disabled', true);
         selectedHospitals = [];
         $('#selectedFacilitiesTable').empty();
