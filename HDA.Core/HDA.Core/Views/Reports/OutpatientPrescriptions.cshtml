@@ -166,28 +166,28 @@
                         <div id="InstitutionTrendsTab" class="tab-pane fade" role="tabpanel">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="card border border-primary bg-light" id="prescriptionsPerInstitution">
+                                    <div class="card border border-primary bg-light" id="prescriptionsTrends">
                                         <div class="card-header bg-primary text-white">
                                             Prescriptions Trends
                                         </div>
                                         <div class="card-body">
                                             <div class="col-md-12">
                                                 <div class="facilityPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select a Facility to View this Chart</i></div>
-                                                <div id="prescriptionsPerInstitutionChart"></div>
+                                                <div id="prescriptionsTrendsChart"></div>
                                             </div>
                                             <br />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="card border border-primary bg-light" id="prescriptionsPerProvider">
+                                    <div class="card border border-primary bg-light" id="prescriptionsPerInstitution">
                                         <div class="card-header bg-primary text-white">
                                             Prescriptions Per Institution
                                         </div>
                                         <div class="card-body">
                                             <div class="col-md-12">
                                                 <div class="facilityPrompt"><i class="fa fa-info-circle fa-lg"></i> <i class="text-black-50">Select a Facility to View this Chart</i></div>
-                                                <div id="prescriptionsPerProviderChart"></div>
+                                                <div id="prescriptionsPerInstitutionChart"></div>
                                             </div>
                                             <br />
                                         </div>
@@ -251,18 +251,16 @@
 
         </div>
     </div>
-
-
 </div>
 
 
 @section Scripts {
     <script type="text/javascript">
-        
+
         var pharmacyTextBox;
         var pharmacyAws;
 
-        var facilityId = 0;
+        var facilityId = "";
         var providerId = "";
         var pharmacyId = "";
         var drugClassTextBox;
@@ -275,11 +273,14 @@
         var pharmacyNames = [];
         var numberOfPharmacies = 0;
 
-        var pChart;
+        //Pharmacy trends charts
         var presPerPharmacyChart;
-
-        
         var quantitiesPerPharmacyChart;
+
+        //Institution trends charts
+        var presTrendsChart;
+        var presPerInstitutionChart;
+
         var selectedHospitals = [];
 
         $(function () {
@@ -304,7 +305,7 @@
         });
 
         $(document).ready(function () {
-            
+
             getAllowedHealthFacilityTypes();
 
             pharmacyTextBox = document.getElementById("TextPharmacy");
@@ -319,15 +320,26 @@
             drugAws = new Awesomplete(drugTextBox, { minChars: 0 });
         });
 
-    
-
-        
+        $(".all_hospitals").change(function () {
+            if (this.checked) {
+                $('.text_hospital').attr('disabled', true);
+                $('.text_hospital').val('');
+                facilityId = '';
+                $('#allPharmacies').attr('disabled', true);
+                selectedHospitals = [];
+                $('#selectedFacilitiesTable').empty();
+                $('#selectedFacilitiesTable').append('<tbody></tbody>');
+            }
+            else {
+                $('.text_hospital').removeAttr('disabled');
+            }
+        });
 
         $("#allPharmacies").change(function () {
             if (this.checked) {
                 $('#TextPharmacy').attr('disabled', true);
                 $('#TextPharmacy').val('');
-                pharmacyId = 0;
+                pharmacyId = "";
                 //refreshCharts();
             }
             else {
@@ -362,45 +374,25 @@
             }
             else {
                 $('#TextDrug').removeAttr('disabled');
-                
+
             }
         });
 
-    $('#TextDrug').focus(function () {
-        drugAws.evaluate();
+        $('#TextDrug').focus(function () {
+            drugAws.evaluate();
             drugAws.open();
-    });
-    
+        });
 
-    $(".all_hospitals").change(function () {
-    if (this.checked) {
-        $('.text_hospital').attr('disabled', true);
-        $('.text_hospital').val('');
-        facilityId = 0;
-        $('#allPharmacies').attr('disabled', true);
-        selectedHospitals = [];
-        $('#selectedFacilitiesTable').empty();
-        $('#selectedFacilitiesTable').append('<tbody></tbody>');
-    }
-    else {
-        $('.text_hospital').removeAttr('disabled');
-    }
-});  
-        
-
-   
-
-    function SelectFacility() {
+        function SelectFacility() {
             var result = this.value.split("~");
             var healthFacilityName = result[1];
             var healthFacilityId = result[0];
             selectedHospitals.push(healthFacilityId);
-        this.value = "";
-        console.log("selected facilities are" + selectedHospitals);
+            this.value = "";
+            //console.log("selected facilities are" + selectedHospitals);
 
             $('#selectedFacilitiesTable > tbody:last-child').append
                 ('<tr><td class="font-weight-bold">' + healthFacilityName + '</td><td><a href="#" onclick="updateTable(this,' + healthFacilityId + ');"><i class="fa fa-trash" ></i></a></td></tr>');
-
 
             $('#allPharmacies').removeAttr('disabled');
             GetPharmacies(selectedHospitals);
@@ -473,7 +465,7 @@
             GetDrugs(drugClassId);
             //refreshCharts();
             $('#allDrugs').removeAttr('disabled');
-            
+
         }
 
         function GetDrugs(selectedDrugClassId) {
@@ -490,7 +482,7 @@
                         drugList.push({ label: serverData[i]['DrugName'], value: serverData[i]['ID'] + '~' + serverData[i]['DrugName'] });
                     }
                     drugAws.list = drugList;
-                    
+
                 },
                 error: function (data) {
                     console.log(data.d);
@@ -505,75 +497,7 @@
             //refreshCharts();
         }
 
-    function GetPrescriptionsPerInstitution() {
-        
-            var payload = [];
-            var a = new Object();
-            a.HealthFacilities = selectedHospitals;
-            a.HealthFacilityTypes = selectedHospitalTypes;
-            payload.push(a);
-            payloadJson = JSON.stringify(payload);
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                data: payloadJson,
-                url: '../api/OutPatientPrescriptions/GetPrescriptionsPerInstitution/?HealthFacilityID=' + facilityId
-                    + '&ProviderID=' + providerId
-                    + '&PharmacyID=' + pharmacyId
-                    + '&FromDate=' + startDate
-                    + '&ToDate=' + endDate
-                    + '&DrugClassId=' + drugClassId
-                    + '&DrugId=' + drugId + '',
-                contentType: "application/json; charset=utf-8"
-            }).done(function (json) {
-                if (selectedHospitals.length == 0 || selectedHospitals.length > 5) {
-                    var series1 = [];
-                    for (var i = 0; i < json.length; i++) {
-                        series1.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['Total']]);
-                    }
-                    pChart.addSeries({
-                        name: 'All Selected Facilities',
-                        data: series1
-                    });
-                }
-                else {
-                    for (var i = 0; i < selectedHospitals.length; i++) {
-                        var series1 = [];
-                        var healthFacilityName = '';
-                        for (var j = 0; j < json.length; j++) {
-                            if (json[j]['HealthFacilityID'] == selectedHospitals[i]) {
-                                series1.push([Date.UTC(json[j]['Year'], json[j]['MonthId'] - 1), json[j]['Total']]);
-                                healthFacilityName = json[j]['HealthFacilityName'];
-                            }
-                        }
-                        pChart.addSeries({
-                                name: healthFacilityName,
-                                data: series1
-                            });
-                    }
-                }
-            });
-        }
-
-        function prescriptionsTrendChart() {
-            pChart = new Highcharts.chart('prescriptionsPerInstitutionChart', {
-                chart: {
-                    type: 'line',
-                    events: {
-                        load: GetPrescriptionsPerInstitution
-                    }
-                },
-                title: { text: '' },
-
-                subtitle: { text: '' },
-                xAxis: { type: 'datetime' },
-                yAxis: {
-                    title: { text: 'Number of Prescriptions' }
-                },
-                credits: false
-            });
-        }
-
+        //Pharmacy trends charts
         function prescriptionsPerPharmacyChart() {
             var payload = [];
             var a = new Object();
@@ -606,10 +530,10 @@
                     pharmacyQuantities.push(json[i]['TotalQuantity']);
                     pharmacyRefills.push(json[i]['TotalRefillQuantity']);
 
-                    console.log("pharmacies are " + pharmacyNames);
-                    console.log("Prescriptions are " + pharmacyPrescriptions);
-                    console.log("Quantities are " + pharmacyPrescriptions);
-                    console.log("Refills are " + pharmacyPrescriptions);
+                    //console.log("pharmacies are " + pharmacyNames);
+                    //console.log("Prescriptions are " + pharmacyPrescriptions);
+                    //console.log("Quantities are " + pharmacyPrescriptions);
+                    //console.log("Refills are " + pharmacyPrescriptions);
 
                 }
 
@@ -707,6 +631,76 @@
 
         }
 
+        //Institution trends charts
+        function GetPrescriptionsPerInstitution() {
+
+            var payload = [];
+            var a = new Object();
+            a.HealthFacilities = selectedHospitals;
+            a.HealthFacilityTypes = selectedHospitalTypes;
+            payload.push(a);
+            payloadJson = JSON.stringify(payload);
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: payloadJson,
+                url: '../api/OutPatientPrescriptions/GetPrescriptionsPerInstitution/?HealthFacilityID=' + facilityId
+                    + '&ProviderID=' + providerId
+                    + '&PharmacyID=' + pharmacyId
+                    + '&FromDate=' + startDate
+                    + '&ToDate=' + endDate
+                    + '&DrugClassId=' + drugClassId
+                    + '&DrugId=' + drugId + '',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (json) {
+                if (selectedHospitals.length == 0 || selectedHospitals.length > 5) {
+                    var series1 = [];
+                    for (var i = 0; i < json.length; i++) {
+                        series1.push([Date.UTC(json[i]['Year'], json[i]['MonthId'] - 1), json[i]['Total']]);
+                    }
+                    presTrendsChart.addSeries({
+                        name: 'All Selected Facilities',
+                        data: series1
+                    });
+                }
+                else {
+                    for (var i = 0; i < selectedHospitals.length; i++) {
+                        var series1 = [];
+                        var healthFacilityName = '';
+                        for (var j = 0; j < json.length; j++) {
+                            if (json[j]['HealthFacilityID'] == selectedHospitals[i]) {
+                                series1.push([Date.UTC(json[j]['Year'], json[j]['MonthId'] - 1), json[j]['Total']]);
+                                healthFacilityName = json[j]['HealthFacilityName'];
+                            }
+                        }
+                        presTrendsChart.addSeries({
+                            name: healthFacilityName,
+                            data: series1
+                        });
+                    }
+                }
+            });
+        }
+
+        function prescriptionsTrendChart() {
+            presTrendsChart = new Highcharts.chart('prescriptionsTrendsChart', {
+                chart: {
+                    type: 'line',
+                    events: {
+                        load: GetPrescriptionsPerInstitution
+                    }
+                },
+                title: { text: '' },
+
+                subtitle: { text: '' },
+                xAxis: { type: 'datetime' },
+                yAxis: {
+                    title: { text: 'Number of Prescriptions' }
+                },
+                credits: false
+            });
+        }
+
         function GetSummaryCounts() {
             $('#numAverageQuantityPerDrugCard').text('-');
             $('#numTotalQuantityPerDrugCard').text('-');
@@ -755,12 +749,12 @@
         }
 
         function refreshCharts() {
-            
+
             if (selectedHospitalTypesJson !== undefined) {
                 $('.facilityPrompt').attr('hidden', true);
                 prescriptionsTrendChart();
                 prescriptionsPerPharmacyChart();
-                prescriptionsPerFacilityChart();
+                prescriptionsPerInstitutionChart();
                 GetSummaryCounts();
             }
             else {
@@ -769,7 +763,7 @@
             }
         }
 
-        function prescriptionsPerFacilityChart() {
+        function prescriptionsPerInstitutionChart() {
             var providerNames = [];
             var payload = [];
             var a = new Object();
@@ -803,7 +797,7 @@
                 if (providerNames.length > 10) {
                     xAxisMax = 10;
                 }
-                var chart = new Highcharts.chart('prescriptionsPerProviderChart', {
+                presPerInstitutionChart = new Highcharts.chart('prescriptionsPerInstitutionChart', {
                     chart: {
                         //type: 'column',
                     },
@@ -842,6 +836,6 @@
                     credits: false
                 });
             });
-        }
+        } 
     </script>
 }
