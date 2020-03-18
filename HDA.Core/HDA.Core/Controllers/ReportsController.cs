@@ -41,6 +41,17 @@ namespace HDA.Core.Controllers
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
             }
         }
+        public ActionResult COVID19SituationAnalysis()
+        {
+            if (new PermissionCheck().IsAllowedOnReport("COVID-19SituationAnalysis", User.Identity.GetUserId()) == true || User.IsInRole("Admin"))
+            {
+                return View();
+            }
+            else
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
+            }
+        }
     }
 
     [System.Web.Http.Authorize]

@@ -1828,6 +1828,7 @@
     <Content Include="Views\Administration\UserManagement.cshtml" />
     <Content Include="Views\Shared\_ReportsPartial.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Reports\COVID19SituationAnalysis.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
