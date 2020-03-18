@@ -230,3 +230,10 @@ body #toast-container > div {
 .card.inpatient-transfers-card {
     height: 100%;
 }
+
+#covid-iframe {
+    height: calc(100vh - 4px);
+    width: calc(100vw - 4px);
+    box-sizing: border-box;
+    /* iframe full screen*/
+}
