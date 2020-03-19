@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 50px;
+    overflow: hidden;
 }
 
 .bg-purple {
@@ -232,8 +233,8 @@ body #toast-container > div {
 }
 
 #covid-iframe {
-    height: calc(100vh - 4px);
-    width: calc(100vw - 4px);
+    height: calc(100vh - 110px);
+    width: calc(100vw - 20px);
     box-sizing: border-box;
     /* iframe full screen*/
 }
