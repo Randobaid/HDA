@@ -11,7 +11,7 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body class="bg-light">
+<body class="bg-light @ViewBag.BodyClass">
     <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-purple">
         @*@Html.ActionLink("HDA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
         @*<a href="@Url.Action("Index","Home")" class="navbar-brand"><i class="fa fa-pie-chart fa-lg"></i></a>*@

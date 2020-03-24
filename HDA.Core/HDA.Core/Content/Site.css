@@ -1,7 +1,6 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 50px;
-    overflow: hidden;
 }
 
 .bg-purple {
@@ -230,6 +229,10 @@ body #toast-container > div {
 
 .card.inpatient-transfers-card {
     height: 100%;
+}
+
+.covid-report-body {
+    overflow: hidden;
 }
 
 #covid-iframe {
